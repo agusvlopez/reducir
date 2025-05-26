@@ -14,6 +14,10 @@ En desarrollo. Actualmente trabajando en el backend con Node.js + Express y el f
 - **Estilos:** CSS y TailwindCSS
 - **Deploy:** Por definir (Vercel, Railway, etc.)
 
+## 🎨 Diseño
+
+- [Prototipo en Figma](https://www.figma.com/proto/hXLdrNPaP5iHCABIJFSBjO/Reducir-App?node-id=2003-22&t=nTqJ5FgR3jDXflpz-1) 
+
 ## 📁 Estructura del proyecto
 
 /reducir
