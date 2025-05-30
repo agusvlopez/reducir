@@ -1,10 +1,12 @@
+import { AppLayout } from "./layouts/AppLayout"
 
 function App() {
 
   return (
     <>
-      <h1>Reducir App</h1>
-
+      <AppLayout>
+        <h1>Reducir App</h1>
+      </AppLayout>
     </>
   )
 }
