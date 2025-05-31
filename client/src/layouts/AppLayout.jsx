@@ -7,7 +7,7 @@ export function AppLayout({ children }) {
             <header className="bg-white shadow">
                 <Navbar />
             </header>
-            <main className="flex-grow container mx-auto p-4">
+            <main className="flex-grow container mx-auto pt-[88px] pb-[80px]">
                 {children}
             </main>
             <footer className="bg-white shadow mt-4">

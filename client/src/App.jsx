@@ -1,13 +1,26 @@
+import { Outlet, Route, Router, Routes } from "react-router";
 import { AppLayout } from "./layouts/AppLayout"
+import { Home } from "./pages/App/Home";
+
+
+function LayoutApp() {
+  return (
+    <>
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
+    </>
+  );
+}
 
 function App() {
 
   return (
-    <>
-      <AppLayout>
-        <h1>Reducir App</h1>
-      </AppLayout>
-    </>
+    <Routes>
+      <Route element={<LayoutApp />}>
+        <Route path="/home" element={<Home />} />
+      </Route>
+    </Routes>
   )
 }
 
