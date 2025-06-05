@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "title": "Reciclar botellas plásticas",
+    "category": "Reciclaje",
+    "carbon": 2,
+    "description": "Deposita botellas plásticas en el contenedor de reciclaje para reducir residuos y emisiones.",
+    "imageSrc": "https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT2-ekologia.jpg",
+    "imageAlt": "Persona reciclando botellas plásticas"
+  },
+  {
+    "id": "2",
+    "title": "Usar transporte público",
+    "category": "Agua",
+    "carbon": 5,
+    "description": "Desplázate en autobús o metro en vez de usar auto particular para disminuir tu huella de carbono.",
+    "imageSrc": "https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT1-ekologia.jpg",
+    "imageAlt": "Autobús ecológico en la ciudad"
+  },
+  {
+    "id": "3",
+    "title": "Reducir consumo de carne",
+    "category": "Alimentación",
+    "carbon": 4,
+    "description": "Opta por comidas vegetarianas al menos un día a la semana para reducir emisiones asociadas a la ganadería.",
+    "imageSrc": "https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT2-ekologia.jpg",
+    "imageAlt": "Plato de comida vegetariana"
+  },
+  {
+    "id": "4",
+    "title": "Apagar luces innecesarias",
+    "category": "Energía",
+    "carbon": 1,
+    "description": "Apaga las luces cuando no las necesites para ahorrar energía y reducir emisiones.",
+    "imageSrc": "https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT1-ekologia.jpg",
+    "imageAlt": "Mano apagando interruptor de luz"
+  },
+  {
+    "id": "5",
+    "title": "Reutilizar bolsas",
+    "category": "Reciclaje",
+    "carbon": 1,
+    "description": "Lleva bolsas reutilizables al hacer compras para evitar el uso de plásticos de un solo uso.",
+    "imageSrc": "https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT2-ekologia.jpg",
+    "imageAlt": "Bolsa reutilizable en supermercado"
+  },
+  {
+    "id": "6",
+    "title": "Plantar un árbol",
+    "category": "Agua",
+    "carbon": 10,
+    "description": "Planta un árbol en tu comunidad para ayudar a capturar CO2 y mejorar el entorno.",
+    "imageSrc": "https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT1-ekologia.jpg",
+    "imageAlt": "Persona plantando un árbol"
+  }
+]

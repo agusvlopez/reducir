@@ -10,7 +10,7 @@ export function AppLayout({ children }) {
             <main className="flex-grow container mx-auto pt-[88px] pb-[80px]">
                 {children}
             </main>
-            <footer className="bg-white shadow mt-4">
+            <footer className="bg-white shadow">
                 <BottomNavigation />
             </footer>
         </div>

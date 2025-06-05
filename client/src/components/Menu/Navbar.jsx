@@ -12,7 +12,7 @@ export function Navbar() {
     };
 
     return (
-        <div className="fixed top-0 left-0 right-0 bg-white shadow-md">
+        <div className="fixed z-20 top-0 left-0 right-0 bg-white shadow-md">
             <nav className="flex justify-between items-center p-4 py-6">
                 <Link to="/home" className="text-gray-700 hover:text-blue-500">
                     <img src={LogoText} alt="Home" />

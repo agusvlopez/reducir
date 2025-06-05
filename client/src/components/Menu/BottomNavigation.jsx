@@ -6,7 +6,7 @@ import CommunityIcon from "../../assets/icons/menu/community.png";
 
 export function BottomNavigation() {
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white shadow-md">
+        <div className="fixed z-20 bottom-0 left-0 right-0 bg-white shadow-md">
             <nav className="flex justify-around p-4">
                 <Link to="/home" className="">
                     <img src={HomeIcon} alt="Home" />
