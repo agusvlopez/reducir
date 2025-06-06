@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-export function HeartIcon({ className = "", isFilled = false }) {
+export function HeartIcon({
+    className = "",
+    isFilled = false
+}) {
     const [filled, setFilled] = useState(isFilled);
 
     const handleClick = () => setFilled((prev) => !prev);

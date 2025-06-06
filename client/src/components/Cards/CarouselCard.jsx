@@ -2,7 +2,7 @@ export function CarouselCard({
     title,
     imageSrc,
     imageAlt = "Carousel Image",
-    className = "",
+    className = ""
 }) {
     return (
         <div

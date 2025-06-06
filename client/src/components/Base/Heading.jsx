@@ -1,5 +1,11 @@
-export function Heading({ children, tag, size, color, weight, align }) {
-
+export function Heading({
+    children,
+    tag,
+    size,
+    color,
+    weight,
+    align
+}) {
     const allowedTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     const TagComponent = allowedTags.includes(tag) ? tag : 'h1';
 

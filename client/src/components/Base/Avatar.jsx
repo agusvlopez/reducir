@@ -1,4 +1,8 @@
-export function Avatar({ src, alt = "Avatar", className = "" }) {
+export function Avatar({
+    src,
+    alt = "Avatar",
+    className = ""
+}) {
     return (
         <img
             src={src}

@@ -1,4 +1,8 @@
-export function Pill({ text, className = "", size = "md" }) {
+export function Pill({
+    text,
+    className = "",
+    size = "md"
+}) {
     const sizeClasses = {
         sm: "text-xs px-2 py-1",
         md: "text-sm px-3 py-1.5",

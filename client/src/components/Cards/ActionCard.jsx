@@ -3,6 +3,7 @@ import { Pill } from "../Base/Pill";
 import { useState } from "react";
 import { HeartIcon } from "../Icons/Heart";
 import CarbonIcon from "../../assets/icons/carbon-green.png";
+import { ImagePill } from "../Base/ImagePill";
 
 export function ActionCard({
     title,
@@ -11,7 +12,7 @@ export function ActionCard({
     description = "",
     imageSrc,
     imageAlt = "Action Image",
-    className = "",
+    className = ""
 }) {
     const [isAchievementAdded, setIsAchievementAdded] = useState(false);
 
@@ -23,20 +24,12 @@ export function ActionCard({
                 <Link
                     to=""
                 >
-                    <div className="relative">
-                        {/* IMAGEN */}
-                        <Pill
-                            size="sm"
-                            text={category}
-                            className="absolute z-10 top-3 right-3 shadow-md backgroundDarkGreen text-white"
-                        />
-
-                        <img
-                            className="object-cover mt-2 aspect-[4/4] rounded-[30px] w-[132px] h-[132px]"
-                            src={imageSrc}
-                            alt={imageAlt}
-                        />
-                    </div>
+                    <ImagePill
+                        category={category}
+                        imageSrc={imageSrc}
+                        imageAlt={imageAlt}
+                        size="sm"
+                    />
                 </Link>
             </div>
 

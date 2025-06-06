@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-export function Search({ onSearch, placeholder = "Buscar...", className = "" }) {
+export function Search({
+    onSearch,
+    placeholder = "Buscar...",
+    className = ""
+}) {
     const [searchValue, setSearchValue] = useState("");
 
     const handleChange = (e) => {
