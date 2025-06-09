@@ -4,7 +4,6 @@ import { AppHeaderSection } from "../../components/Sections/AppHeader";
 import { BaseModal } from "../../components/Base/BaseModal";
 import { Heading } from "../../components/Base/Heading";
 import QuestionIcon from "../../assets/icons/question.png";
-import { Pill } from "../../components/Base/Pill";
 import { Link } from "react-router";
 import CarbonReduceIcon from "../../assets/icons/carbon-reduce.png";
 import { BaseButton } from "../../components/Base/BaseButton";
@@ -17,7 +16,7 @@ export function Goals() {
     const [customGoal, setCustomGoal] = useState(false);
     const [sliderValue, setSliderValue] = useState(70);
 
-    const handleCustomGoal = () => setCustomGoal(true);
+    const handleCustomGoal = () => setCustomGoal(!customGoal);
 
     return (
         <>
@@ -97,14 +96,14 @@ export function Goals() {
                 )}
             </section>
             <section className="px-6 py-12 flex flex-col gap-6 items-center">
-                {!customGoal && (
-                    <BaseButton
-                        variant="outline"
-                        className="mx-auto"
-                        onClick={handleCustomGoal}>
-                        Reducción personalizada
-                    </BaseButton>
-                )}
+
+                <BaseButton
+                    variant="outline"
+                    className="mx-auto"
+                    onClick={handleCustomGoal}>
+                    {!customGoal ? "Reducción personalizada" : "Cambiar objetivo"}
+                </BaseButton>
+
 
                 <div className="text-center">
                     <p className="text-sm mb-3">Tenemos que reducir las emisiones a la mitad para 2030.</p>
