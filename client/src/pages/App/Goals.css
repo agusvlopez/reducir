@@ -1,0 +1,90 @@
+/* Slider personalizado para Goals */
+.goals-slider[type="range"] {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    /* Tailwind gray-200 */
+    border-radius: 0.5rem;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Webkit (Chrome, Safari) */
+.goals-slider[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #005840;
+    border: 2px solid #F5F5F5;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.goals-slider[type="range"]:focus::-webkit-slider-thumb {
+    outline: 2px solid #005840;
+}
+
+/* Firefox */
+.goals-slider[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #005840;
+    border: 2px solid #F5F5F5;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.goals-slider[type="range"]:focus::-moz-range-thumb {
+    outline: 2px solid #005840;
+}
+
+/* IE */
+.goals-slider[type="range"]::-ms-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #005840;
+    border: 2px solid #F5F5F5;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Track para Firefox */
+.goals-slider[type="range"]::-moz-range-track {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 0.5rem;
+}
+
+/* Track para IE */
+.goals-slider[type="range"]::-ms-fill-lower,
+.goals-slider[type="range"]::-ms-fill-upper {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 0.5rem;
+}
+
+/* Quitar el borde azul en focus en algunos navegadores */
+.goals-slider[type="range"]:focus {
+    outline: none;
+}
+
+/* Opcional: animación al pasar el mouse */
+.goals-slider[type="range"]:hover::-webkit-slider-thumb {
+    background: #00795a;
+}
+
+.goals-slider[type="range"]:hover::-moz-range-thumb {
+    background: #00795a;
+}
+
+.goals-slider[type="range"]:hover::-ms-thumb {
+    background: #00795a;
+}
