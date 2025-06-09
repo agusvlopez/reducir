@@ -9,8 +9,8 @@ import { CarouselCard } from "../../components/Cards/CarouselCard";
 export function Home() {
     return (
         <>
-            <div className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-24 rounded-b-[30px]">
-                <section className="flex items-center gap-4">
+            <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-24 rounded-b-[30px]">
+                <div className="flex items-center gap-4">
                     <Avatar src={"https://i.pravatar.cc/300"} alt="User Avatar" className="mb-4" />
                     <div>
                         <p>¡Hola Nombre de usuario!</p>
@@ -21,9 +21,9 @@ export function Home() {
                         </div>
 
                     </div>
-                </section>
-            </div>
-            <div className="w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
+                </div>
+            </section>
+            <section className="w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
                 <div className="text-xs text-[#383838] flex flex-col gap-1">
                     <p>Objetivo</p>
                     <span className="bg-[#ED6C1D] p-1 px-2 rounded-[30px] text-xs text-white">Reducir la huella un 10%</span>
@@ -48,21 +48,21 @@ export function Home() {
                     {/* PROGRESS DONUT */}
                     <DonutProgress value={72} />
                 </div>
-            </div>
-            <div className="mt-[40px] flex gap-2 overflow-x-auto pl-6">
+            </section>
+            <section className="mt-[40px] flex gap-2 overflow-x-auto pl-6">
                 <Pill text="Acciones en proceso" />
                 <Pill text="Acciones en proceso" />
                 <Pill text="Acciones en proceso" />
                 <Pill text="Acciones en proceso" />
-            </div>
-            <div className="mt-[40px] px-6 flex flex-col gap-4">
+            </section>
+            <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
                     <p className="text-xs">Opciones guardadas para hacer cuando te sientas listo/a.</p>
                 </div>
                 <button className="font-semibold text-[#005840]">+ Agregar una acción</button>
 
-                <section className="flex gap-4 ">
+                <div className="flex gap-4 ">
                     {/* TODO: USE SWIPER */}
                     <CarouselCard
                         title={"Acción 1"}
@@ -82,8 +82,8 @@ export function Home() {
                         imageAlt={"Imagen de la acción 1"}
                         className="mt-4"
                     />
-                </section>
-            </div>
+                </div>
+            </section>
         </>
     );
 }

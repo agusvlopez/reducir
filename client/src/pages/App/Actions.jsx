@@ -16,6 +16,7 @@ import {
     Button,
     useDisclosure,
 } from "@heroui/react";
+import { BaseModal } from "../../components/Base/BaseModal";
 
 export function Actions() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -40,50 +41,26 @@ export function Actions() {
             (!searchQuery || action.title.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
-    const handleOpenInfoModal = () => {
-        console.log("Open info modal");
-
-    }
-
     return (
         <>
-
             <div className="flex flex-col min-h-screen">
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                    <ModalContent className="rounded-[30px] bg-[#F5F5F5] text-[#383838] pt-4 pb-2">
-                        {(onClose) => (
-                            <>
-                                <ModalHeader className="flex flex-col gap-1">¿Qué son las acciones?</ModalHeader>
-                                <ModalBody>
-                                    <p className="text-[#383838] font-medium">
-                                        ¡Observá todos los tips y empezá a hacer la acción que quieras!
-                                    </p>
-                                    <p className="text-[#383838] font-medium">
-                                        Agregala a “acciones pendientes” para tenerla siempre a mano.
-                                    </p>
-                                    <p className="text-[#383838] font-medium">
-                                        Una vez que consideres que incorporaste el hábito ¡agregala como logro!
-                                    </p>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button
-                                        className="text-[#383838] font-semibold" variant="light" onPress={onClose}>
-                                        Cerrar
-                                    </Button>
-                                    <Button
-                                        className="bg-[#005840] text-[#F1EDEC] font-semibold"
-                                        onPress={onClose}
-                                        radius="full">
-                                        Aceptar
-                                    </Button>
-                                </ModalFooter>
-                            </>
-                        )}
-                    </ModalContent>
-                </Modal>
+                <BaseModal
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    title="¿Qué son las acciones?">
+                    <p className="text-[#383838] font-medium">
+                        ¡Observá todos los tips y empezá a hacer la acción que quieras!
+                    </p>
+                    <p className="text-[#383838] font-medium">
+                        Agregala a “acciones pendientes” para tenerla siempre a mano.
+                    </p>
+                    <p className="text-[#383838] font-medium">
+                        Una vez que consideres que incorporaste el hábito ¡agregala como logro!
+                    </p>
+                </BaseModal>
                 <section>
                     <div className="px-6 pt-6">
-                        <Heading tag="h2" size="h2" color="darkGreen" weight="semibold" align="left">
+                        <Heading tag="h2" size="h2" color="green" weight="semibold" align="left">
                             <span className="flex gap-2 items-center">
                                 Acciones
                                 <button

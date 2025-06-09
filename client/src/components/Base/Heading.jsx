@@ -30,7 +30,7 @@ export function Heading({
 
     const textColor = {
         white: 'text-white',
-        darkGreen: 'text-[#005840]',
+        green: 'text-[#005840]',
         grey: 'text-[#383838]'
     }
 
@@ -45,12 +45,16 @@ export function Heading({
         right: 'text-right',
     }
 
+    // Elige el tamaño (usa size si está, si no usa tag)
+    const headingSize = size || tag || 'h1';
+
     return (
         <TagComponent className={`
-        ${size ? fontSize[size] : fontSize[tag]} 
-        ${textColor[color]} 
-        ${textWeight[weight]}
-        ${align && textAlign[align]}
+            ${fontSize.mobile[headingSize]} 
+            sm:${fontSize[headingSize]}
+            ${textColor[color]} 
+            ${textWeight[weight]}
+            ${align && textAlign[align]}
         `}>
             {children}
         </TagComponent>

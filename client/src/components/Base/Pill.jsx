@@ -1,7 +1,8 @@
 export function Pill({
     text,
     className = "",
-    size = "md"
+    size = "md",
+    color = "green",
 }) {
     const sizeClasses = {
         sm: "text-xs px-2 py-1",
@@ -9,11 +10,14 @@ export function Pill({
         lg: "text-base px-4 py-2",
     };
 
-    const sizeClass = sizeClasses[size] || sizeClasses.md;
+    const colorClasses = {
+        green: "text-white bg-[#005840]",
+        orange: "text-white bg-[#ED6C1D]"
+    };
 
     return (
         <span
-            className={`min-w-fit ${sizeClass} text-white bg-[#005840] rounded-[30px] ${className}`}
+            className={`w-fit ${sizeClasses[size]} ${colorClasses[color]} rounded-[30px] ${className}`}
         >
             {text}
         </span>

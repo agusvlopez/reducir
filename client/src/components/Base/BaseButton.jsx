@@ -6,16 +6,16 @@ export function BaseButton({
 }) {
     // Define the base styles for the button depending on the variant
     const variantStyles = {
-        green: "bg-[#005840] text-white",
-        white: "bg-[#F5F5F5] text-[#383838]",
+        green: "border border-[#005840] bg-[#005840] text-white",
+        white: "bg-[#F5F5F5] text-[#005840]",
         danger: "bg-red-500 text-white",
-        outline: "border border-[#005840] text-[#005840]",
+        outline: "border border-[#005840] text-[#005840] bg-white",
     };
 
     return (
         <button
 
-            className={`py-2 px-4 rounded-[30px] flex items-center justify-center ${className} ${variantStyles[variant]}`}
+            className={`w-fit py-2 px-4 rounded-[30px] flex items-center justify-center ${className} ${variantStyles[variant]}`}
             {...props}
         >
             {children}
