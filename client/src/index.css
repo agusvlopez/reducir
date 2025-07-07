@@ -7,4 +7,5 @@
 body {
     /* @apply bg-[#F1EDEC] text-[#383838]; */
     font-family: 'Quicksand', sans-serif;
+    color: #383838;
 }

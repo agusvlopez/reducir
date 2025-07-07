@@ -1,5 +1,6 @@
 export function BaseButton({
     variant = "green",
+    buttonType = "button",
     children,
     className,
     ...props
@@ -14,7 +15,7 @@ export function BaseButton({
 
     return (
         <button
-
+            type={buttonType}
             className={`w-fit py-2 px-4 rounded-[30px] flex items-center justify-center ${className} ${variantStyles[variant]}`}
             {...props}
         >

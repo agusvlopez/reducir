@@ -49,7 +49,7 @@ export function Emissions() {
                     imageAlt=""
                     labelButton="Comenzar"
                     color="green"
-                    link="/emisiones/metas"
+                    link="/emisiones/goals"
                 />
                 <BaseCard
                     title="Perfil de emisiones"

@@ -11,13 +11,13 @@ export function BottomNavigation() {
                 <Link to="/home" className="">
                     <img src={HomeIcon} alt="Home" />
                 </Link>
-                <Link to="/acciones" className="">
+                <Link to="/actions" className="">
                     <img src={ActionsIcon} alt="Acciones" />
                 </Link>
-                <Link to="/emisiones" className="">
+                <Link to="/emissions" className="">
                     <img src={EmissionsIcon} alt="Emisiones" />
                 </Link>
-                <Link to="/comunidad" className="">
+                <Link to="/community" className="">
                     <img src={CommunityIcon} alt="Comunidad" />
                 </Link>
             </nav>
