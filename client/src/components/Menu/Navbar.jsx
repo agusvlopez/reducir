@@ -14,7 +14,7 @@ export function Navbar() {
     return (
         <div className="fixed z-20 top-0 left-0 right-0 bg-white shadow-md">
             <nav className="flex justify-between items-center p-4 py-6">
-                <Link to="/home" className="text-gray-700 hover:text-blue-500">
+                <Link to="/app/home" className="text-gray-700 hover:text-blue-500">
                     <img src={LogoText} alt="Home" />
                 </Link>
                 <button onClick={toggleMenu} className="transition duration-300 ease-in-out">
@@ -29,7 +29,7 @@ export function Navbar() {
                 <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4">
                     <ul className="flex flex-col space-y-2">
                         <li>
-                            <Link to="/home" className="text-gray-700 hover:text-blue-500">Ajustes del perfil</Link>
+                            <Link to="/app/home" className="text-gray-700 hover:text-blue-500">Ajustes del perfil</Link>
                         </li>
                     </ul>
                 </div>

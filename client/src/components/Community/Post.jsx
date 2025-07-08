@@ -10,7 +10,7 @@ export function Post() {
 
     return (
         <section className="flex flex-col gap-4 border-b border-[#6D6D6D] pb-6">
-            <Link to="/1/post/1"
+            <Link to="/app/1/post/1"
                 className={``}>
                 <PostHeader />
                 <PostContent />

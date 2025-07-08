@@ -4,6 +4,8 @@ import { Avatar } from "../../components/Base/Avatar";
 import { PostHeader } from "../../components/Community/PostHeader";
 import { PostContent } from "../../components/Community/PostContent";
 import { PostFooter } from "../../components/Community/PostFooter";
+import { BaseTextarea } from "../../components/Inputs/BaseTextarea";
+import { Answer } from "../../components/Community/Answer";
 
 export function ComposerPost() {
     return (
@@ -31,19 +33,13 @@ export function ComposerPost() {
                     <p className="mt-6 text-sm">Respondiendo a @nombredeusuario </p>
                 </div>
             </div>
-            {/* hacer comentario */}
-            <div className="flex items-center gap-4">
-                <Avatar src="https://i.pravatar.cc/300" />
-                <form className="flex-1 flex items-center justify-between">
-                    <input
-                        type="text"
-                        placeholder="Comentá tu respuesta"
-                    />
-                    <BaseButton buttonType="submit">
-                        Responder
-                    </BaseButton>
-                </form>
-            </div>
+
+            <Answer 
+                labelButton="Responder"
+                placeholder="Comentá tu respuesta"
+                name="comment"
+                srcAvatar="https://i.pravatar.cc/300"
+            />
         </section>
     )
 }

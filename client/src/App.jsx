@@ -25,14 +25,14 @@ function App() {
   return (
     <Routes>
       <Route element={<LayoutApp />}>
-        <Route path="/home" element={<Home />} />
-        <Route path="/actions" element={<Actions />} />
-        <Route path="/actions/:id" element={<Action />} />
-        <Route path="/emissions" element={<Emissions />} />
-        <Route path="/emissions/goals" element={<Goals />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/:userId/post/:postId" element={<CommunityPost />} />
-        <Route path="/compose/post/:postId" element={<ComposerPost />} />
+        <Route path="/app/home" element={<Home />} />
+        <Route path="/app/actions" element={<Actions />} />
+        <Route path="/app/actions/:id" element={<Action />} />
+        <Route path="/app/emissions" element={<Emissions />} />
+        <Route path="/app/emissions/goals" element={<Goals />} />
+        <Route path="/app/community" element={<Community />} />
+        <Route path="/app/:userId/post/:postId" element={<CommunityPost />} />
+        <Route path="/app/compose/post/:postId" element={<ComposerPost />} />
       </Route>
     </Routes>
   )

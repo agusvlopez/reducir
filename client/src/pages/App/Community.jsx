@@ -22,7 +22,6 @@ export function Community() {
                     isBordered={true}
                     className="mx-auto"
                 />
-
                 <Search className="flex-1" />
             </div>
 
@@ -56,7 +55,6 @@ export function Community() {
                                 Publicar
                             </BaseButton>
                         </div>
-
                     </div>
                 )}
 
@@ -65,6 +63,6 @@ export function Community() {
                     <Post />
                 </div>
             </div>
-        </section >
+        </section>
     );
 }

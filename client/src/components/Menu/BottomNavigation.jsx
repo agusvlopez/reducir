@@ -8,16 +8,16 @@ export function BottomNavigation() {
     return (
         <div className="fixed z-20 bottom-0 left-0 right-0 bg-white shadow-md">
             <nav className="flex justify-around p-4">
-                <Link to="/home" className="">
+                <Link to="/app/home" className="">
                     <img src={HomeIcon} alt="Home" />
                 </Link>
-                <Link to="/actions" className="">
+                <Link to="/app/actions" className="">
                     <img src={ActionsIcon} alt="Acciones" />
                 </Link>
-                <Link to="/emissions" className="">
+                <Link to="/app/emissions" className="">
                     <img src={EmissionsIcon} alt="Emisiones" />
                 </Link>
-                <Link to="/community" className="">
+                <Link to="/app/community" className="">
                     <img src={CommunityIcon} alt="Comunidad" />
                 </Link>
             </nav>
