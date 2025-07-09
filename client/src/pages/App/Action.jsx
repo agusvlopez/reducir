@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { Heading } from "../../components/Base/Heading";
 import ACTIONS from "../../assets/data/actions.json";
-import { BaseButton } from "../../components/Base/BaseButton";
+import BaseButton from "../../components/Base/BaseButton";
 import { HeartIcon } from "../../components/Icons/Heart";
 import { PlusIcon } from "../../components/Icons/Plus";
 import { CarbonIcon } from "../../components/Icons/Carbon";

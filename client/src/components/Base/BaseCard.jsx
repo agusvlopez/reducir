@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { BaseButton } from "./BaseButton";
+import BaseButton from "./BaseButton";
 import { Heading } from "./Heading";
 
 export function BaseCard({

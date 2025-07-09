@@ -6,7 +6,7 @@ import { Heading } from "../../components/Base/Heading";
 import QuestionIcon from "../../assets/icons/question.png";
 import { Link } from "react-router";
 import CarbonReduceIcon from "../../assets/icons/carbon-reduce.png";
-import { BaseButton } from "../../components/Base/BaseButton";
+import BaseButton from "../../components/Base/BaseButton";
 import { useState } from "react";
 
 

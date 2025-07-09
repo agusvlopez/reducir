@@ -1,5 +1,5 @@
 import { Avatar } from "../Base/Avatar";
-import { BaseButton } from "../Base/BaseButton";
+import BaseButton from "../Base/BaseButton";
 import { BaseTextarea } from "../Inputs/BaseTextarea";
 
 export function Answer ({

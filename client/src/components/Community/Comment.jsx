@@ -1,5 +1,4 @@
 import { Avatar } from "../Base/Avatar";
-import { BaseButton } from "../Base/BaseButton";
 import { CommentHeart } from "./CommentHeart";
 
 export function Comment({

@@ -4,7 +4,7 @@ import { Heading } from "../../components/Base/Heading";
 import { Post } from "../../components/Community/Post";
 import { Search } from "../../components/Inputs/Search";
 import { Select } from "../../components/Inputs/Select";
-import { BaseButton } from "../../components/Base/BaseButton";
+import BaseButton from "../../components/Base/BaseButton";
 
 export function Community() {
     const [isNewPost, setIsNewPost] = useState(false);

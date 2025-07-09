@@ -1,4 +1,4 @@
-export function BaseButton({
+export default function BaseButton({
     variant = "green",
     buttonType = "button",
     children,

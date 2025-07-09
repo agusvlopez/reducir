@@ -29,7 +29,9 @@ export function Navbar() {
                 <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4">
                     <ul className="flex flex-col space-y-2">
                         <li>
-                            <Link to="/app/home" className="text-gray-700 hover:text-blue-500">Ajustes del perfil</Link>
+                            <Link to="/app/profile/settings"
+                            onClick={toggleMenu}
+                            className="text-gray-700 hover:text-blue-500">Ajustes del perfil</Link>
                         </li>
                     </ul>
                 </div>

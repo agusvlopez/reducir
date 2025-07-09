@@ -8,6 +8,7 @@ import { Goals } from "./pages/App/Goals";
 import { Community } from "./pages/App/Community";
 import { CommunityPost } from "./pages/App/CommunityPost";
 import { ComposerPost } from "./pages/App/ComposerPost";
+import { ProfileSettings } from "./pages/App/ProfileSettings";
 
 
 function LayoutApp() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/app/community" element={<Community />} />
         <Route path="/app/:userId/post/:postId" element={<CommunityPost />} />
         <Route path="/app/compose/post/:postId" element={<ComposerPost />} />
+        <Route path="/app/profile/settings" element={<ProfileSettings />} />
       </Route>
     </Routes>
   )

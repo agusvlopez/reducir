@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { Post } from "../../components/Community/Post";
 import { Avatar } from "../../components/Base/Avatar";
-import { BaseButton } from "../../components/Base/BaseButton";
 import { Comment } from "../../components/Community/Comment";
 import { BaseTextarea } from "../../components/Inputs/BaseTextarea";
 import { Answer } from "../../components/Community/Answer";
@@ -19,8 +18,7 @@ export function CommunityPost() {
     return (
         <section className="mx-6 my-6 flex flex-col gap-6">
             <NavigationLink 
-                label="Publicación"
-                
+                label="Publicación"              
             />
             <div>
                 <Post />
