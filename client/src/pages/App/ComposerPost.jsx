@@ -5,17 +5,15 @@ import { PostContent } from "../../components/Community/PostContent";
 import { PostFooter } from "../../components/Community/PostFooter";
 import { BaseTextarea } from "../../components/Inputs/BaseTextarea";
 import { Answer } from "../../components/Community/Answer";
+import { NavigationLink } from "../../components/Base/NavigationLink";
 
 export function ComposerPost() {
     return (
         <section className="mx-6 my-6 flex flex-col gap-6">
-            <Link
-                to={`/community`}
-                className="text-[#005840] flex items-center justify-between gap-8 text-lg font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-            </Link>
+            <NavigationLink
+                to="/app/community"
+                label="Publicación"              
+            />
 
             <div className="flex gap-4">
                 <div className="flex flex-col">
