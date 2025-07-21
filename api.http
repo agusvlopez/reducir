@@ -3,7 +3,9 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
+  "name": "Jim",
   "username": "Jim",
+  "email": "jim@gmail.com",
   "password": "pass"
 }
 
@@ -12,7 +14,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "username": "Jim",
+  "email": "jim@gmail.com",
   "password": "pass"
 }
 
