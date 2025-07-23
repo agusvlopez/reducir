@@ -5,18 +5,21 @@ Content-Type: application/json
 {
   "name": "Jim",
   "username": "Jim",
-  "email": "jim@gmail.com",
-  "password": "pass"
+  "email": "jim6@gmail.com",
+  "password": "12345678"
 }
 
 ### LOGIN
-POST http://localhost:3000/login
+POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-  "email": "jim@gmail.com",
-  "password": "pass"
+  "email": "jim1@gmail.com",
+  "password": "12345678"
 }
+
+### LOGOUT
+POST http://localhost:3000/users/logout
 
 ### GET USERS
 GET http://localhost:3000/users
