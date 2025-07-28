@@ -4,11 +4,11 @@ import './databases/mongoDBConnection.js';
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import jwt from 'jsonwebtoken';
-import { JWT_KEY_SECRET, PORT, SALT_ROUNDS } from "./config.js";
+import { PORT } from "./config.js";
 import User from "./models/User.js";
 import usersRouter from './routes/user.route.js';
 import { authMiddleware } from './middlewares/auth.middleware.js';
+import tokensRouter from './routes/token.route.js';
 
 const corsOptions = {
     origin: true, //todo: change it
@@ -25,8 +25,10 @@ app.use(cookieParser());
 
 // routes
 app.use('/users', usersRouter);
+app.use('/tokens', tokensRouter);
 
-app.get('/users', async (req, res) => {
+//TESTING:
+app.get('/users', authMiddleware, async (req, res) => {
   const users = await User.find({});
   res.send(users);
 });

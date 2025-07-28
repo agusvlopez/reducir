@@ -1,10 +1,11 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from "../repositories/user.repository.js";
-import { JWT_KEY_SECRET, SALT_ROUNDS } from "../config.js";
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALT_ROUNDS } from "../config.js";
 import { validateUserCreate, validateUserLogin } from "../validations/user.schema.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import { ConflictError } from "../errors/ConflictError.js";
+import { TokenService } from './token.service.js';
 
 export class UserService {
   static async create({ name, username, email, password }){
@@ -22,14 +23,31 @@ export class UserService {
       email,
       hashedPassword
     });
-
-    const token = jwt.sign(
+    
+    // Access Token
+    const accessToken = jwt.sign(
       { id: user._id, email: user.email}, 
-      JWT_KEY_SECRET, 
+      ACCESS_TOKEN_SECRET, 
       {  expiresIn: '1h' }
     );
 
-    return { userId: user._id, token };
+    // Refresh token
+    const refreshToken = jwt.sign(
+      { id: user._id, email: user.email}, 
+      REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    // save refresh token in database
+    await TokenService.create({
+      refreshToken,
+      userId: user._id,
+      userEmail: user.email
+    });
+
+    return { userId: user._id, accessToken, refreshToken };
   }
 
   static async login({ email, password }){
@@ -42,14 +60,31 @@ export class UserService {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if(!isPasswordValid) throw new ValidationError('Credenciales inválidas');
 
-    const token = jwt.sign(
+    // Access Token
+    const accessToken = jwt.sign(
       { id: user._id, email: user.email}, 
-      JWT_KEY_SECRET, 
+      ACCESS_TOKEN_SECRET, 
       {  expiresIn: '1h' }
     );
 
+    // Refresh token
+    const refreshToken = jwt.sign(
+      { id: user._id, email: user.email}, 
+      REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    // save refresh token in database
+    await TokenService.create({
+      refreshToken,
+      userId: user._id,
+      userEmail: user.email
+    });
+
     const { password: _, ...publicUser } = user;
     
-    return { user: publicUser, token };
+    return { user: publicUser, accessToken, refreshToken };
   }
 }
