@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Righteous&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --color-off-white: #F5F5F5;
+    --color-gray: #6D6D6D;
+    --color-gray-light: #F1EDEC;
+    --color-gray-lighter: #F5F5F5;
+    --color-dark-green: #005840;
+}
 
 body {
     /* @apply bg-[#F1EDEC] text-[#383838]; */
