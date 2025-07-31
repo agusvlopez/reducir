@@ -5,8 +5,13 @@ import TimeIcon from "../../assets/icons/time.png";
 import ArrowRightIcon from "../../assets/icons/arrow-next.png";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
+import { useGetUsersQuery } from "../../api/apiSlice";
 
 export function Home() {
+
+    const { data: users, isError, isLoading, error } = useGetUsersQuery();
+
+    console.log('users', users);
     return (
         <>
             <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-24 rounded-b-[30px]">

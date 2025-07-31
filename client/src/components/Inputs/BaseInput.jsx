@@ -3,7 +3,8 @@ export default function BaseInput({
     inputName,
     inputType = "text",
     inputId,
-    inputPlaceholder
+    inputPlaceholder,
+    inputRequired = false,
 }) {
     return (
         <div>
@@ -16,7 +17,8 @@ export default function BaseInput({
                 type={inputType}
                 id={inputId}
                 placeholder={inputPlaceholder}
-                className="block w-full h-11 rounded-full border-0 py-1.5 pl-4 pr-2 text-[#6D6D6D] text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                className="block w-full h-11 rounded-full border-0 py-1.5 pl-4 pr-2 text-gray text-sm ring-1 ring-inset ring-gray placeholder:text-gray sm:text-sm sm:leading-6"
+                required={inputRequired}
             />
         </div>
     )

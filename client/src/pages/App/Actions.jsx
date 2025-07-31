@@ -6,7 +6,7 @@ import { ActionCard } from "../../components/Cards/ActionCard";
 import { Search } from "../../components/Inputs/Search";
 import { Select } from "../../components/Inputs/Select";
 import ACTIONS from "../../assets/data/actions.json";
-import QuestionIcon from "../../assets/icons/question.png";
+import InfoImage from "../../assets/icons/info.png";
 import {
     Modal,
     ModalContent,
@@ -66,7 +66,7 @@ export function Actions() {
                                 <button
                                     onClick={onOpen}
                                 >
-                                    <img src={QuestionIcon} alt="Información de las acciones" className="h-fit" />
+                                    <img src={InfoImage} alt="Información de las acciones" className="h-fit" />
                                 </button>
                             </span>
                         </Heading>

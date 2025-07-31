@@ -9,6 +9,11 @@ import { Community } from "./pages/App/Community";
 import { CommunityPost } from "./pages/App/CommunityPost";
 import { ComposerPost } from "./pages/App/ComposerPost";
 import { ProfileSettings } from "./pages/App/ProfileSettings";
+import { Login } from "./pages/App/Login";
+import { Register } from "./pages/App/Register";
+import { Welcome } from "./pages/App/Welcome";
+import { IntroTest } from "./pages/App/Test/IntroTest";
+import { FormTest } from "./pages/App/Test/FormTest";
 
 
 function LayoutApp() {
@@ -25,6 +30,11 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/welcome" element={<Welcome />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/test/intro" element={<IntroTest />} />
+      <Route path="/test/form" element={<FormTest />} />
       <Route element={<LayoutApp />}>
         <Route path="/app/home" element={<Home />} />
         <Route path="/app/actions" element={<Actions />} />

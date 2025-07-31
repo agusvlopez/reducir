@@ -3,7 +3,7 @@ import { useDisclosure } from "@heroui/react";
 import { AppHeaderSection } from "../../components/Sections/AppHeader";
 import { BaseModal } from "../../components/Base/BaseModal";
 import { Heading } from "../../components/Base/Heading";
-import QuestionIcon from "../../assets/icons/question.png";
+import InfoImage from "../../assets/icons/info.png";
 import { Link } from "react-router";
 import CarbonReduceIcon from "../../assets/icons/carbon-reduce.png";
 import BaseButton from "../../components/Base/BaseButton";
@@ -40,7 +40,7 @@ export function Goals() {
                             <button
                                 onClick={onOpen}
                             >
-                                <img src={QuestionIcon} alt="Información de las acciones" className="h-fit" />
+                                <img src={InfoImage} alt="Información de las acciones" className="h-fit" />
                             </button>
                         </span>
                     </span>

@@ -4,7 +4,7 @@ import { Pill } from "../../components/Base/Pill";
 import { AppHeaderSection } from "../../components/Sections/AppHeader";
 import LedImage from "../../assets/led.png";
 import PlantImage from "../../assets/plant.png";
-import QuestionIcon from "../../assets/icons/question.png";
+import InfoImage from "../../assets/icons/info.png";
 import { BaseModal } from "../../components/Base/BaseModal";
 import { useDisclosure } from "@heroui/react";
 
@@ -27,7 +27,7 @@ export function Emissions() {
                         <button
                             onClick={onOpen}
                         >
-                            <img src={QuestionIcon} alt="Información de las acciones" className="h-fit" />
+                            <img src={InfoImage} alt="Información de las acciones" className="h-fit" />
                         </button>
                     </span>
                     <p className="">Toneladas anuales de contaminación (CO2e)</p>
