@@ -14,9 +14,9 @@ export class TokenService {
   }
 
   /**
-  * Create new access token from refresh token 
+  * Create new access token and new refresh token from refresh token
   */
-  static async createAccessToken({ refreshToken }) {
+  static async createToken({ refreshToken }) {
     // 1. find if refresh token exists in database
     const foundRefreshToken = await TokenRepository.findByToken({ refreshToken });
     if(!foundRefreshToken) throw new ValidationError('Refresh token not found');
@@ -37,7 +37,13 @@ export class TokenService {
       { expiresIn: "1h" }
     );
 
-    return { accessToken };
+    const updatedRefreshToken = jwt.sign(
+      { id, email },
+      REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return { accessToken, updatedRefreshToken };
   }
 
   static async delete({ refreshToken }) {
