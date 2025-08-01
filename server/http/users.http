@@ -23,4 +23,4 @@ POST http://localhost:3000/users/logout
 
 ### GET USERS
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5NGJjOTlkMGJjN2VhZjJhZTg2YyIsImVtYWlsIjoiamltMUBnbWFpbC5jb20iLCJpYXQiOjE3NTQwNjQ1NzUsImV4cCI6MTc1NDA2ODE3NX0.r3Lacy_Ph6HTzg9XEW2b0fl4IF7z7CBIUo1mFTcAPmQ
+Authorization: Bearer {{ access_token }}

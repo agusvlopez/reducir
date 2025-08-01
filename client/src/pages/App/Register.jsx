@@ -4,13 +4,15 @@ import BaseButton from "../../components/Base/BaseButton";
 import { ChevronLeft } from "../../components/Icons/ChevronLeft";
 import { EntryAppLayout } from "../../layouts/EntryAppLayout";
 import { Link } from "react-router";
+import { useCreateUserMutation } from "../../api/apiSlice";
 
 export function Register() {
-
-    const handleRegister = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
+    const [createUser] = useCreateUserMutation();
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
         const name = formData.get("name");
+        const username = formData.get("username");
         const email = formData.get("email");
         const password = formData.get("password");
         const confirmPassword = formData.get("confirmPassword");
@@ -21,7 +23,25 @@ export function Register() {
             return;
         }
 
-        console.log("Registro:", { name, email, password, confirmPassword });
+        // Call the createUser mutation with the new user data
+        try {
+            // Call the createUser mutation with the credentials
+            const response = await createUser({ 
+                name,
+                username,
+                email,
+                password
+            });
+            console.log("Respuesta del create:", response);
+            // Handle access token in secure storage or state management
+            console.log("accesstoken:", response.data?.accessToken);
+            // Handle successful login, e.g., redirect to dashboard or show success message
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            // Handle error, e.g., show a message to the user
+        }
+
+        console.log("Registro:", { name, username, email, password, confirmPassword });
     }
 
     return (
@@ -47,6 +67,14 @@ export function Register() {
                     inputType="text"
                     inputId="name"
                     inputPlaceholder="Ingresá tu nombre"
+                    inputRequired
+                    />
+                    <BaseInput 
+                    label="Nombre de usuario"
+                    inputName="username"
+                    inputType="text"
+                    inputId="username"
+                    inputPlaceholder="Ingresá tu nombre de usuario"
                     inputRequired
                     />
                     <BaseInput 

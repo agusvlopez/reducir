@@ -3,17 +3,40 @@ import BaseInput from "../../components/Inputs/BaseInput";
 import BaseButton from "../../components/Base/BaseButton";
 import { EntryAppLayout } from "../../layouts/EntryAppLayout";
 import { Link } from "react-router";
+import { useLoginUserMutation } from "../../api/apiSlice";
 
 export function Login() {
+    const [loginUser] = useLoginUserMutation();
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const email = formData.get("email");
         const password = formData.get("password");
 
+        if (!email || !password) {
+            console.log("Email y contraseña son requeridos");
+            // Handle error, e.g., show a message to the user
+            return;
+        }
+
         // Fetch or API call
         console.log("Login:", { email, password });
+        try {
+            // Call the loginUser mutation with the credentials
+            const response = await loginUser({ 
+                email,
+                password
+            });
+            console.log("Respuesta del login:", response);
+            // Handle access token in secure storage or state management
+            console.log("accesstoken:", response.data?.accessToken);
+            // Handle successful login, e.g., redirect to dashboard or show success message
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            // Handle error, e.g., show a message to the user
+        }
+        
     }
 
     return (
