@@ -15,6 +15,7 @@ export const apiSlice = createApi({
         url: "/users",
         method: "POST",
         body: newUser,
+        credentials: 'include' // Necessary if the backend uses cookies for authentication
       }),
       // invalidatesTags: ["Users"]
     }),
@@ -23,6 +24,7 @@ export const apiSlice = createApi({
        url: "/users/login",
        method: "POST",
        body: credentials,
+       credentials: 'include' // Necessary if the backend uses cookies for authentication
      }),
     }),
 

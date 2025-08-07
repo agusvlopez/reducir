@@ -2,7 +2,9 @@ import { TokenService } from "../services/token.service.js";
 
 export class TokenController {
   static async create(req, res) { 
-    const { refresh_token: refreshToken } = req.cookies;
+    console.log("TokenController.create called");
+    
+    const { refreshToken: refreshToken } = req.cookies;
 
     if (!refreshToken) {
       return res.status(401).json({ message: 'Refresh token not provided' });
@@ -10,22 +12,12 @@ export class TokenController {
 
     try {
       const { accessToken, updatedRefreshToken } = await TokenService.createToken({ refreshToken });
-      
-      // res
-      //   .cookie('access_token', accessToken, {
-      //     httpOnly: true,
-      //     secure: process.env.NODE_ENV === 'production',
-      //     sameSite: 'strict',
-      //     maxAge: 60 * 60 * 1000
-      //   })
-      //   .status(200)
-      //   .json({ accessToken });
 
       // Update the refresh token cookie
-      res.cookie('refresh_token', updatedRefreshToken, {
+      res.cookie('refreshToken', updatedRefreshToken, {
         httpOnly: true,
+        sameSite: "Lax",
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         // path: '/tokens'
       });
