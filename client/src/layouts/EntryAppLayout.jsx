@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "../components/Icons/ChevronLeft";
 
 export function EntryAppLayout({ children, footer }) {

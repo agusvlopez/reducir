@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import LogoText from "../../assets/logo-text.png";
 import HamburgerMenu from "../../assets/icons/menu/hamburger1.png";
 import CloseIcon from "../../assets/icons/menu/close.png";

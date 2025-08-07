@@ -3,7 +3,7 @@ import BaseInput from "../../components/Inputs/BaseInput";
 import BaseButton from "../../components/Base/BaseButton";
 import { ChevronLeft } from "../../components/Icons/ChevronLeft";
 import { EntryAppLayout } from "../../layouts/EntryAppLayout";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useCreateUserMutation } from "../../api/apiSlice";
 
 export function Register() {

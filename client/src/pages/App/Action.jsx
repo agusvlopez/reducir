@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Heading } from "../../components/Base/Heading";
 import ACTIONS from "../../assets/data/actions.json";
 import BaseButton from "../../components/Base/BaseButton";

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 import { Avatar } from "../Base/Avatar";
 import { PostHeader } from "./PostHeader";
 import { PostContent } from "./PostContent";

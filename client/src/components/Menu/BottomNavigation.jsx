@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import HomeIcon from "../../assets/icons/menu/home.png";
 import ActionsIcon from "../../assets/icons/menu/actions.png";
 import EmissionsIcon from "../../assets/icons/menu/emissions.png";

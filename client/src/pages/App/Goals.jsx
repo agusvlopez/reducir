@@ -4,7 +4,7 @@ import { AppHeaderSection } from "../../components/Sections/AppHeader";
 import { BaseModal } from "../../components/Base/BaseModal";
 import { Heading } from "../../components/Base/Heading";
 import InfoImage from "../../assets/icons/info.png";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import CarbonReduceIcon from "../../assets/icons/carbon-reduce.png";
 import BaseButton from "../../components/Base/BaseButton";
 import { useState } from "react";

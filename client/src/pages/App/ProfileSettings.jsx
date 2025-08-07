@@ -2,10 +2,13 @@ import { Avatar } from "../../components/Base/Avatar";
 import { Heading } from "../../components/Base/Heading";
 import editIcon from "../../assets/icons/edit.png";
 import BaseInput from "../../components/Inputs/BaseInput";
-import BaseButton from "../../components/Base/BaseButton";
 import { useState } from "react";
+import BaseButton from "../../components/Base/BaseButton";
+import { useAuth } from "../../hooks/useAuth";
 
 export function ProfileSettings() {
+  const { handleLogout } = useAuth();
+
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
 
   const toggleDeleteAccountModal = () => {
@@ -150,6 +153,7 @@ export function ProfileSettings() {
         <span className="h-[1px] w-full bg-[#6D6D6D] mx-auto"></span>
         <div className="flex flex-col gap-4 mb-4">
           <BaseButton
+            onClick={handleLogout}
             className="w-full"
             variant="outline">
             Cerrar sesión

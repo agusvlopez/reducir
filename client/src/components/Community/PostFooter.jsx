@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { HeartIcon } from "../Icons/Heart";
 
 export function PostFooter() {

@@ -1,5 +1,5 @@
 
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo-md.png";
 import BaseButton from "../../components/Base/BaseButton";
 

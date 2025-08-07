@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import BaseButton from "./BaseButton";
 import { Heading } from "./Heading";
 

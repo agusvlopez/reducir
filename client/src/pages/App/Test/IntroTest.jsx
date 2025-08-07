@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import BaseButton from "../../../components/Base/BaseButton";
 import { Heading } from "../../../components/Base/Heading";
 import { EntryAppLayout } from "../../../layouts/EntryAppLayout";

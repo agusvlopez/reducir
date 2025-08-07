@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Pill } from "../Base/Pill";
 import { useState } from "react";
 import { HeartIcon } from "../Icons/Heart";

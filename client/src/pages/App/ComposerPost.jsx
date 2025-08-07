@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Avatar } from "../../components/Base/Avatar";
 import { PostHeader } from "../../components/Community/PostHeader";
 import { PostContent } from "../../components/Community/PostContent";
