@@ -19,10 +19,9 @@ export class UserController {
       res
         .cookie('refreshToken', refreshToken, {
           httpOnly: true,
-          sameSite: "Lax",
-          secure: process.env.NODE_ENV === 'production',
-          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-          //path: '/tokens' // IMPORTANT: Only send to the token refresh path
+          sameSite: "None",
+          secure: true,
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         .status(201).json({ userId, accessToken }); 
     } catch (error) {
@@ -45,10 +44,9 @@ export class UserController {
       res
         .cookie('refreshToken', refreshToken, {
           httpOnly: true,
-          sameSite: "Lax",
-          secure: process.env.NODE_ENV === 'production',
-          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-          // path: '/tokens'
+          sameSite: "None",
+          secure: true,
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
         })
         .status(200).json({ user, accessToken });
     } catch (error) {
@@ -70,13 +68,12 @@ export class UserController {
         await TokenService.delete({ refreshToken });
       }
       
-      const isProduction = process.env.NODE_ENV === 'production';
-
       res
         .clearCookie('refreshToken', { 
           httpOnly: true, 
-          sameSite: 'Lax', 
-          secure: isProduction })
+          sameSite: "None",
+          secure: true,
+        })
         .status(200)
         .json({ message: 'Logout successful' });
     } catch (error) {

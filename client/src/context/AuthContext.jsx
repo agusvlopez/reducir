@@ -10,7 +10,7 @@ const AuthContext = createContext();
 export default AuthContext;
 
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => { 
   const navigate = useNavigate();
 
   const [loginUser] = useLoginUserMutation();
@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
@@ -74,8 +75,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await loginUser({ email, password }).unwrap();
-      const token = response?.accessToken;
+      const response = await loginUser({ email, password }).unwrap(); //todo: CHECK unwrap
+      const token = response?.accessToken;     
       console.log('token', token);
 
       if (token) {
@@ -89,6 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogout = () => {
     setAccessToken(null);
+    //TODO: CALL BACKEND TO LOGOUT
     navigate('/login', { replace: true });
   }
   
@@ -106,7 +108,7 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setLoading(false); 
       }
-    };
+    }
 
     fetchAccessToken();
   }, []);

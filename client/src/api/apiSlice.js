@@ -21,14 +21,16 @@ export const apiSlice = createApi({
     }),
     loginUser: builder.mutation({
      query: (credentials) => ({
-       url: "/users/login",
-       method: "POST",
-       body: credentials,
-       credentials: 'include' // Necessary if the backend uses cookies for authentication
+      url: "/users/login",
+      method: "POST",
+      body: credentials,
+      credentials: 'include' // Necessary if the backend uses cookies for authentication
      }),
     }),
 
   }),
 });
+
+
 
 export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation } = apiSlice;

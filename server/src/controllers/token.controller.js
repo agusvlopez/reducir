@@ -16,8 +16,8 @@ export class TokenController {
       // Update the refresh token cookie
       res.cookie('refreshToken', updatedRefreshToken, {
         httpOnly: true,
-        sameSite: "Lax",
-        secure: process.env.NODE_ENV === 'production',
+        sameSite: "None",
+        secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         // path: '/tokens'
       });
