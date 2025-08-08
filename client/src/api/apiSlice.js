@@ -27,7 +27,14 @@ export const apiSlice = createApi({
       credentials: 'include' // Necessary if the backend uses cookies for authentication
      }),
     }),
-
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: "/users/logout",
+        method: "POST",
+        credentials: 'include' // Necessary if the backend uses cookies for authentication
+      }),
+    }),
+    
   }),
 });
 

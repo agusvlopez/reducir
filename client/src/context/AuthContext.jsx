@@ -89,9 +89,15 @@ export const AuthProvider = ({ children }) => {
   }
 
   const handleLogout = () => {
-    setAccessToken(null);
-    //TODO: CALL BACKEND TO LOGOUT
-    navigate('/login', { replace: true });
+    try {
+      axios.post(`${baseURL}/users/logout`, {}, {
+        withCredentials: true
+      });
+      setAccessToken(null);
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
   }
   
   useEffect(() => {    
