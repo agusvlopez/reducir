@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCreateUserMutation, useLoginUserMutation } from '../api/apiSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '../utils/axios';
-
+import { toast } from 'sonner';
 
 const AuthContext = createContext();
 
@@ -20,10 +20,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const handleRegister = async (data) => {
-    const name = data.name;
-    const username = data.username;
-    const email = data.email;
-    const password = data.password;
+    const { name, username, email, password } = data;
 
     try {
       const response = await createUser({ 
@@ -40,20 +37,26 @@ export const AuthProvider = ({ children }) => {
         navigate('/app/home', { replace: true });
       }
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      // TODO: Handle error, e.g., show a message to the user
+      console.error("Error al registrarse:", error);
+      // Extraemos el mensaje de error de la respuesta de la API
+      const errorMessage = error.data || "Ocurrió un error inesperado. Inténtalo de nuevo.";
+      toast.error(errorMessage, {
+        duration: Infinity,
+        closeButton: true,
+        style: {
+          fontSize: '14px',
+          display: 'flex',
+          justifyContent: 'center',
+          borderRadius: '20px',
+          border: '1px solid #f87171',
+          fontFamily: 'Inter, sans-serif',
+        }
+      });
     }
   }
 
   const handleLogin = async (data) => {
-    const email = data.email;
-    const password = data.password;
-
-    if (!email || !password) {
-      console.log("Email y contraseña son requeridos");
-      // TODO: Handle error, e.g., show a message to the user
-      return;
-    }
+    const { email, password } = data;
 
     try {
       const response = await loginUser({ 
@@ -69,6 +72,19 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
+      const errorMessage = error.data || "Email o contraseña incorrectos.";
+      toast.error(errorMessage, {
+        duration: Infinity,
+        closeButton: true,
+        style: {
+          fontSize: '14px',
+          display: 'flex',
+          justifyContent: 'center',
+          borderRadius: '20px',
+          border: '1px solid #f87171',
+          fontFamily: 'Inter, sans-serif',
+        }
+      });
     }
   }
 
@@ -92,7 +108,7 @@ export const AuthProvider = ({ children }) => {
         });
 
         setAccessToken(response?.data?.accessToken);
-      } catch (error) {        
+      } catch {        
         setAccessToken(null);
       } finally {
         setLoading(false); 

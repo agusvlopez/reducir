@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ApiProvider } from '@reduxjs/toolkit/query/react';
 import { apiSlice } from './api/apiSlice.js';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { Toaster } from 'sonner';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
         <ApiProvider api={apiSlice}>
           <AuthProvider>
             <App />
+            <Toaster richColors />
           </AuthProvider>
         </ApiProvider>
       </HeroUIProvider>
