@@ -4,16 +4,10 @@ import BaseButton from "../../components/Base/BaseButton";
 import { EntryAppLayout } from "../../layouts/EntryAppLayout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { userLoginSchema } from "../../utils/formSchemas";
 
-const userLoginSchema = z.object({
-    email: z.email({ message: 'Email no válido' }),
-    password: z.string({
-        required_error: 'La contraseña es obligatoria',
-    }).min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
-});
 
 export function Login() {
     const { handleLogin } = useAuth();
@@ -28,8 +22,7 @@ export function Login() {
     });
 
     const onSubmit = handleSubmit((data) => {
-        console.log("Form submitted");
-        console.log(data);              
+        handleLogin(data);         
     });
 
     return (

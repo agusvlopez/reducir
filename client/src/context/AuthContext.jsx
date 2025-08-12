@@ -19,21 +19,11 @@ export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState();
   const [loading, setLoading] = useState(true);
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const name = formData.get("name");
-    const username = formData.get("username");
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const confirmPassword = formData.get("confirmPassword");
-
-    if (password !== confirmPassword) {
-      console.log("Las contraseñas no coinciden");
-      // Handle error, e.g., show a message to the user
-      return;
-    }
+  const handleRegister = async (data) => {
+    const name = data.name;
+    const username = data.username;
+    const email = data.email;
+    const password = data.password;
 
     try {
       const response = await createUser({ 
@@ -41,14 +31,8 @@ export const AuthProvider = ({ children }) => {
         username,
         email,
         password
-      });
+      }).unwrap(); 
 
-      if(response.error) {
-        console.error("Error al registrar el usuario:", response.error);
-        // Handle error, e.g., show a message to the user
-        return; 
-      }
-      
       const token = response?.data?.accessToken;
  
       if (token) {
@@ -57,16 +41,13 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
-      // Handle error, e.g., show a message to the user
+      // TODO: Handle error, e.g., show a message to the user
     }
   }
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const password = formData.get("password");
+  const handleLogin = async (data) => {
+    const email = data.email;
+    const password = data.password;
 
     if (!email || !password) {
       console.log("Email y contraseña son requeridos");
@@ -75,9 +56,12 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await loginUser({ email, password }).unwrap(); //todo: CHECK unwrap
+      const response = await loginUser({ 
+        email, 
+        password 
+      }).unwrap(); 
+
       const token = response?.accessToken;     
-      console.log('token', token);
 
       if (token) {
         setAccessToken(token);
@@ -102,7 +86,6 @@ export const AuthProvider = ({ children }) => {
   
   useEffect(() => {    
     const fetchAccessToken = async () => {
-      console.log("Verificando sesión activa...");
       try {
         const response = await axios.post(`${baseURL}/tokens`, {}, {
           withCredentials: true

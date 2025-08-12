@@ -1,32 +1,13 @@
 import { Heading } from "../../components/Base/Heading";
 import BaseInput from "../../components/Inputs/BaseInput";
 import BaseButton from "../../components/Base/BaseButton";
-import { ChevronLeft } from "../../components/Icons/ChevronLeft";
 import { EntryAppLayout } from "../../layouts/EntryAppLayout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { userRegisterSchema } from "../../utils/formSchemas";
 
-const userSchema = z.object({
-  name: z.string({
-    required_error: 'El nombre es requerido',
-  }).min(1, { message: 'El nombre no puede estar vacío' }),
-  username: z.string({
-    required_error: 'El nombre de usuario es requerido',
-  }).min(1, { message: 'El nombre de usuario no puede estar vacío' }),
-  email: z.email({ message: 'Email no válido' }),
-  password: z.string({
-    required_error: 'La contraseña es obligatoria',
-  }).min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
-  confirmPassword: z.string({
-    required_error: 'La contraseña es obligatoria',
-  }).min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Las contraseñas no coinciden",
-  path: ["confirmPassword"] //show error on confirmPassword field
-});
 
 export function Register() {
     const { handleRegister } = useAuth();
@@ -37,14 +18,12 @@ export function Register() {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: zodResolver(userSchema)
+        resolver: zodResolver(userRegisterSchema)
     });
-
-    console.log(errors);
     
     const onSubmit = handleSubmit((data) => {
-        console.log("Form submitted");
-        console.log(data);              
+        handleRegister(data);
+            
     });
 
     return (
