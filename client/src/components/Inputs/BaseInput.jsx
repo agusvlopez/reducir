@@ -5,6 +5,8 @@ export default function BaseInput({
     inputId,
     inputPlaceholder,
     inputRequired = false,
+    register,
+    validationRules = {},
 }) {
     return (
         <div>
@@ -18,7 +20,8 @@ export default function BaseInput({
                 id={inputId}
                 placeholder={inputPlaceholder}
                 className="block w-full h-11 rounded-full border-0 py-1.5 pl-4 pr-2 text-gray text-sm ring-1 ring-inset ring-gray placeholder:text-gray sm:text-sm sm:leading-6"
-                required={inputRequired}
+
+                {...register(inputName)}
             />
         </div>
     )

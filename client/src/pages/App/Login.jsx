@@ -4,10 +4,33 @@ import BaseButton from "../../components/Base/BaseButton";
 import { EntryAppLayout } from "../../layouts/EntryAppLayout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
+const userLoginSchema = z.object({
+    email: z.email({ message: 'Email no válido' }),
+    password: z.string({
+        required_error: 'La contraseña es obligatoria',
+    }).min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
+});
 
 export function Login() {
     const { handleLogin } = useAuth();
+
+    // React hook form
+    const { 
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(userLoginSchema)
+    });
+
+    const onSubmit = handleSubmit((data) => {
+        console.log("Form submitted");
+        console.log(data);              
+    });
 
     return (
         <EntryAppLayout 
@@ -24,31 +47,37 @@ export function Login() {
                 >Iniciar sesión</Heading>
 
                 <form 
-                className="flex flex-col gap-6 mt-6"
-                onSubmit={handleLogin}>
-                    <BaseInput 
-                    label="Email"
-                    inputName="email"
-                    inputType="email"
-                    inputId="email"
-                    inputPlaceholder="Ingresá tu email"
-                    inputRequired
-                    />
-                    <BaseInput 
-                    label="Contraseña"
-                    inputName="password"
-                    inputType="password"
-                    inputId="password"
-                    inputPlaceholder="Contraseña"
-                    inputRequired
-                    />
+                className="flex flex-col mt-4"
+                onSubmit={onSubmit}>
+                    <div className="h-[92px]">
+                        <BaseInput 
+                            label="Email"
+                            inputName="email"
+                            inputType="email"
+                            inputId="email"
+                            inputPlaceholder="Ingresá tu email"
+                            register={register}
+                        />
+                        {errors?.email && <span className="text-red-500 text-xs font-medium">{errors.email?.message}</span>}
+                    </div>
+                    <div className="h-[92px]">
+                        <BaseInput 
+                            label="Contraseña"
+                            inputName="password"
+                            inputType="password"
+                            inputId="password"
+                            inputPlaceholder="Contraseña"
+                            register={register}
+                        />
+                        {errors?.password && <span className="text-red-500 text-xs font-medium">{errors.password?.message}</span>}
+                    </div>
                     <div className="flex justify-end">
                         {/* TODO: LINK PARA RECUPERAR CONTRASEÑA */}
                         <p className="text-sm text-gray font-semibold">¿Olvidaste tu contraseña?</p>
                     </div>
                     <BaseButton 
                         type="submit"
-                        className="flex self-center mt-[6px]"
+                        className="flex self-center mt-6"
                     >Iniciar sesión</BaseButton>
                 </form>
         </EntryAppLayout>
