@@ -51,9 +51,7 @@ export function Home() {
             </section>
             <section className="mt-[40px] flex gap-2 overflow-x-auto pl-6">
                 <Pill text="Acciones en proceso" />
-                <Pill text="Acciones en proceso" />
-                <Pill text="Acciones en proceso" />
-                <Pill text="Acciones en proceso" />
+                <Pill text="Acciones logradas" />
             </section>
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>

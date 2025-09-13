@@ -8,12 +8,6 @@ import { Select } from "../../components/Inputs/Select";
 import ACTIONS from "../../assets/data/actions.json";
 import InfoImage from "../../assets/icons/info.png";
 import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Button,
     useDisclosure,
 } from "@heroui/react";
 import { BaseModal } from "../../components/Base/BaseModal.jsx";
@@ -48,7 +42,7 @@ export function Actions() {
         []
     );
 
-    const filteredActions = actions?.filter(
+    const filteredActions = ACTIONS?.filter(
         (action) =>
             (!category || action.category.toLowerCase() === category.toLowerCase()) &&
             (!searchQuery || action.title.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -78,6 +72,7 @@ export function Actions() {
                                 Acciones
                                 <button
                                     onClick={onOpen}
+                                    className="cursor-pointer hover:opacity-90 transition-all"
                                 >
                                     <img src={InfoImage} alt="Información de las acciones" className="h-fit" />
                                 </button>
@@ -115,6 +110,7 @@ export function Actions() {
                         {filteredActions?.map((action) => (
                             <ActionCard
                                 key={action._id}
+                                id={action._id}
                                 title={action.title}
                                 category={action.category}
                                 carbon={action.carbon}

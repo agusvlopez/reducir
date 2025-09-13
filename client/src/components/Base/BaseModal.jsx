@@ -14,11 +14,16 @@ export function BaseModal({
     children
 }) {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal
+            classNames={{
+                closeButton: "top-4 end-4 cursor-pointer"
+            }}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}>
             <ModalContent className="rounded-[30px] bg-[#F5F5F5] text-[#383838] pt-4 pb-2">
                 {(onClose) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
+                        <ModalHeader className="pt-8">{title}</ModalHeader>
                         <ModalBody>
                             {children}
                         </ModalBody>
