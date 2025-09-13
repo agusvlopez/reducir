@@ -1,25 +1,15 @@
-export function Pill({
-    text,
-    className = "",
-    size = "md",
-    color = "green",
-}) {
-    const sizeClasses = {
-        sm: "text-xs px-2 py-1",
-        md: "text-sm px-3 py-1.5",
-        lg: "text-base px-4 py-2",
-    };
-
-    const colorClasses = {
-        green: "text-white bg-[#005840]",
-        orange: "text-white bg-[#ED6C1D]"
-    };
-
-    return (
-        <span
-            className={`w-fit ${sizeClasses[size]} ${colorClasses[color]} rounded-[30px] ${className}`}
-        >
-            {text}
-        </span>
-    );
+// Primero, actualiza tu componente Pill para manejar el estado activo
+export function Pill ({ text, isActive, onClick }) {
+  return (
+    <button
+      onClick={() => onClick(text)}
+      className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors cursor-pointer border-white/30 ${
+        isActive
+          ? 'bg-white text-[#005840] font-medium'
+          : 'bg-[#005840] text-white border hover:bg-white/10 hover:text-[#005840] transition-all'
+      }`}
+    >
+      {text}
+    </button>
+  );
 }

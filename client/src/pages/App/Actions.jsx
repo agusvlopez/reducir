@@ -16,17 +16,27 @@ import {
     Button,
     useDisclosure,
 } from "@heroui/react";
-import { BaseModal } from "../../components/Base/BaseModal";
+import { BaseModal } from "../../components/Base/BaseModal.jsx";
+import { useGetActionsQuery } from "../../api/actionsSlice.js";
+
+const categories = [
+  { value: "", label: "Todas" },
+  { value: "Agua", label: "Agua" },
+  { value: "Energía", label: "Energía" },
+  { value: "Transporte", label: "Transporte" },
+  { value: "Alimentación", label: "Alimentación" },
+  { value: "Reciclaje", label: "Reciclaje" },
+];
 
 export function Actions() {
+    const {data: actions, isError, isLoading} = useGetActionsQuery();
     
-
-
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [category, setCategory] = useState("");
 
-    const handleSelectCategory = (selectedValue) => {
-        setCategory(selectedValue);
+    const handlePillClick = (categoryValue) => {
+        const value = categoryValue === "Todas" ? "" : categoryValue;
+        setCategory(value); 
     };
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -38,9 +48,9 @@ export function Actions() {
         []
     );
 
-    const filteredActions = ACTIONS?.filter(
+    const filteredActions = actions?.filter(
         (action) =>
-            (!category || action.category === category) &&
+            (!category || action.category.toLowerCase() === category.toLowerCase()) &&
             (!searchQuery || action.title.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
@@ -77,11 +87,14 @@ export function Actions() {
                             agregar. Junto con tips que podrian ser útiles.</p>
                     </div>
                     <div className="mt-6 py-4 flex gap-2 overflow-x-auto pl-6">
-                        <Pill text="Agua" />
-                        <Pill text="Energía" />
-                        <Pill text="Transporte" />
-                        <Pill text="Alimentación" />
-                        <Pill text="Reciclaje" />
+                    {categories.map((cat) => (
+                        <Pill
+                        key={cat.value}
+                        text={cat.label}
+                        isActive={category === cat.value}
+                        onClick={handlePillClick}
+                        />
+                    ))}
                     </div>
                 </section>
                 <section className="bg-[#005840] text-white p-4 px-6 pb-12 rounded-t-[30px] mt-2 flex-1">
@@ -91,33 +104,23 @@ export function Actions() {
                             className="w-full mb-4"
                             onSearch={debouncedSearch}
                         />
-                        <Select
-                            options={[
-                                { value: "", label: "Todas" },
-                                { value: "Agua", label: "Agua" },
-                                { value: "Energía", label: "Energía" },
-                                { value: "Transporte", label: "Transporte" },
-                                { value: "Alimentación", label: "Alimentación" },
-                                { value: "Reciclaje", label: "Reciclaje" },
-                            ]}
-                            placeholder="Seleccioná una opción"
-                            className="w-full"
-                            value={category}
-                            onChange={handleSelectCategory}
-                        />
                     </div>
                     <div
                         className="flex flex-col gap-4 lg:flex-row lg:flex-wrap"
                     >
-                        {filteredActions.map((action) => (
+                        {isLoading && <p className="text-white">Cargando acciones...</p>}
+                        {isError && <p className="text-white">Error al cargar las acciones.</p>}
+                        {filteredActions && filteredActions.length === 0 && !isLoading && 
+                            <p className="text-white">No se encontraron acciones.</p>}
+                        {filteredActions?.map((action) => (
                             <ActionCard
-                                key={action.id}
+                                key={action._id}
                                 title={action.title}
                                 category={action.category}
                                 carbon={action.carbon}
                                 description={action.description}
-                                imageSrc={action.imageSrc}
-                                imageAlt={action.imageAlt}
+                                imageSrc={action.image?.url}
+                                imageAlt={action.title}
                             />
                         ))}
                     </div>

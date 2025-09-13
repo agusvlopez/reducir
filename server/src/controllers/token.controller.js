@@ -1,3 +1,4 @@
+import { ValidationError } from "../errors/ValidationError.js";
 import { TokenService } from "../services/token.service.js";
 
 export class TokenController {

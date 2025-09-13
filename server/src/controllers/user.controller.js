@@ -1,7 +1,6 @@
 import { ConflictError } from "../errors/ConflictError.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import { TokenService } from "../services/token.service.js";
-
 import { UserService } from "../services/user.service.js";
 
 export class UserController {
