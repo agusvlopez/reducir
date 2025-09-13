@@ -30,7 +30,7 @@ En desarrollo. Actualmente trabajando en el backend con Node.js + Express y el f
 ## ✨ Funcionalidades previstas
 - [ ] Vista optimizada para móvil
 - [ ] Vista optimizada para escritorio
-- [ ] Registro e inicio de sesión
+- [x] Registro e inicio de sesión
 - [ ] Configuración del perfil
 - [ ] Test para la medición de la huella de carbono generada anualmente
 - [ ] Carga de hábitos/acciones sostenibles
