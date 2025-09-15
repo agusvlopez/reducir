@@ -2,9 +2,7 @@ import { ValidationError } from "../errors/ValidationError.js";
 import { TokenService } from "../services/token.service.js";
 
 export class TokenController {
-  static async create(req, res) { 
-    console.log("TokenController.create called");
-    
+  static async create(req, res) {    
     const { refreshToken: refreshToken } = req.cookies;
 
     if (!refreshToken) {

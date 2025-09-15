@@ -35,6 +35,12 @@ const UserSchema = new mongoose.Schema({
   },
   following: {
     type: [String]
+  },
+  favorites: {
+    type: [String]
+  },
+  achievements: {
+    type: [String]
   }
 }, { timestamps: true });
 

@@ -1,5 +1,6 @@
 import { ConflictError } from "../errors/ConflictError.js";
 import { ValidationError } from "../errors/ValidationError.js";
+import User from "../models/User.js";
 import { TokenService } from "../services/token.service.js";
 import { UserService } from "../services/user.service.js";
 
@@ -64,6 +65,7 @@ export class UserController {
       const { refreshToken } = req.cookies;
 
       if (refreshToken) {
+        // TODO: HACER ESTO EN User.SERVICE
         await TokenService.delete({ refreshToken });
       }
       
@@ -79,4 +81,16 @@ export class UserController {
       res.status(500).json({ message: 'Could not log out, please try again.' });
     }
   }
+
+  static async toggleFavoriteAction(req, res) {
+    console.log("favorties", req.body);
+    
+    const { userId, actionId } = req.body;
+    try {
+      const updatedUser = await UserService.toggleFavoriteAction({ userId, actionId });
+      res.status(200).json(updatedUser);
+    } catch (error) {
+    }
+  }
+
 }

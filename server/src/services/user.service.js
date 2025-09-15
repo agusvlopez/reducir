@@ -23,7 +23,9 @@ export class UserService {
       email,
       hashedPassword
     });
-    
+
+    if(!user) throw new ValidationError('No se pudo crear el usuario');
+
     // Access Token
     const accessToken = jwt.sign(
       { id: user._id, email: user.email}, 
@@ -87,4 +89,10 @@ export class UserService {
     
     return { user: publicUser, accessToken, refreshToken };
   }
+
+  static async toggleFavoriteAction({ userId, actionId }){
+    const updatedUser = await UserRepository.toggleFavoriteAction({ userId, actionId });
+    //si ya existe en la base de d
+    return updatedUser;
+  } 
 }
