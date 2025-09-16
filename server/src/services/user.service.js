@@ -92,7 +92,6 @@ export class UserService {
 
   static async toggleFavoriteAction({ userId, actionId }){
     const updatedUser = await UserRepository.toggleFavoriteAction({ userId, actionId });
-    //si ya existe en la base de d
     return updatedUser;
   } 
 }

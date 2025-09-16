@@ -34,10 +34,17 @@ export const apiSlice = createApi({
         credentials: 'include' // Necessary if the backend uses cookies for authentication
       }),
     }),
-    
+    toggleFavoriteAction: builder.mutation({
+      query: (ids) => ({
+        url: "/users/toggle-favorite-action",
+        method: "PATCH",
+        body: ids
+      }),
+      invalidatesTags: ["Users"]
+    }),
   }),
 });
 
 
 
-export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation } = apiSlice;
+export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation, useToggleFavoriteActionMutation } = apiSlice;

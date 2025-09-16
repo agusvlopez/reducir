@@ -4,7 +4,6 @@ import { Heading } from "../../components/Base/Heading";
 import { Pill } from "../../components/Base/Pill";
 import { ActionCard } from "../../components/Cards/ActionCard";
 import { Search } from "../../components/Inputs/Search";
-import { Select } from "../../components/Inputs/Select";
 import ACTIONS from "../../assets/data/actions.json";
 import InfoImage from "../../assets/icons/info.png";
 import {
@@ -24,6 +23,7 @@ const categories = [
 
 export function Actions() {
     const {data: actions, isError, isLoading} = useGetActionsQuery();
+    console.log(actions);
     
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [category, setCategory] = useState("");

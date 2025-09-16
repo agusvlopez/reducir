@@ -82,10 +82,9 @@ export class UserController {
     }
   }
 
-  static async toggleFavoriteAction(req, res) {
-    console.log("favorties", req.body);
-    
+  static async toggleFavoriteAction(req, res) {    
     const { userId, actionId } = req.body;
+    
     try {
       const updatedUser = await UserService.toggleFavoriteAction({ userId, actionId });
       res.status(200).json(updatedUser);

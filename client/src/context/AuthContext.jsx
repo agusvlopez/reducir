@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loginUser] = useLoginUserMutation();
   const [createUser] = useCreateUserMutation();
 
+  const [userId, setUserId] = useState();
   const [accessToken, setAccessToken] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +34,8 @@ export const AuthProvider = ({ children }) => {
       const token = response?.data?.accessToken;
  
       if (token) {
-        setAccessToken(token);
+        setAccessToken(token);        
+        setUserId(response?.data?.userId);
         navigate('/app/home', { replace: true });
       }
     } catch (error) {
@@ -68,6 +70,7 @@ export const AuthProvider = ({ children }) => {
 
       if (token) {
         setAccessToken(token);
+        setUserId(response?.userId);
         navigate('/app/home', { replace: true });
       }
     } catch (error) {
@@ -94,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true
       });
       setAccessToken(null);
+      setUserId(null);
       navigate('/login', { replace: true });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -106,10 +110,12 @@ export const AuthProvider = ({ children }) => {
         const response = await axios.post(`${baseURL}/tokens`, {}, {
           withCredentials: true
         });
-
+        console.log("response", response);
         setAccessToken(response?.data?.accessToken);
+        setUserId(response?.data?.userId);
       } catch {        
         setAccessToken(null);
+        setUserId(null);
       } finally {
         setLoading(false); 
       }
@@ -120,7 +126,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return(
-    <AuthContext.Provider value={{ accessToken, setAccessToken, handleRegister, handleLogin, handleLogout }}>
+    <AuthContext.Provider value={{ accessToken, userId, setAccessToken, handleRegister, handleLogin, handleLogout }}>
       {loading ? null : children}
     </AuthContext.Provider>
   )

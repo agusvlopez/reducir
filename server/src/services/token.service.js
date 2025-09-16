@@ -49,7 +49,7 @@ export class TokenService {
 
     await this.create({ refreshToken: newRefreshToken, userId: userPayload.id, userEmail: userPayload.email });
 
-    return { accessToken: newAccessToken, updatedRefreshToken: newRefreshToken };
+    return { accessToken: newAccessToken, updatedRefreshToken: newRefreshToken, userId: userPayload.id };
   }
 
   static async delete({ refreshToken }) {

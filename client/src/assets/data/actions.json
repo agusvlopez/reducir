@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "_id": "1",
     "title": "Reciclar botellas plásticas",
     "category": "Reciclaje",
     "carbon": 2,
@@ -9,7 +9,7 @@
     "imageAlt": "Persona reciclando botellas plásticas"
   },
   {
-    "id": "2",
+    "_id": "2",
     "title": "Usar transporte público",
     "category": "Agua",
     "carbon": 5,
@@ -18,7 +18,7 @@
     "imageAlt": "Autobús ecológico en la ciudad"
   },
   {
-    "id": "3",
+    "_id": "3",
     "title": "Reducir consumo de carne",
     "category": "Alimentación",
     "carbon": 4,
@@ -27,7 +27,7 @@
     "imageAlt": "Plato de comida vegetariana"
   },
   {
-    "id": "4",
+    "_id": "4",
     "title": "Apagar luces innecesarias",
     "category": "Energía",
     "carbon": 1,
@@ -36,7 +36,7 @@
     "imageAlt": "Mano apagando interruptor de luz"
   },
   {
-    "id": "5",
+    "_id": "5",
     "title": "Reutilizar bolsas",
     "category": "Reciclaje",
     "carbon": 1,
@@ -45,7 +45,7 @@
     "imageAlt": "Bolsa reutilizable en supermercado"
   },
   {
-    "id": "6",
+    "_id": "6",
     "title": "Plantar un árbol",
     "category": "Agua",
     "carbon": 10,

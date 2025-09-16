@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { Toaster } from 'sonner';
 import { store } from './utils/store.js';
+import { FavoritesProvider } from './context/FavoritesContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -16,8 +17,10 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <HeroUIProvider>
           <AuthProvider>
-            <App />
-            <Toaster richColors />
+            <FavoritesProvider>
+              <App />
+              <Toaster richColors />
+            </FavoritesProvider>
           </AuthProvider>
         </HeroUIProvider>
       </BrowserRouter>

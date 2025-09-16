@@ -25,6 +25,7 @@ export class UserRepository {
   static async findByEmail({ email }) {
     try {
       const user = await User.findOne({ email }).lean();
+      //todo: pasar user menos la pass
       return user;
     } catch (error) {
       return null;
@@ -72,7 +73,21 @@ export class UserRepository {
         success: true,
         isAdded: !isInFavorites,
         message: !isInFavorites ? 'Action added to favorites' : 'Action removed from favorites',
-        user: updatedUser
+        //pasar todo user menos el password
+        user: {
+          _id: updatedUser._id,
+          name: updatedUser.name,
+          username: updatedUser.username,
+          email: updatedUser.email,
+          image: updatedUser.image,
+          carbon: updatedUser.carbon,
+          achievements: updatedUser.achievements,
+          actions: updatedUser.actions,
+          followers: updatedUser.followers,
+          following: updatedUser.following,
+          favorites: updatedUser.favorites
+        }
+
       };
         
     } catch (error) {

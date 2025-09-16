@@ -1,9 +1,15 @@
-// Primero, actualiza tu componente Pill para manejar el estado activo
-export function Pill ({ text, isActive, onClick }) {
+export function Pill ({ size, text, isActive, onClick }) {
+  const sizeClasses = {
+    default: 'px-4 py-2',
+    sm: 'px-2 py-1 text-xs',
+  };
+
+  const sizeClass = sizeClasses[size] || sizeClasses.default;
+
   return (
     <button
       onClick={() => onClick(text)}
-      className={`px-4 py-2 rounded-full transition-colors cursor-pointer border-white/30 ${
+      className={`${sizeClass} rounded-full transition-colors cursor-pointer border-white/30 ${
         isActive
           ? 'bg-white text-[#005840] font-medium'
           : 'bg-[#005840] text-white border hover:bg-white/10 hover:text-[#005840] transition-all'
