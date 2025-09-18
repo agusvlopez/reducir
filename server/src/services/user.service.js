@@ -90,6 +90,11 @@ export class UserService {
     return { user: publicUser, accessToken, refreshToken };
   }
 
+  static async createCarbon({ userId, carbon }){
+    const updatedUser = await UserRepository.createCarbon({ userId, carbon });
+    return updatedUser;
+  }
+
   static async toggleFavoriteAction({ userId, actionId }){
     const updatedUser = await UserRepository.toggleFavoriteAction({ userId, actionId });
     return updatedUser;

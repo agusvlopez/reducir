@@ -41,6 +41,20 @@ export class UserRepository {
     }
   }
 
+  static async createCarbon({ userId, carbon }) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $inc: { carbon } },
+        { new: true, runValidators: true }
+      );
+      return updatedUser;
+
+    } catch (error) {
+      return null;
+    }
+  }
+
   static async toggleFavoriteAction({ userId, actionId }) {
     try {
       // First check if the action is already in favorites
