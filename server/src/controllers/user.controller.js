@@ -83,13 +83,19 @@ export class UserController {
   }
 
   static async createCarbon(req, res) {
-    console.log(req)
     const { userId, carbon } = req.body;
     
     try {
       const updatedUser = await UserService.createCarbon({ userId, carbon });
-      res.status(200).json(updatedUser);
-    } catch (error) {}
+      res.status(200).json({
+        success: true,
+        user: updatedUser
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false
+      })
+    }
   }
 
   static async toggleFavoriteAction(req, res) {    

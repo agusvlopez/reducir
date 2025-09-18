@@ -1,3 +1,4 @@
+import { createAction } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -34,6 +35,15 @@ export const apiSlice = createApi({
         credentials: 'include' // Necessary if the backend uses cookies for authentication
       }),
     }),
+    createCarbon: builder.mutation({
+      query: (data) => ({
+        url: "/users/carbon",
+        method: "PATCH",
+        body: data
+      }),
+      invalidatesTags: ["Users"]
+
+    }),
     toggleFavoriteAction: builder.mutation({
       query: (ids) => ({
         url: "/users/toggle-favorite-action",
@@ -47,4 +57,4 @@ export const apiSlice = createApi({
 
 
 
-export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation, useToggleFavoriteActionMutation } = apiSlice;
+export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation, useCreateCarbonMutation, useToggleFavoriteActionMutation } = apiSlice;

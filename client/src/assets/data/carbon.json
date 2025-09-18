@@ -1,0 +1,64 @@
+{
+  "consumo_kwh": {
+    "pequena": {
+      "descripcion": "Vivienda pequeña (departamento o monoambiente, ~100 kWh/mes)",
+      "factor": 38.4,
+      "unidad": "kgCO2e/mes",
+      "detalle": "Basado en 100 kWh x 0.384 kgCO2e/kWh (factor promedio de red en Argentina)."
+    },
+    "mediana": {
+      "descripcion": "Vivienda mediana (~200 kWh/mes)",
+      "factor": 76.8,
+      "unidad": "kgCO2e/mes",
+      "detalle": "200 kWh x 0.384 kgCO2e/kWh."
+    },
+    "grande": {
+      "descripcion": "Vivienda grande (~400 kWh/mes)",
+      "factor": 153.6,
+      "unidad": "kgCO2e/mes",
+      "detalle": "400 kWh x 0.384 kgCO2e/kWh."
+    }
+  },
+  "transporte": {
+    "bicicleta_pie": {
+      "descripcion": "Bicicleta o a pie",
+      "factor": 0.0,
+      "unidad": "kgCO2e/km"
+    },
+    "transporte_publico": {
+      "descripcion": "Transporte público (colectivo urbano)",
+      "factor": 0.089,
+      "unidad": "kgCO2e/km"
+    },
+    "auto_particular": {
+      "descripcion": "Auto particular a nafta",
+      "factor": 0.192,
+      "unidad": "kgCO2e/km"
+    },
+    "auto_compartido": {
+      "descripcion": "Auto compartido (carpooling)",
+      "factor": 0.096,
+      "unidad": "kgCO2e/km"
+    }
+  },
+  "dieta": {
+    "vegetariana_vegana": {
+      "descripcion": "Vegetariana o vegana",
+      "factor": 1500,
+      "unidad": "kgCO2e/año",
+      "detalle": "Promedio global anual para dietas basadas en plantas."
+    },
+    "omnivora_moderada": {
+      "descripcion": "Omnívora con consumo moderado de carne",
+      "factor": 2500,
+      "unidad": "kgCO2e/año",
+      "detalle": "Basado en estudios de dietas mixtas con poca carne roja."
+    },
+    "carnivora": {
+      "descripcion": "Alta en carne roja y productos animales",
+      "factor": 3300,
+      "unidad": "kgCO2e/año",
+      "detalle": "Promedio para dietas con alto consumo de carne vacuna."
+    }
+  }
+}

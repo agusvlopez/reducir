@@ -4,35 +4,33 @@ import InfoImage from "../../../assets/icons/info.png";
 import BaseInput from "../../../components/Inputs/BaseInput";
 import { Select } from "../../../components/Inputs/Select";
 import BaseButton from "../../../components/Base/BaseButton";
-
-const housingOptions = [
-  { value: "casa", label: "Casa" },
-  { value: "departamento", label: "Departamento" },
-];
-
-const transportOptions = [
-  { value: "auto", label: "Auto" },
-  { value: "autobus", label: "Autobus" },
-  { value: "tren", label: "Tren" },
-  { value: "bicicleta", label: "Bicicleta" },
-  { value: "caminar", label: "Caminar" },
-];
-
-const dietOptions = [
-  { value: "carnivoro", label: "Carnívoro" },
-  { value: "vegetariano", label: "Vegetariano" },
-  { value: "vegano", label: "Vegano" },
-];
+import { dietOptions, kwhOptions, transportOptions } from "../../../utils/testOptions";
+import { calculateCarbon } from "../../../helpers/calculateCarbon";
+import { useCreateCarbonMutation } from "../../../api/apiSlice";
+import { useAuth } from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export function FormTest() {
-  const handleSendTest = (event) => {
+  const navigate = useNavigate();
+
+  const [ createCarbon ] = useCreateCarbonMutation();
+  const { userId } = useAuth();
+
+  const handleSendTest = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const housing = formData.get("housing");
+    const kwh = formData.get("kwh");
     const transport = formData.get("transport");
     const diet = formData.get("diet");
-    // Fetch or API call to send the test data
-    console.log("Test enviado:", { housing, transport, diet });
+
+    const carbon = calculateCarbon({ kwh, transport, diet });
+    const result = await createCarbon({ userId, carbon }).unwrap();
+console.log(result);
+
+    if (result.success) {
+      navigate('/app/home');
+    }
+
   }
 
   return (
@@ -55,10 +53,10 @@ export function FormTest() {
         onSubmit={handleSendTest}
         className="flex flex-col gap-9 mt-6">
           <Select
-            selectId="housing"
-            selectName="housing"
+            selectId="kwh"
+            selectName="kwh"
             label="Vamos a calcular aproximadamente el consumo de kwh según el tamaño de tu vivienda.*"
-            options={housingOptions}
+            options={kwhOptions}
             placeholder="Seleccioná una opción"
             isRequired
           />

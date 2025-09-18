@@ -23,7 +23,7 @@ export function Select({
                         {placeholder}
                     </option>
                     {options.map((option) => (
-                        <option key={option.value} value={option.value} className="text-[#383838] border-b border-gray-200 hover:bg-gray-100">
+                        <option key={option.id} value={option.value} className="text-[#383838] border-b border-gray-200 hover:bg-gray-100">
                             {option.label}
                         </option>
                     ))}
