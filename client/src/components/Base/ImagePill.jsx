@@ -21,6 +21,7 @@ export function ImagePill({
                 size="sm"
                 text={category}
                 className="absolute z-10 top-3 right-3 shadow-md backgroundDarkGreen text-white"
+                isButton={false}
             />
 
             <img

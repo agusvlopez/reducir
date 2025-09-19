@@ -26,7 +26,7 @@ export default function BaseButton({
     return (
         <button
             type={buttonType}
-            className={`w-fit rounded-[30px] flex items-center justify-center shadow-md font-medium ${className} ${variantStyles[variant]} ${sizeStyles[size]}`}
+            className={`cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md font-medium ${className} ${variantStyles[variant]} ${sizeStyles[size]}`}
             {...props}
         >
             {children}

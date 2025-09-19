@@ -19,7 +19,14 @@ export const useFavorites = () => {
 
     try {
       setIsProcessing(true);
-      await toggleFavorites({ userId, actionId });
+      const response = await toggleFavorites({ userId, actionId });
+      console.log("response",response.isAdded);
+      if (response.isAdded) {
+        toast.success("Agregado a favoritos");
+      } else {
+        toast.success("Eliminado de favoritos");
+      }
+      
     } catch (error) {
       console.error("Error al cambiar favorito:", error);
       toast.error("Error al cambiar favorito");
