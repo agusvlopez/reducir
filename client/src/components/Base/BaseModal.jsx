@@ -29,11 +29,11 @@ export function BaseModal({
                         </ModalBody>
                         <ModalFooter>
                             <Button
-                                className="text-[#383838] font-semibold" variant="light" onPress={onClose}>
+                                className="text-[#383838] font-semibold cursor-pointer" variant="light" onPress={onClose}>
                                 Cerrar
                             </Button>
                             <Button
-                                className="bg-[#005840] text-[#F1EDEC] font-semibold"
+                                className="bg-[#005840] text-[#F1EDEC] font-semibold cursor-pointer"
                                 onPress={onClose}
                                 radius="full">
                                 Aceptar

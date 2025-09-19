@@ -6,7 +6,7 @@ export default function BaseButton({
     buttonType = "button",
     children,
     className,
-    isButton = true,
+    isArray = true, //TODO: CHANGE NAME TO withArrow
     ...props
 }) {
     // Define the base styles for the button depending on the variant
@@ -30,7 +30,7 @@ export default function BaseButton({
             {...props}
         >
             {children}
-            {isButton && <ChevronRight className="size-5 ml-2" />}
+            {isArray && <ChevronRight className="size-5 ml-2" />}
         </button>
     );
 }

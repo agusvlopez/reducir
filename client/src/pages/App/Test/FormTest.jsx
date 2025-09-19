@@ -1,7 +1,6 @@
 import { Heading } from "../../../components/Base/Heading";
 import { EntryAppLayout } from "../../../layouts/EntryAppLayout";
 import InfoImage from "../../../assets/icons/info.png";
-import BaseInput from "../../../components/Inputs/BaseInput";
 import { Select } from "../../../components/Inputs/Select";
 import BaseButton from "../../../components/Base/BaseButton";
 import { dietOptions, kwhOptions, transportOptions } from "../../../utils/testOptions";
@@ -77,7 +76,7 @@ export function FormTest() {
           />
           <BaseButton 
             buttonType="submit"
-            isButton={false}
+            isArray={false}
             className="self-center mt-4 px-8"
           >
             Enviar

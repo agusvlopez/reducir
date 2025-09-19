@@ -52,18 +52,18 @@ export function Action() {
                 </div>
 
                 <div className="flex flex-col items-center gap-6 text-center mt-2">
-                    {isActionFavorite ? 
-                        <button onClick={() => handleToggleFavorite(action?._id)} className="cursor-pointer text-[#005840] font-semibold text-sm flex items-center gap-2">
-                            <HeartIcon isFilled />
-                            Acción ya marcada como favorita  
-                        </button>  
-                    : 
-                    (
-                        <BaseButton onClick={() => handleToggleFavorite(action?._id)} className="w-full max-w-[300px]" isButton={false}>
-                            <HeartIcon className="inline-block mr-2" />
-                            Agregar a mis objetivos
-                        </BaseButton> 
-                    )}
+                    <BaseButton 
+                        onClick={() => handleToggleFavorite(action?._id)} 
+                        className="w-full max-w-[300px]" 
+                        isArray={false}
+                        variant={isActionFavorite ? 'white' : 'green'}
+                    >
+                        {/* TODO: VER COMO ARREGLAR Q SE VACIE CUANDO NO ESTA MARCADO Y VICEVERSA */}
+                        <HeartIcon 
+                            className={`inline-block mr-2 ${isActionFavorite ? 'text-[#005840]' : ''}`} isFilled={isActionFavorite} 
+                        />
+                       {isActionFavorite ? 'Quitar de mis favoritos' : 'Agregar a mis favoritos'}
+                    </BaseButton> 
                     <BaseButton variant="outline" className="w-full max-w-[300px]">
                         <PlusIcon className="inline-block mr-2" />
                         Marcar como completado

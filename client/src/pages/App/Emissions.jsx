@@ -60,6 +60,7 @@ export function Emissions() {
                     color="white"
                     isReverse={true}
                     className=""
+                    link="/test/intro"
                 />
             </section>
         </>
