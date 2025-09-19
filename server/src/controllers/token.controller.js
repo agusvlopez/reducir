@@ -10,7 +10,7 @@ export class TokenController {
     }
 
     try {
-      const { accessToken, updatedRefreshToken, userId } = await TokenService.createToken({ refreshToken });
+      const { user, accessToken, updatedRefreshToken, userId } = await TokenService.createToken({ refreshToken });
 
       // Update the refresh token cookie
       res.cookie('refreshToken', updatedRefreshToken, {
@@ -21,7 +21,7 @@ export class TokenController {
         // path: '/tokens'
       });
 
-      res.status(201).json({ accessToken, userId });
+      res.status(201).json({ user, accessToken, userId });
     } catch (error) {
       if (error instanceof ValidationError) return res.status(401).send(error.message);
       return res.status(500).send({ message: 'An unexpected error occurred on the server.' });

@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loginUser] = useLoginUserMutation();
   const [createUser] = useCreateUserMutation();
 
+  const [user, setUser] = useState();
   const [userId, setUserId] = useState();
   const [accessToken, setAccessToken] = useState();
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         setAccessToken(token);        
         setUserId(response?.data?.userId);
+        setUser(response?.data?.user);
         navigate('/app/home', { replace: true });
       }
     } catch (error) {
@@ -71,6 +73,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         setAccessToken(token);
         setUserId(response?.userId);
+        setUser(response?.user);
         navigate('/app/home', { replace: true });
       }
     } catch (error) {
@@ -98,6 +101,7 @@ export const AuthProvider = ({ children }) => {
       });
       setAccessToken(null);
       setUserId(null);
+      setUser(null);
       navigate('/login', { replace: true });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -110,12 +114,15 @@ export const AuthProvider = ({ children }) => {
         const response = await axios.post(`${baseURL}/tokens`, {}, {
           withCredentials: true
         });
-        console.log("response", response);
+
         setAccessToken(response?.data?.accessToken);
         setUserId(response?.data?.userId);
+        setUser(response?.data?.user);
+        
       } catch {        
         setAccessToken(null);
         setUserId(null);
+        setUser(null);
       } finally {
         setLoading(false); 
       }
@@ -126,7 +133,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return(
-    <AuthContext.Provider value={{ accessToken, userId, setAccessToken, handleRegister, handleLogin, handleLogout }}>
+    <AuthContext.Provider value={{ accessToken, userId, user, setUser, setAccessToken, handleRegister, handleLogin, handleLogout }}>
       {loading ? null : children}
     </AuthContext.Provider>
   )

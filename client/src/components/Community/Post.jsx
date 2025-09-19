@@ -5,8 +5,8 @@ import { PostContent } from "./PostContent";
 import { PostFooter } from "./PostFooter";
 
 export function Post() {
-    const { userId, postId } = useParams();
-    console.log(userId, postId);
+    // const { userId, postId } = useParams();
+    // console.log(userId, postId);
 
     return (
         <section className="flex flex-col gap-4 border-b border-[#6D6D6D] pb-6">

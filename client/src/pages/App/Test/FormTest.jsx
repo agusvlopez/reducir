@@ -18,6 +18,7 @@ export function FormTest() {
 
   const handleSendTest = async (event) => {
     event.preventDefault();
+
     const formData = new FormData(event.target);
     const kwh = formData.get("kwh");
     const transport = formData.get("transport");
@@ -25,12 +26,10 @@ export function FormTest() {
 
     const carbon = calculateCarbon({ kwh, transport, diet });
     const result = await createCarbon({ userId, carbon }).unwrap();
-console.log(result);
 
     if (result.success) {
       navigate('/app/home');
     }
-
   }
 
   return (

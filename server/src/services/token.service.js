@@ -2,6 +2,7 @@ import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import { TokenRepository } from "../repositories/token.repository.js";
 import jwt from 'jsonwebtoken';
+import { UserRepository } from "../repositories/user.repository.js";
 
 export class TokenService {
   static async create({ refreshToken, userId, userEmail }) {
@@ -47,9 +48,14 @@ export class TokenService {
       { expiresIn: "7d" }
     );
 
-    await this.create({ refreshToken: newRefreshToken, userId: userPayload.id, userEmail: userPayload.email });
+    await this.create({ refreshToken: newRefreshToken, userId: userPayload.id, userEmail: userPayload.email });  
+    const user = await UserRepository.findById({ id: userPayload.id });
+    
+    if (!user) {
+      throw new ValidationError('Usuario no encontrado.');
+    }
 
-    return { accessToken: newAccessToken, updatedRefreshToken: newRefreshToken, userId: userPayload.id };
+    return { user, accessToken: newAccessToken, updatedRefreshToken: newRefreshToken, userId: userPayload.id };
   }
 
   static async delete({ refreshToken }) {

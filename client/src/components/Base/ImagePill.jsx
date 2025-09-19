@@ -17,7 +17,6 @@ export function ImagePill({
 
     return (
         <div className={`relative ${className}`}>
-            {/* IMAGEN */}
             <Pill
                 size="sm"
                 text={category}

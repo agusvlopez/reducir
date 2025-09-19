@@ -49,8 +49,7 @@ export const apiSlice = createApi({
         url: "/users/toggle-favorite-action",
         method: "PATCH",
         body: ids
-      }),
-      invalidatesTags: ["Users"]
+      })
     }),
   }),
 });

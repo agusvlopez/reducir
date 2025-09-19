@@ -1,0 +1,473 @@
+[{
+  "_id": "68c2063372a141eb4a77c0e0",
+  "title": "Andar en bicicleta",
+  "description": "Utilizar la bicicleta para trayectos cortos es una forma saludable y ecológica de movilizarse, eliminando por completo las emisiones contaminantes de transporte motorizado.",
+  "carbon": 4,
+  "category": "transporte",
+  "image": {
+    "public_id": "andar-en-bicicleta_ssrmpj",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e5",
+  "title": "Separar residuos reciclables",
+  "description": "Clasificar la basura en diferentes categorías (papel, plástico, vidrio, orgánicos) facilita su reciclaje y reduce la cantidad de residuos enviados a rellenos sanitarios.",
+  "carbon": 3,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "separar-residuos_md662u",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757542603/separar-residuos_md662u.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e9",
+  "title": "Evitar plásticos de un solo uso",
+  "description": "Optar por utensilios y envases reutilizables ayuda a disminuir la contaminación plástica que afecta ríos, mares y ecosistemas terrestres.",
+  "carbon": 3,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "plastico-un-solo-uso_idn4fi",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757541060/plastico-un-solo-uso_idn4fi.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f2",
+  "title": "Reducir bebidas embotelladas",
+  "description": "Usar botellas reutilizables y filtros de agua reduce la cantidad de plástico de un solo uso y la contaminación asociada.",
+  "carbon": 2,
+  "category": "alimentación",
+  "image": {
+    "public_id": "botellas-reutilizables_rf5wxa",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757533152/botellas-reutilizables_rf5wxa.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f9",
+  "title": "Juntar agua de lluvia",
+  "description": "Recolectar agua de lluvia mediante sistemas adecuados para su uso en riego o limpieza ayuda a conservar recursos hídricos.",
+  "carbon": 2,
+  "category": "agua",
+  "image": {
+    "public_id": "juntar-agua-lluvia_a63oaq",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757529872/juntar-agua-lluvia_a63oaq.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0fa",
+  "title": "Optimizar el uso del lavarropas",
+  "description": "Llenar completamente el tambor antes de lavar ropa reduce la cantidad de agua y energía por carga.",
+  "carbon": 2,
+  "category": "agua",
+  "image": {
+    "public_id": "lavado-de-ropa_rcqign",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757529558/lavado-de-ropa_rcqign.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0fb",
+  "title": "Plantar un árbol",
+  "description": "Sembrar árboles ayuda a absorber dióxido de carbono, mejorar la calidad del aire y ofrecer sombra natural, contribuyendo a mitigar el cambio climático.",
+  "carbon": 5,
+  "category": "otros",
+  "image": {
+    "public_id": "plantar-arbol_o8wc84",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757528945/plantar-arbol_o8wc84.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0fd",
+  "title": "Optar por productos biodegradables",
+  "description": "Elegir productos fabricados con materiales que se descomponen fácilmente en el ambiente ayuda a reducir la contaminación a largo plazo.",
+  "carbon": 2,
+  "category": "otros",
+  "image": {
+    "public_id": "productos-biodegradables_vg97xn",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757528603/productos-biodegradables_vg97xn.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0ff",
+  "title": "Apoyar empresas sostenibles",
+  "description": "Comprar a empresas que adoptan prácticas responsables ambientalmente fomenta un mercado más sostenible y ético.",
+  "carbon": 3,
+  "category": "otros",
+  "image": {
+    "public_id": "empresas-sostenibles_mwyis7",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757527678/empresas-sostenibles_mwyis7.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c100",
+  "title": "Hacer voluntariado ambiental",
+  "description": "Participar en actividades como limpiezas de espacios naturales y reforestación ayuda a preservar el medio ambiente y crear conciencia.",
+  "carbon": 4,
+  "category": "otros",
+  "image": {
+    "public_id": "voluntariado_wst6r4",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757516857/voluntariado_wst6r4.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e2",
+  "title": "Compartir coche",
+  "description": "Organizar viajes compartidos con amigos o vecinos disminuye la cantidad de vehículos en la calle, ayudando a bajar las emisiones contaminantes y el tráfico.",
+  "carbon": 3,
+  "category": "transporte",
+  "image": {
+    "public_id": "compartir-coche_s5iwbv",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757543930/compartir-coche_s5iwbv.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e7",
+  "title": "Compostar residuos orgánicos",
+  "description": "Transformar restos de comida y desechos orgánicos en compost produce abono natural, mejora la calidad del suelo y reduce la cantidad de basura que va a rellenos sanitarios.",
+  "carbon": 4,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "compostar_cbgvub",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757542054/compostar_cbgvub.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0ed",
+  "title": "Reducir consumo de carne",
+  "description": "Incorporar comidas vegetarianas algunas veces a la semana disminuye la huella de carbono asociada a la producción ganadera y mejora la salud.",
+  "carbon": 4,
+  "category": "alimentación",
+  "image": {
+    "public_id": "comida-vegetariana_n6zazi",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757540124/comida-vegetariana_n6zazi.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0ee",
+  "title": "Comprar productos locales",
+  "description": "Preferir alimentos producidos localmente reduce las emisiones derivadas del transporte y apoya a los productores de la región.",
+  "carbon": 2,
+  "category": "alimentación",
+  "image": {
+    "public_id": "alimentos-locales_ddadda",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757546401/alimentos-locales_ddadda.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0ef",
+  "title": "Evitar desperdicio de comida",
+  "description": "Planificar las compras y consumir los alimentos antes de que se echen a perder reduce el desperdicio y su impacto ambiental.",
+  "carbon": 3,
+  "category": "alimentación",
+  "image": {
+    "public_id": "desperdicio-comida_jsqga5",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757533706/desperdicio-comida_jsqga5.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f7",
+  "title": "Regar en horarios de baja evaporación",
+  "description": "Regar plantas temprano en la mañana o al atardecer minimiza la pérdida de agua por evaporación, optimizando su uso.",
+  "carbon": 2,
+  "category": "agua",
+  "image": {
+    "public_id": "regar-sombra_jvqohc",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757546626/regar-sombra_jvqohc.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0fc",
+  "title": "Usar bolsas reutilizables",
+  "description": "Llevar siempre bolsas de tela o materiales duraderos evita la generación de residuos plásticos de un solo uso que contaminan ecosistemas.",
+  "carbon": 1,
+  "category": "otros",
+  "image": {
+    "public_id": "bolsas-reutilizables_lftrwv",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757528831/bolsas-reutilizables_lftrwv.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c101",
+  "title": "Evitar productos con exceso de embalaje",
+  "description": "Preferir productos con envases mínimos o reutilizables reduce la generación de residuos y el consumo de recursos.",
+  "carbon": 2,
+  "category": "otros",
+  "image": {
+    "public_id": "embalaje_eslhas",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757516135/embalaje_eslhas.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0db",
+  "title": "Aprovechar la luz natural",
+  "description": "Mantener las cortinas y persianas abiertas durante el día permite iluminar los espacios interiores con luz natural, reduciendo la necesidad de usar luz artificial y así ahorrar energía.",
+  "carbon": 1,
+  "category": "energía",
+  "image": {
+    "public_id": "aprovechar-luz-natural_cr9tis",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757545494/aprovechar-luz-natural_cr9tis.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0dc",
+  "title": "Usar energía solar",
+  "description": "Instalar paneles solares fotovoltaicos para generar energía limpia y renovable, disminuyendo la dependencia de fuentes contaminantes y reduciendo significativamente las emisiones de CO₂.",
+  "carbon": 5,
+  "category": "energía",
+  "image": {
+    "public_id": "instalar-paneles-solares_ce3jc4",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757545177/instalar-paneles-solares_ce3jc4.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e1",
+  "title": "Caminar distancias cortas",
+  "description": "Para recorridos menores a 1 km, caminar en vez de usar vehículos reduce significativamente la huella de carbono y aporta beneficios a la salud física y mental.",
+  "carbon": 2,
+  "category": "transporte",
+  "image": {
+    "public_id": "caminar_hdpllo",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544110/caminar_hdpllo.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e3",
+  "title": "Conducir a velocidad moderada",
+  "description": "Mantener una velocidad constante y moderada optimiza el consumo de combustible y reduce la emisión de gases contaminantes provenientes de los vehículos.",
+  "carbon": 2,
+  "category": "transporte",
+  "image": {
+    "public_id": "conducir-moderado_pfwwg1",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757543613/conducir-moderado_pfwwg1.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e4",
+  "title": "Teletrabajar",
+  "description": "Trabajar desde casa evita desplazamientos diarios, disminuyendo el consumo de combustible y la contaminación asociada al transporte.",
+  "carbon": 3,
+  "category": "transporte",
+  "image": {
+    "public_id": "teletrabajar_gp7dvc",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757543394/teletrabajar_gp7dvc.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0ea",
+  "title": "Reparar antes de desechar",
+  "description": "Arreglar objetos en lugar de tirarlos prolonga su vida útil y reduce la cantidad de residuos que contaminan el ambiente.",
+  "carbon": 3,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "reparar-antes-de-desechar_hobcbr",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757540745/reparar-antes-de-desechar_hobcbr.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0ec",
+  "title": "Donar ropa usada",
+  "description": "Dar ropa en buen estado a quienes la necesitan evita que termine en la basura y promueve la reutilización.",
+  "carbon": 2,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "ropa-usada_fso0wc",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757540383/ropa-usada_fso0wc.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f0",
+  "title": "Elegir productos de temporada",
+  "description": "Consumir frutas y verduras de estación disminuye la necesidad de producción en invernaderos o transporte a larga distancia.",
+  "carbon": 2,
+  "category": "alimentación",
+  "image": {
+    "public_id": "alimentos-temporada_mxpfiy",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757533539/alimentos-temporada_mxpfiy.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f5",
+  "title": "Cerrar la canilla al cepillarse los dientes",
+  "description": "Mantener cerrada la canilla mientras te cepillas los dientes evita el desperdicio innecesario de agua potable.",
+  "carbon": 1,
+  "category": "agua",
+  "image": {
+    "public_id": "cepillar-dientes_puj2hj",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757532426/cepillar-dientes_puj2hj.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c102",
+  "title": "Utilizar almohadillas reutilizables para desmaquillar",
+  "description": "",
+  "carbon": 1,
+  "category": "otros",
+  "image": {
+    "public_id": "almohadillas-reutilizables_k2ezro",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757514104/almohadillas-reutilizables_k2ezro.jpg"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0d8",
+  "title": "Apagar luces innecesarias",
+  "description": "Apagar las luces al salir de una habitación no solo ayuda a reducir el consumo eléctrico, sino que también disminuye la huella de carbono de tu hogar, contribuyendo a un ambiente más sostenible.",
+  "carbon": 1,
+  "category": "energía",
+  "image": {
+    "public_id": "apagar-luces_ahivyq",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757545998/apagar-luces_ahivyq.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0d9",
+  "title": "Usar lámparas LED",
+  "description": "Reemplazar las bombillas incandescentes o fluorescentes por lámparas LED permite ahorrar hasta un 80% de energía, además de aumentar la vida útil de la iluminación y reducir la frecuencia de reemplazo, ayudando a minimizar residuos.",
+  "carbon": 3,
+  "category": "energía",
+  "image": {
+    "public_id": "lamparas-led_stmq7x",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757545756/lamparas-led_stmq7x.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0da",
+  "title": "Desenchufar aparatos no utilizados",
+  "description": "Muchos dispositivos consumen energía incluso cuando están apagados. Desenchufar aparatos o usar regletas con interruptor puede evitar este consumo fantasma, ahorrando energía y dinero.",
+  "carbon": 2,
+  "category": "energía",
+  "image": {
+    "public_id": "desenchufar-aparatos_q1amko",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757545627/desenchufar-aparatos_q1amko.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0dd",
+  "title": "Mantener electrodomésticos limpios",
+  "description": "Limpiar regularmente los filtros y partes de electrodomésticos como el aire acondicionado y el refrigerador mejora su eficiencia, ayudando a consumir menos energía y prolongar su vida útil.",
+  "carbon": 1,
+  "category": "energía",
+  "image": {
+    "public_id": "limpiar-electrodomesticos_at113p",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757545068/limpiar-electrodomesticos_at113p.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0de",
+  "title": "Regular la temperatura del hogar",
+  "description": "Mantener la calefacción y aire acondicionado en temperaturas moderadas ayuda a evitar un gasto excesivo de energía y reduce la huella de carbono de tu vivienda.",
+  "carbon": 3,
+  "category": "energía",
+  "image": {
+    "public_id": "temperatura-hogar_d14kfm",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544745/temperatura-hogar_d14kfm.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0df",
+  "title": "Usar transporte público",
+  "description": "Optar por el transporte público en lugar del vehículo particular disminuye la cantidad de autos en circulación, reduciendo la contaminación y la emisión de gases de efecto invernadero.",
+  "carbon": 4,
+  "category": "transporte",
+  "image": {
+    "public_id": "transporte-publico_rnbkwk",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544500/transporte-publico_rnbkwk.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e6",
+  "title": "Reutilizar envases",
+  "description": "Dar nueva vida a frascos, botellas y otros envases reduce la demanda de materiales nuevos y disminuye la cantidad de residuos generados.",
+  "carbon": 2,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "reutilizar-envases_jtlkjo",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757542354/reutilizar-envases_jtlkjo.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0e8",
+  "title": "Comprar productos reciclados",
+  "description": "Preferir productos fabricados con materiales reciclados fomenta la economía circular y reduce la explotación de recursos naturales.",
+  "carbon": 2,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "productos-reciclados_rlenep",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757541736/productos-reciclados_rlenep.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0eb",
+  "title": "Reciclar electrónicos",
+  "description": "Llevar dispositivos electrónicos viejos a puntos de reciclaje especializado evita que sus componentes tóxicos contaminen el suelo y el agua.",
+  "carbon": 4,
+  "category": "reciclaje",
+  "image": {
+    "public_id": "reciclar-electronicos_k62wek",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757540601/reciclar-electronicos_k62wek.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f1",
+  "title": "Consumir alimentos orgánicos",
+  "description": "Optar por productos cultivados sin pesticidas ni fertilizantes químicos protege la biodiversidad y la calidad del suelo.",
+  "carbon": 3,
+  "category": "alimentación",
+  "image": {
+    "public_id": "alimentos-organicos_c4yblk",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757533372/alimentos-organicos_c4yblk.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f3",
+  "title": "Cocinar en casa",
+  "description": "Preparar comidas caseras evita envases y transporte de alimentos procesados, disminuyendo la huella ambiental.",
+  "carbon": 2,
+  "category": "alimentación",
+  "image": {
+    "public_id": "cocinar-en-casa_noiuju",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757532941/cocinar-en-casa_noiuju.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f4",
+  "title": "Consumir menos lácteos",
+  "description": "Reducir la ingesta de lácteos ayuda a bajar las emisiones de metano provenientes del ganado y promueve una alimentación más sostenible.",
+  "carbon": 3,
+  "category": "alimentación",
+  "image": {
+    "public_id": "lacteos_sumtcg",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757532709/lacteos_sumtcg.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f6",
+  "title": "Reutilizar agua de lavado",
+  "description": "Aprovechar el agua usada para lavar verduras o platos para regar plantas y jardines contribuye al ahorro hídrico.",
+  "carbon": 2,
+  "category": "agua",
+  "image": {
+    "public_id": "aprovechar-agua-verdura_nxh6bs",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757546778/aprovechar-agua-verdura_nxh6bs.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0f8",
+  "title": "Reparar fugas de agua",
+  "description": "Arreglar goteras y fugas en grifos y cañerías evita el desperdicio continuo de agua potable.",
+  "carbon": 3,
+  "category": "agua",
+  "image": {
+    "public_id": "arreglar-fugas-agua_urhi5m",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757530031/arreglar-fugas-agua_urhi5m.webp"
+  }
+},
+{
+  "_id": "68c2063372a141eb4a77c0fe",
+  "title": "Evitar impresiones innecesarias",
+  "description": "Reducir el uso de papel e imprimir solo cuando sea estrictamente necesario contribuye a preservar bosques y disminuir residuos.",
+  "carbon": 2,
+  "category": "otros",
+  "image": {
+    "public_id": "imprimir-menos_npeu3v",
+    "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757528045/imprimir-menos_npeu3v.webp"
+  }
+}]

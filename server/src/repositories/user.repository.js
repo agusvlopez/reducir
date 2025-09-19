@@ -32,6 +32,15 @@ export class UserRepository {
     }
   }
 
+  static async findById({ id }) {
+    try {
+      const user = await User.findById(id).lean();
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
   static async exists({ email }) {
     try {
       const userExists = await User.exists({ email });

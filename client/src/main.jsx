@@ -1,4 +1,3 @@
-import { StrictMode } from 'react';
 import { HeroUIProvider } from '@heroui/react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
@@ -12,7 +11,6 @@ import { store } from './utils/store.js';
 import { FavoritesProvider } from './context/FavoritesContext.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <HeroUIProvider>
@@ -25,5 +23,4 @@ createRoot(document.getElementById('root')).render(
         </HeroUIProvider>
       </BrowserRouter>
     </Provider>
-  </StrictMode>,
 )

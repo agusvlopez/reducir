@@ -4,7 +4,7 @@ import { Heading } from "../../components/Base/Heading";
 import { Pill } from "../../components/Base/Pill";
 import { ActionCard } from "../../components/Cards/ActionCard";
 import { Search } from "../../components/Inputs/Search";
-import ACTIONS from "../../assets/data/actions.json";
+import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import InfoImage from "../../assets/icons/info.png";
 import {
     useDisclosure,
@@ -183,7 +183,7 @@ export function Actions() {
                         {displayedActions?.map((action, index) => (
                             <ActionCard
                                 key={`${action._id}-${index}`} // Mejor key para evitar problemas con lazy loading
-                                id={action._id}
+                                id={action?._id}
                                 title={action.title}
                                 category={action.category}
                                 carbon={action.carbon}

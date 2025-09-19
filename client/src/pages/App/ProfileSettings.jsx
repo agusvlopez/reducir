@@ -13,11 +13,9 @@ export function ProfileSettings() {
 
   const toggleDeleteAccountModal = () => {
     setDeleteAccountModal(!deleteAccountModal);
-    console.log("Modal de eliminación de cuenta alternado");
   }
 
   const handleDeleteAccount = () => {
-    console.log("Cuenta eliminada");
     toggleDeleteAccountModal();
   }
 
@@ -25,9 +23,7 @@ export function ProfileSettings() {
 
   const toggleEditImageModal = () => {
     setEditImageModal(!editImageModal);
-    console.log("Modal de edición de imagen alternado");
   }
-
 
   return (
     <>

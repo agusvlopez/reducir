@@ -5,19 +5,34 @@ import TimeIcon from "../../assets/icons/time.png";
 import ArrowRightIcon from "../../assets/icons/arrow-next.png";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
+import { useAuth } from "../../hooks/useAuth";
+// import { useGetActionsQuery } from "../../api/actionsSlice";
+import { useFavorites } from "../../hooks/useFavorites";
+import ACTIONS from "../../assets/data/greenSteps.actions.json";
 
 export function Home() {
+    const { user } = useAuth();
+
+    // Usamos useGetActionsQuery para obtener todas las acciones
+    //TODO: pasar a un hook ? 
+    //Esto va una vez que acomode la API de actions
+    // const { data: actions, error: isError, isLoading } = useGetActionsQuery();
+    // console.log("actions", actions);
+
+    //favorites
+    const { favorites } = useFavorites();
+
     return (
         <>
             <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-24 rounded-b-[30px]">
                 <div className="flex items-center gap-4">
                     <Avatar src={"https://i.pravatar.cc/300"} alt="User Avatar" className="mb-4" />
                     <div>
-                        <p>¡Hola Nombre de usuario!</p>
+                        <p>¡Hola <span className="font-semibold">{user?.name}</span>!</p>
                         <p>Tu huella de carbono este mes:</p>
                         <div>
                             <span></span>
-                            <p className="text-semibold">72kg de CO2</p>
+                            <p className="font-semibold"><span className="font-bold">{user?.carbon}</span> kg de CO2</p>
                         </div>
 
                     </div>
@@ -60,26 +75,26 @@ export function Home() {
                 </div>
                 <button className="font-semibold text-[#005840]">+ Agregar una acción</button>
 
-                <div className="flex gap-4 ">
+                <div className="flex gap-4 mb-4">
                     {/* TODO: USE SWIPER */}
-                    <CarouselCard
-                        title={"Acción 1"}
-                        imageSrc={"https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT2-ekologia.jpg"}
-                        imageAlt={"Imagen de la acción 1"}
-                        className="mt-4"
-                    />
-                    <CarouselCard
-                        title={"Acción 1"}
-                        imageSrc={"https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT2-ekologia.jpg"}
-                        imageAlt={"Imagen de la acción 1"}
-                        className="mt-4"
-                    />
-                    <CarouselCard
-                        title={"Acción 1"}
-                        imageSrc={"https://bcdn.products.pcc.eu/wp-content/uploads/2022/08/FOT2-ekologia.jpg"}
-                        imageAlt={"Imagen de la acción 1"}
-                        className="mt-4"
-                    />
+                    {/* {isLoading && <p>Cargando acciones favoritas...</p>} */}
+                    {/* {isError && <p>Error al cargar las acciones.</p>} */}
+                    {favorites?.map((actionId) => {
+                        const favoriteAction = ACTIONS?.find(a => a._id === actionId);
+
+                        if (!favoriteAction) return null;
+
+                        return (
+                            <CarouselCard
+                                key={favoriteAction._id}
+                                actionId={favoriteAction._id}
+                                title={favoriteAction?.title}
+                                imageSrc={favoriteAction?.image?.url}
+                                imageAlt={favoriteAction?.title}
+                                className="mt-4"
+                            />
+                        );
+                    })}
                 </div>
             </section>
         </>

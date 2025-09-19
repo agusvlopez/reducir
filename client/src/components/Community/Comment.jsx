@@ -4,7 +4,6 @@ import { CommentHeart } from "./CommentHeart";
 export function Comment({
     answers
 }) {
-    console.log("answers", answers);
 
     return (
         <>
