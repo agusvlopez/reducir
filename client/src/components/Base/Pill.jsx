@@ -9,9 +9,9 @@ export function Pill ({ size, text, isActive, onClick, className = '' }) {
   return (
     <button
       onClick={() => onClick(text)}
-      className={`${className} ${sizeClass} rounded-full transition-colors cursor-pointer border-white/30 ${
+      className={`${className} ${sizeClass} rounded-full transition-colors cursor-pointer ${
         isActive
-          ? 'bg-white text-[#005840] font-medium'
+          ? 'bg-white text-[#005840] font-medium border border-[#005840]'
           : 'bg-[#005840] text-white border hover:bg-white/10 hover:text-[#005840] transition-all'
       }`}
     >

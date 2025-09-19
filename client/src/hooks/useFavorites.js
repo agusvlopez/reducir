@@ -29,7 +29,7 @@ export const useFavorites = () => {
   };
 
   return {
-    ...context, // Spread todas las funciones/datos del contexto original
+    ...context,
     handleToggleFavorite,
     isProcessing,
   };

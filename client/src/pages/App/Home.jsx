@@ -1,14 +1,14 @@
 import { Avatar } from "../../components/Base/Avatar";
 import { DonutProgress } from "../../components/DonutProgress";
-import { AppLayout } from "../../layouts/AppLayout";
 import TimeIcon from "../../assets/icons/time.png";
 import ArrowRightIcon from "../../assets/icons/arrow-next.png";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
 import { useAuth } from "../../hooks/useAuth";
-// import { useGetActionsQuery } from "../../api/actionsSlice";
 import { useFavorites } from "../../hooks/useFavorites";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function Home() {
     const { user } = useAuth();
@@ -21,6 +21,12 @@ export function Home() {
 
     //favorites
     const { favorites } = useFavorites();
+
+    const [isFavoritesSection, setIsFavoritesSection] = useState(true);
+
+    const handleSections = () => {
+        setIsFavoritesSection(!isFavoritesSection);
+    }
 
     return (
         <>
@@ -65,15 +71,16 @@ export function Home() {
                 </div>
             </section>
             <section className="mt-[40px] flex gap-2 overflow-x-auto pl-6">
-                <Pill text="Acciones en proceso" />
-                <Pill text="Acciones logradas" />
+                <Pill text="Acciones en proceso" onClick={handleSections} isActive={isFavoritesSection} />
+                <Pill text="Acciones logradas" onClick={handleSections} isActive={!isFavoritesSection}/>
             </section>
+            {isFavoritesSection ?
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
                     <p className="text-xs">Opciones guardadas para hacer cuando te sientas listo/a.</p>
                 </div>
-                <button className="font-semibold text-[#005840]">+ Agregar una acción</button>
+                <Link to={"/app/actions"} className="font-semibold text-[#005840]">+ Agregar una acción</Link>
 
                 <div className="flex gap-4 mb-4">
                     {/* TODO: USE SWIPER */}
@@ -97,6 +104,13 @@ export function Home() {
                     })}
                 </div>
             </section>
+            :
+            (
+                <section>
+                    <h2>Acciones logradas</h2>
+                </section>
+            )
+            }
         </>
     );
 }
