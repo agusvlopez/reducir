@@ -12,7 +12,7 @@ export const useFavorites = () => {
     throw new Error('useFavorites must be used within a FavoritesProvider');
   }
 
-  const { toggleFavorites, isFavorite } = context;
+  const { toggleFavorites } = context;
 
   const handleToggleFavorite = async (actionId) => {
     if (isProcessing) return;

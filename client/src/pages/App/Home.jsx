@@ -9,6 +9,7 @@ import { useFavorites } from "../../hooks/useFavorites";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { BaseCarousel } from "../../components/Base/BaseCarousel";
 
 export function Home() {
     const { user } = useAuth();
@@ -74,6 +75,7 @@ export function Home() {
                 <Pill text="Acciones en proceso" onClick={handleSections} isActive={isFavoritesSection} />
                 <Pill text="Acciones logradas" onClick={handleSections} isActive={!isFavoritesSection}/>
             </section>
+            
             {isFavoritesSection ?
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
@@ -82,7 +84,7 @@ export function Home() {
                 </div>
                 <Link to={"/app/actions"} className="font-semibold text-[#005840]">+ Agregar una acción</Link>
 
-                <div className="flex gap-4 mb-4">
+                <BaseCarousel>
                     {/* TODO: USE SWIPER */}
                     {/* {isLoading && <p>Cargando acciones favoritas...</p>} */}
                     {/* {isError && <p>Error al cargar las acciones.</p>} */}
@@ -102,7 +104,7 @@ export function Home() {
                             />
                         );
                     })}
-                </div>
+                </BaseCarousel>
             </section>
             :
             (

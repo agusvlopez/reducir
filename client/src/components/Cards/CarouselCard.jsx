@@ -9,7 +9,7 @@ export function CarouselCard({
 }) {
     return (
         <Link to={`/app/actions/${actionId}`}
-            className={`w-[118px] h-[180px] lg:w-[230px] lg:h-[300px] rounded-[10px] flex flex-col items-center justify-center bg-[#005840] shadow-md ${className}`}
+            className={`w-[118px] h-[180px] lg:w-[230px] lg:h-[300px] rounded-[10px] flex flex-col items-center justify-center bg-[#005840] shadow-md flex-shrink-0 ${className}`}
         >
             <img
                 src={imageSrc}
