@@ -13,6 +13,9 @@ const PostLikeSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+// Índice único compuesto para evitar que un usuario dé like al mismo post más de una vez
+PostLikeSchema.index({ postId: 1, userId: 1 }, { unique: true });
+
 const PostLike = mongoose.model('PostLike', PostLikeSchema);
 
 export default PostLike;
