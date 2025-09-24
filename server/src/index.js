@@ -9,6 +9,7 @@ import User from "./models/User.js";
 import usersRouter from './routes/user.route.js';
 import { authMiddleware } from './middlewares/auth.middleware.js';
 import tokensRouter from './routes/token.route.js';
+import postsRouter from './routes/post.route.js';
 
 const corsOptions = {
     origin: true, //todo: change it
@@ -26,6 +27,7 @@ app.use(cookieParser());
 // routes
 app.use('/users', usersRouter);
 app.use('/tokens', tokensRouter);
+app.use('/posts', postsRouter);
 
 //TESTING:
 app.get('/users', authMiddleware, async (req, res) => {

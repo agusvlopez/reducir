@@ -24,12 +24,6 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  achievements: {
-    type: [String]
-  },
-  actions: {
-    type: [String]
-  },
   followers: {
     type: [String]
   },
