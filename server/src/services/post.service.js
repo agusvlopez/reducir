@@ -1,6 +1,5 @@
-import { PostRepository } from "../repositories/posts.repository.js";
+import { PostRepository } from "../repositories/post.repository.js";
 import { ValidationError } from "../errors/ValidationError.js";
-import { ConflictError } from "../errors/ConflictError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 
 export class PostService {

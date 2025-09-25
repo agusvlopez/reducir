@@ -5,7 +5,7 @@ import Post from "../models/Post.js";
 import PostLike from "../models/PostLike.js";
 
 export class PostLikeRepository {
-  //CHECKED?:
+  //CHECKED?: ✅
   /**
   * Crea un nuevo like para un post específico
   * Debe verificar que no exista ya un like del mismo usuario para ese post
