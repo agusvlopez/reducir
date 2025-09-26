@@ -128,15 +128,12 @@ export class PostLikeRepository {
       throw error;
     }
   }
-
   //CHECKED?:✅
   static async existsLike({ postId, userId }) {
     try {
       const postLike = await PostLike.findOne({ postId, userId });
-      if(postLike === null) {
-        throw new NotFoundError('No se encontró el post o el usuario');
-      }
-      return postLike !== null;
+
+      return postLike;
     } catch (error) {
       if(error.name === 'CastError') {
         throw new ValidationError('ID inválido');
@@ -144,10 +141,4 @@ export class PostLikeRepository {
       throw error;
     }
   }
-
-
-
-  
-
-
 }

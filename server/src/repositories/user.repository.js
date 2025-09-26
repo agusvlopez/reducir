@@ -117,4 +117,27 @@ export class UserRepository {
         throw new Error(`Failed to toggle favorite action: ${error.message}`);
     }
   }
+
+  static async checkFavoriteAction({ userId, actionId }) {
+    try {
+      const user = await User.findById(userId);
+      const favorites = user.favorites;
+      //devolver true o false
+      if (!favorites) return false;
+      return favorites.includes(actionId);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  static async getFavoriteActions(userId) {
+    try {
+      const user = await User.findById(userId);
+      const favoriteActions = user.favorites;
+      return favoriteActions;
+    } catch (error) {
+      return null;
+    }
+  }
+
 }

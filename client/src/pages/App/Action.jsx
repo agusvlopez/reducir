@@ -6,15 +6,31 @@ import { HeartIcon } from "../../components/Icons/Heart";
 import { PlusIcon } from "../../components/Icons/Plus";
 import { CarbonIcon } from "../../components/Icons/Carbon";
 import { ImagePill } from "../../components/Base/ImagePill";
-import { useFavorites } from "../../hooks/useFavorites";
+// import { useFavorites } from "../../hooks/useFavorites";
 import { ChevronLeft } from "../../components/Icons/ChevronLeft";
+import { useFavorites, useFavoriteStatus } from "../../context/FavoritesContext";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Action() {
     const navigate = useNavigate();
 
     const { id } = useParams();
-    const { isFavorite, handleToggleFavorite } = useFavorites(id);
-    const isActionFavorite = isFavorite(id);
+    const { userId } = useAuth();
+    //ESTO TAMBIEN LO USO EN ACTIONCARD, TODO: VER SI SIMPLIFICAR
+    const { toggleFavorites } = useFavorites();
+    const { isFavorite, isLoading } = useFavoriteStatus(id);
+    
+    const handleToggle = async () => {
+        try {
+            await toggleFavorites({ 
+                userId: userId, 
+                actionId: id 
+            });
+        // RTK Query se encarga de actualizar automáticamente
+        } catch (error) {
+        // TODO: Manejar error
+        }
+    }
 
     //buscar la acción por id en el archivo, por ahora
     //TODO: se llamara a la API para obtener la acción
@@ -52,18 +68,23 @@ export function Action() {
                 </div>
 
                 <div className="flex flex-col items-center gap-6 text-center mt-2">
-                    <BaseButton 
-                        onClick={() => handleToggleFavorite(action?._id)} 
-                        className="w-full max-w-[300px]" 
-                        isArray={false}
-                        variant={isActionFavorite ? 'white' : 'green'}
-                    >
-                        {/* TODO: VER COMO ARREGLAR Q SE VACIE CUANDO NO ESTA MARCADO Y VICEVERSA */}
-                        <HeartIcon 
-                            className={`inline-block mr-2 ${isActionFavorite ? 'text-[#005840]' : ''}`} isFilled={isActionFavorite} 
-                        />
-                       {isActionFavorite ? 'Quitar de mis favoritos' : 'Agregar a mis favoritos'}
-                    </BaseButton> 
+                    {isLoading ? 
+                        <p>Cargando...</p>
+                        :
+                        <BaseButton 
+                            onClick={handleToggle} 
+                            className="w-full max-w-[300px]" 
+                            isArray={false}
+                            variant={isFavorite ? 'white' : 'green'}
+                        >
+                            {/* TODO: VER COMO ARREGLAR Q SE VACIE CUANDO NO ESTA MARCADO Y VICEVERSA */}
+                            <HeartIcon 
+                                className={`inline-block mr-2 ${isFavorite ? 'text-[#005840]' : ''}`} 
+                                isFilled={isFavorite} 
+                            />
+                        {isFavorite ? 'Quitar de mis favoritos' : 'Agregar a mis favoritos'}
+                        </BaseButton>  
+                    }
                     <BaseButton variant="outline" className="w-full max-w-[300px]">
                         <PlusIcon className="inline-block mr-2" />
                         Marcar como completado

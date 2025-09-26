@@ -8,5 +8,7 @@ usersRouter.post('/login', UserController.login);
 usersRouter.post('/logout', UserController.logout);
 usersRouter.patch('/carbon', UserController.createCarbon);
 usersRouter.patch('/toggle-favorite-action', UserController.toggleFavoriteAction);
+usersRouter.get('/:userId/favorite-actions/:actionId', UserController.checkFavoriteAction);
+usersRouter.get('/:userId/favorite-actions', UserController.getFavoriteActions);
 
 export default usersRouter;

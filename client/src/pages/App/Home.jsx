@@ -5,11 +5,12 @@ import ArrowRightIcon from "../../assets/icons/arrow-next.png";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
 import { useAuth } from "../../hooks/useAuth";
-import { useFavorites } from "../../hooks/useFavorites";
+//import { useFavorites } from "../../hooks/useFavorites";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
+import { useFavorites } from "../../context/FavoritesContext";
 
 export function Home() {
     const { user } = useAuth();

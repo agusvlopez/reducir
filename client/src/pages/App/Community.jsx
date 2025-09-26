@@ -5,13 +5,17 @@ import { Post } from "../../components/Community/Post";
 import { Search } from "../../components/Inputs/Search";
 import { Select } from "../../components/Inputs/Select";
 import BaseButton from "../../components/Base/BaseButton";
+import { useGetPostsQuery } from "../../api/postsSlice";
 
 export function Community() {
+    const {data: posts, isError, isLoading} = useGetPostsQuery();
+    
     const [isNewPost, setIsNewPost] = useState(false);
 
     const handleAddPost = () => {
         setIsNewPost(true);
     };
+
     return (
         <section className="h-screen bg-[#005840] py-6">
             <div className="flex items-center gap-6 mb-8 px-6">
@@ -59,8 +63,23 @@ export function Community() {
                 )}
 
                 <div className="flex flex-col gap-6">
-                    <Post />
-                    <Post />
+                    {isLoading && <p className="text-white">Cargando posts...</p>}
+                    {isError && <p className="text-white">Error al cargar los posts.</p>}
+                    {posts?.map((post) => (
+                            <Post 
+                                key={post._id}
+                                id={post._id}
+                                name={post.userInfo.name}
+                                username={post.userInfo.username}
+                                profileImage={post.userInfo.profileImage}
+                                image={post.image}
+                                content={post.content}
+                                category={post.category}
+                                createdAt={post.createdAt}
+                                likesCount={post.likesCount}
+                                commentsCount={post.commentsCount}
+                            />
+                    ))}
                 </div>
             </div>
         </section>

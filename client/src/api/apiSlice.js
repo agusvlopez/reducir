@@ -41,18 +41,16 @@ export const apiSlice = createApi({
         body: data
       }),
       invalidatesTags: ["Users"]
-
     }),
-    toggleFavoriteAction: builder.mutation({
-      query: (ids) => ({
-        url: "/users/toggle-favorite-action",
-        method: "PATCH",
-        body: ids
-      })
-    }),
+    // toggleFavoriteAction: builder.mutation({
+    //   query: (ids) => ({
+    //     url: "/users/toggle-favorite-action",
+    //     method: "PATCH",
+    //     body: ids
+    //   })
+    // }),
   }),
 });
 
 
-
-export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation, useCreateCarbonMutation, useToggleFavoriteActionMutation } = apiSlice;
+export const { useGetUsersQuery, useCreateUserMutation, useLoginUserMutation, useLogoutUserMutation, useCreateCarbonMutation } = apiSlice;

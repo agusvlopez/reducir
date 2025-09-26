@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { HeartIcon } from "../Icons/Heart";
 import CarbonIcon from "../../assets/icons/carbon-green.png";
 import { ImagePill } from "../Base/ImagePill.jsx";
-import { useFavorites } from "../../hooks/useFavorites.js";
+import { useFavoriteStatus, useFavorites } from "../../context/FavoritesContext.jsx";
+import { useAuth } from "../../hooks/useAuth.js";
 
 export function ActionCard({
     id,
@@ -14,8 +15,22 @@ export function ActionCard({
     imageAlt = "Action Image",
     className = ""
 }) {
-    const { isFavorite, handleToggleFavorite, isProcessing } = useFavorites(id);
-    const isActionFavorite = isFavorite(id);
+    const { userId } = useAuth();
+    //ESTO TAMBIEN LO USO EN ACTION, TODO: VER SI SIMPLIFICAR
+    const { toggleFavorites } = useFavorites();
+    const { isFavorite, isLoading } = useFavoriteStatus(id);
+    
+    const handleToggle = async () => {
+        try {
+            await toggleFavorites({ 
+                userId: userId, 
+                actionId: id 
+            });
+        // RTK Query se encarga de actualizar automáticamente
+        } catch (error) {
+            // TODO: Manejar error
+        }
+    }
 
     return (
         <div
@@ -31,7 +46,6 @@ export function ActionCard({
                     />
                 </Link>
             </div>
-
             <div className="flex">
                 {/* El link ahora apunta a la página de detalle de la acción */}
                 <Link to={`/app/actions/${id}`}>
@@ -46,16 +60,8 @@ export function ActionCard({
                         <p className="text-small text-foreground/80 line-clamp-2">{description}</p>
                     </div>
                 </Link>
-                <button
-                    onClick={() => handleToggleFavorite(id)}
-                    disabled={isProcessing}
-                    className="ml-2 p-1 hover:scale-110 transition-transform disabled:opacity-50 disabled:cursor-not-allowed self-start"
-                >
-                    {isProcessing ? (
-                        <div className="w-4 h-4 border-2 border-gray-300 border-t-[#005840] loader"></div>
-                    ) : (
-                        <HeartIcon isFilled={isActionFavorite} />
-                    )}
+                <button>
+                    <HeartIcon isFilled={isFavorite} handleClick={handleToggle} isLoading={isLoading} />
                 </button>
             </div>
         </div>

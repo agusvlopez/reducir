@@ -99,4 +99,15 @@ export class UserService {
     const updatedUser = await UserRepository.toggleFavoriteAction({ userId, actionId });
     return updatedUser;
   } 
+
+  static async checkFavoriteAction({ userId, actionId }){
+    const isFavorite = await UserRepository.checkFavoriteAction({ userId, actionId });
+    return isFavorite;
+  }
+
+  static async getFavoriteActions(userId) {
+    const favoriteActions = await UserRepository.getFavoriteActions(userId);
+    return favoriteActions;
+  }
+
 }

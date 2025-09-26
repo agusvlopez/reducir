@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Avatar } from "../../components/Base/Avatar";
-import { PostHeader } from "../../components/Community/PostHeader";
 import { PostContent } from "../../components/Community/PostContent";
-import { PostFooter } from "../../components/Community/PostFooter";
-import { BaseTextarea } from "../../components/Inputs/BaseTextarea";
 import { Answer } from "../../components/Community/Answer";
 import { NavigationLink } from "../../components/Base/NavigationLink";
+import { useGetPostQuery } from "../../api/postsSlice";
 
 export function ComposerPost() {
+    const { postId } = useParams();
+    const {data: post, isError, isLoading} = useGetPostQuery(postId);
+    
+    if (isLoading) return <p>Cargando...</p>;
+    if (isError) return <p>Error al cargar el post.</p>;
+
     return (
+
         <section className="mx-6 my-6 flex flex-col gap-6">
             <NavigationLink
                 to="/app/community"
@@ -23,11 +28,15 @@ export function ComposerPost() {
                 </div>
                 <div className="flex-1">
                     <div className={`flex flex-col gap-1 mb-2 text-sm`}>
-                        <span className="font-semibold">Nombre usuario</span>
-                        <span className="">@nombredeusuario</span>
+                        <span className="font-semibold">{post?.userInfo?.name}</span>
+                        <span className="">@{post?.userInfo?.username}</span>
                     </div>
-                    <PostContent />
-                    <p className="mt-6 text-sm">Respondiendo a @nombredeusuario </p>
+                    <PostContent 
+                        image={post?.image}
+                        content={post?.content}
+                        category={post?.category}
+                    />
+                    <p className="mt-6 text-sm">Respondiendo a @{post?.userInfo?.username}</p>
                 </div>
             </div>
 

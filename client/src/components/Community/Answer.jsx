@@ -8,6 +8,15 @@ export function Answer ({
     name = "comment",
     srcAvatar = "https://i.pravatar.cc/300",
 }) {
+    const handleSubmitAnswer = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const content = formData.get(name);
+        console.log(content);
+        // TODO (FALTA LOGICA DE BACKEND)
+    }
+
     return (
       <>
       {/* POST A COMMENT (FORM) */}
@@ -17,7 +26,7 @@ export function Answer ({
           />
           <form 
             className="flex-1 flex flex-col gap-2 items-end"
-            onSubmit=""
+            onSubmit={handleSubmitAnswer}
           >
               <BaseTextarea
                   name={name}

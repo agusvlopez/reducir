@@ -1,14 +1,14 @@
+import './index.css';
 import { HeroUIProvider } from '@heroui/react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
 import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
-import { ApiProvider } from '@reduxjs/toolkit/query/react';
 import { Provider } from 'react-redux';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { Toaster } from 'sonner';
 import { store } from './utils/store.js';
 import { FavoritesProvider } from './context/FavoritesContext.jsx';
+import { FavoritePostsProvider } from './context/FavoritePostsContext.jsx';
 
 createRoot(document.getElementById('root')).render(
     <Provider store={store}>
@@ -16,7 +16,9 @@ createRoot(document.getElementById('root')).render(
         <HeroUIProvider>
           <AuthProvider>
             <FavoritesProvider>
-              <App />
+              <FavoritePostsProvider>
+                <App />
+              </FavoritePostsProvider>
               <Toaster richColors />
             </FavoritesProvider>
           </AuthProvider>

@@ -1,64 +1,61 @@
-import { createContext, useState, useEffect } from "react";
-import { useToggleFavoriteActionMutation } from "../api/apiSlice";
+import { createContext, useContext } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useCheckFavoriteActionQuery, useGetFavoriteActionsQuery, useToggleFavoriteActionMutation } from "../api/actionsSlice";
+
 
 const FavoritesContext = createContext();
 
 export const FavoritesProvider = ({ children }) => {
-  const [favorites, setFavorites] = useState([]);
-  const { user } = useAuth();
-
-  // Sincroniza el estado de favoritos con el usuario autenticado
-  useEffect(() => {
-    setFavorites(user?.favorites || []);
-  }, [user]);
-
+  const { user, userId } = useAuth();
   const [toggleFavoriteAction] = useToggleFavoriteActionMutation();
 
   const toggleFavorites = async ({ userId, actionId }) => {
-    // Guardamos el estado actual para poder revertir si es necesario
-    const previousFavorites = [...favorites];
-    const isCurrentlyFavorite = favorites.includes(actionId);
-    
-    // Optimistic update
-    const newFavorites = isCurrentlyFavorite
-      ? favorites.filter(id => id !== actionId)
-      : [...favorites, actionId];
-
-    setFavorites(newFavorites);
-
     try {
       const response = await toggleFavoriteAction({ userId, actionId }).unwrap();
-      
-      // Sincronizamos con la respuesta del servidor
-      setFavorites(response.user.favorites);
-      
+      console.log('Response from server:', response);
       return response;
     } catch (error) {
-      // Revertimos al estado anterior en caso de error
-      setFavorites(previousFavorites);
-      
       console.error('Error toggling favorite:', error);
       throw error;
     }
-  };
+  }
 
-  const isFavorite = (actionId) => {
-    return favorites.includes(actionId);
-  };
+  const { data: favorites = [], favoritesIsLoading } = useGetFavoriteActionsQuery(
+    userId,
+    { skip: !userId }
+  );
+
 
   const contextValue = {
     favorites,
+    favoritesIsLoading,
     toggleFavorites,
-    isFavorite,
-    favoritesCount: favorites.length
-  };
+    userId: user?.id
+  }
 
   return (
     <FavoritesContext.Provider value={contextValue}>
       {children}
     </FavoritesContext.Provider>
   );
+}
+
+export const useFavorites = () => {
+  const context = useContext(FavoritesContext);
+  if (!context) {
+    throw new Error('useFavorites must be used within FavoritesProvider');
+  }
+  return context;
 };
 
-export default FavoritesContext;
+// Hook personalizado para usar en componentes
+export const useFavoriteStatus = (actionId) => {
+  const { userId } = useAuth();
+  
+  const { data: isFavorite = false, isLoading } = useCheckFavoriteActionQuery(
+    { userId, actionId },
+    { skip: !userId || !actionId }
+  );
+
+  return { isFavorite, isLoading };
+};
