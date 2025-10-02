@@ -23,7 +23,7 @@ export function ActionCard({
     const handleToggle = async () => {
         try {
             await toggleFavorites({ 
-                userId: userId, 
+                userId, 
                 actionId: id 
             });
         // RTK Query se encarga de actualizar automáticamente

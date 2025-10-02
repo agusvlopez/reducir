@@ -8,12 +8,6 @@ export class UserRepository {
         username,
         email,
         password: hashedPassword,
-        image: null,
-        carbon: 0,
-        achievements: [],
-        actions: [],
-        followers: [],
-        following: [],
       });
 
       return user;      
@@ -25,16 +19,18 @@ export class UserRepository {
   static async findByEmail({ email }) {
     try {
       const user = await User.findOne({ email }).lean();
-      //todo: pasar user menos la pass
       return user;
     } catch (error) {
       return null;
     }
   }
-
+  
+  //todo: revisar si funciona ok
+  //        .select('-password -__v')
   static async findById({ id }) {
     try {
-      const user = await User.findById(id).lean();
+      const user = await User.findById(id)
+        .lean();
       return user;
     } catch (error) {
       return null;
@@ -65,6 +61,7 @@ export class UserRepository {
   }
 
   static async toggleFavoriteAction({ userId, actionId }) {
+    console.log('Toggling favorite action for userId:', userId, 'actionId:', actionId);
     try {
       // First check if the action is already in favorites
       const user = await User.findById(userId);
@@ -73,44 +70,33 @@ export class UserRepository {
           throw new Error(`User with ID ${userId} not found`);
       }
       
-      const isInFavorites = user.favorites.includes(actionId);
+      const isInFavorites = user?.actions_saved?.includes(actionId);
+      console.log(isInFavorites);
       
       let updatedUser;
       if (isInFavorites) {
           // Remove from favorites
           updatedUser = await User.findByIdAndUpdate(
               userId,
-              { $pull: { favorites: actionId } },
+              { $pull: { actions_saved: actionId } },
               { new: true, runValidators: true }
           );
       } else {
           // Add to favorites
           updatedUser = await User.findByIdAndUpdate(
               userId,
-              { $addToSet: { favorites: actionId } },
+              { $addToSet: { actions_saved: actionId } },
               { new: true, runValidators: true }
           );
       }
       
+      const { password, __v, ...userWithoutPassword } = updatedUser.toObject();
+
       return {
         success: true,
         isAdded: !isInFavorites,
         message: !isInFavorites ? 'Action added to favorites' : 'Action removed from favorites',
-        //pasar todo user menos el password
-        user: {
-          _id: updatedUser._id,
-          name: updatedUser.name,
-          username: updatedUser.username,
-          email: updatedUser.email,
-          image: updatedUser.image,
-          carbon: updatedUser.carbon,
-          achievements: updatedUser.achievements,
-          actions: updatedUser.actions,
-          followers: updatedUser.followers,
-          following: updatedUser.following,
-          favorites: updatedUser.favorites
-        }
-
+        user: userWithoutPassword
       };
         
     } catch (error) {
@@ -120,8 +106,9 @@ export class UserRepository {
 
   static async checkFavoriteAction({ userId, actionId }) {
     try {
-      const user = await User.findById(userId);
-      const favorites = user.favorites;
+      const result = await User.findById(userId, 'actions_saved').lean();
+      const favorites = result?.actions_saved;
+      
       //devolver true o false
       if (!favorites) return false;
       return favorites.includes(actionId);
@@ -130,13 +117,12 @@ export class UserRepository {
     }
   }
 
-  static async getFavoriteActions(userId) {
+  static async getSavedActions(userId) {
     try {
-      const user = await User.findById(userId);
-      const favoriteActions = user.favorites;
-      return favoriteActions;
+      const result = await User.findById(userId, 'actions_saved').lean();
+      return result?.actions_saved || [];
     } catch (error) {
-      return null;
+      return [];
     }
   }
 

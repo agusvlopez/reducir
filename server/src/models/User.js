@@ -18,23 +18,29 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: String
+    type: String,
+    default: null
   },
   carbon: {
     type: Number,
-    required: true
+    required: true,
+    default: 0
   },
   followers: {
-    type: [String]
+    type: [String],
+    default: []
   },
   following: {
-    type: [String]
+    type: [String],
+    default: []
   },
-  favorites: {
-    type: [String]
+  actions_saved: {
+    type: [String],
+    default: []
   },
-  achievements: {
-    type: [String]
+  actions_achieved: {
+    type: [String],
+    default: []
   }
 }, { timestamps: true });
 

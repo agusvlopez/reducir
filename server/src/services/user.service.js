@@ -105,8 +105,8 @@ export class UserService {
     return isFavorite;
   }
 
-  static async getFavoriteActions(userId) {
-    const favoriteActions = await UserRepository.getFavoriteActions(userId);
+  static async getSavedActions(userId) {
+    const favoriteActions = await UserRepository.getSavedActions(userId);
     return favoriteActions;
   }
 

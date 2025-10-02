@@ -118,23 +118,17 @@ export class UserController {
     }
   }
 
-  static async getFavoriteActions(req, res) {
+  static async getSavedActions(req, res) {
     const { userId } = req.params;
 
     try {
-      const user = await User.findById(userId).lean();
-      if(!user) {
-        throw new ValidationError('No se encontró el usuario');
-      }      
-      const favoriteActions = user.favorites;
-            
+      const favoriteActions = await UserService.getSavedActions(userId);
       res.status(200).json(favoriteActions);
     } catch (error) {
       if(error.name === 'ValidationError') {
         return res.status(400).json({ error: error.message });
       }
       return res.status(500).json({ message: 'Error inesperado' });
-    
     }
   }
 

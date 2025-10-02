@@ -34,8 +34,8 @@ export const userSchema = createUserSchema.extend({
   _id: z.any(),
   image: z.string().nullable().optional(),
   carbon: z.number(),
-  achievements: z.array(z.string()),
-  actions: z.array(z.string()),
+  actions_achieved: z.array(z.string()),
+  actions_saved: z.array(z.string()),
   followers: z.array(z.string()),
   following: z.array(z.string()),
   createdAt: z.date()

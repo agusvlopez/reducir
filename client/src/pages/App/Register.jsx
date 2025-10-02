@@ -23,7 +23,6 @@ export function Register() {
     
     const onSubmit = handleSubmit((data) => {
         handleRegister(data);
-            
     });
 
     return (

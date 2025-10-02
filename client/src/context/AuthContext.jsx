@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
         setAccessToken(token);        
         setUserId(response?.data?.userId);
         setUser(response?.data?.user);
+        //TODO: CHECK porque no funciona el navigate
         navigate('/app/home', { replace: true });
       }
     } catch (error) {
