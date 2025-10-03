@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { HeartIcon } from "../Icons/Heart";
 import CarbonIcon from "../../assets/icons/carbon-green.png";
 import { ImagePill } from "../Base/ImagePill.jsx";
-import { useFavoriteStatus, useFavorites } from "../../context/FavoritesContext.jsx";
 import { useAuth } from "../../hooks/useAuth.js";
+import { useActionsSaved } from "../../hooks/useActionsSaved.js";
+import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus.js";
 
 export function ActionCard({
     id,
@@ -17,19 +18,14 @@ export function ActionCard({
 }) {
     const { userId } = useAuth();
     //ESTO TAMBIEN LO USO EN ACTION, TODO: VER SI SIMPLIFICAR
-    const { toggleFavorites } = useFavorites();
-    const { isFavorite, isLoading } = useFavoriteStatus(id);
+    const { toggleAction } = useActionsSaved();
+    const { isActionSaved, isLoading } = useActionsSavedStatus(id);
     
     const handleToggle = async () => {
-        try {
-            await toggleFavorites({ 
-                userId, 
-                actionId: id 
-            });
-        // RTK Query se encarga de actualizar automáticamente
-        } catch (error) {
-            // TODO: Manejar error
-        }
+        await toggleAction({ 
+            userId, 
+            actionId: id 
+        });
     }
 
     return (
@@ -61,7 +57,7 @@ export function ActionCard({
                     </div>
                 </Link>
                 <button>
-                    <HeartIcon isFilled={isFavorite} handleClick={handleToggle} isLoading={isLoading} />
+                    <HeartIcon isFilled={isActionSaved} handleClick={handleToggle} isLoading={isLoading} />
                 </button>
             </div>
         </div>

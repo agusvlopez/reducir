@@ -11,7 +11,7 @@ export const useFavoritePosts = () => {
   const context = useContext(FavoritePostsContext);
 
   if (!context) {
-    throw new Error('useFavorites must be used within a FavoritesProvider');
+    throw new Error('useFavorites must be used within a ActionsSavedProvider');
   }
 
   const { toggleFavoritePost } = context;

@@ -5,12 +5,11 @@ import ArrowRightIcon from "../../assets/icons/arrow-next.png";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
 import { useAuth } from "../../hooks/useAuth";
-//import { useFavorites } from "../../hooks/useFavorites";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
-import { useFavorites } from "../../context/FavoritesContext";
+import { useActionsSaved } from "../../hooks/useActionsSaved";
 
 export function Home() {
     const { user } = useAuth();
@@ -21,13 +20,13 @@ export function Home() {
     // const { data: actions, error: isError, isLoading } = useGetActionsQuery();
     // console.log("actions", actions);
 
-    //favorites
-    const { favorites } = useFavorites();
+    //actionsSaved
+    const { actionsSaved } = useActionsSaved();
 
-    const [isFavoritesSection, setIsFavoritesSection] = useState(true);
+    const [isActionsSavedSection, setIsActionsSavedSection] = useState(true);
 
     const handleSections = () => {
-        setIsFavoritesSection(!isFavoritesSection);
+        setIsActionsSavedSection(!isActionsSavedSection);
     }
 
     return (
@@ -73,11 +72,11 @@ export function Home() {
                 </div>
             </section>
             <section className="mt-[40px] flex gap-2 overflow-x-auto pl-6">
-                <Pill text="Acciones en proceso" onClick={handleSections} isActive={isFavoritesSection} />
-                <Pill text="Acciones logradas" onClick={handleSections} isActive={!isFavoritesSection}/>
+                <Pill text="Acciones en proceso" onClick={handleSections} isActive={isActionsSavedSection} />
+                <Pill text="Acciones logradas" onClick={handleSections} isActive={!isActionsSavedSection}/>
             </section>
             
-            {isFavoritesSection ?
+            {isActionsSavedSection ?
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
@@ -89,18 +88,18 @@ export function Home() {
                     {/* TODO: USE SWIPER */}
                     {/* {isLoading && <p>Cargando acciones favoritas...</p>} */}
                     {/* {isError && <p>Error al cargar las acciones.</p>} */}
-                    {favorites?.map((actionId) => {
-                        const favoriteAction = ACTIONS?.find(a => a._id === actionId);
+                    {actionsSaved?.map((actionId) => {
+                        const savedAction = ACTIONS?.find(a => a._id === actionId);
 
-                        if (!favoriteAction) return null;
+                        if (!savedAction) return null;
 
                         return (
                             <CarouselCard
-                                key={favoriteAction._id}
-                                actionId={favoriteAction._id}
-                                title={favoriteAction?.title}
-                                imageSrc={favoriteAction?.image?.url}
-                                imageAlt={favoriteAction?.title}
+                                key={savedAction._id}
+                                actionId={savedAction._id}
+                                title={savedAction?.title}
+                                imageSrc={savedAction?.image?.url}
+                                imageAlt={savedAction?.title}
                                 className="mt-4"
                             />
                         );

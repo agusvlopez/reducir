@@ -20,7 +20,7 @@ export const actionsSlice = createApi({
       }),
       invalidatesTags: ["Actions"]
     }),
-    toggleFavoriteAction: builder.mutation({
+    toggleSavedAction: builder.mutation({
       query: (ids) => ({
         url: "http://localhost:3000/users/toggle-favorite-action",
         method: "PATCH",
@@ -28,7 +28,7 @@ export const actionsSlice = createApi({
       }),
       invalidatesTags: ['Actions', 'UserFavorites']
     }),
-    checkFavoriteAction: builder.query({
+    checkSavedAction: builder.query({
       query: ({ userId, actionId }) => 
         `http://localhost:3000/users/${userId}/favorite-actions/${actionId}`,
       providesTags: (result, error, { actionId }) => [
@@ -36,7 +36,7 @@ export const actionsSlice = createApi({
         'Actions'
       ]
     }),
-    getFavoriteActions: builder.query({
+    getSavedActions: builder.query({
       query: (userId) => `http://localhost:3000/users/${userId}/favorite-actions`,
       providesTags: (result, error, userId) => [
         { type: 'UserFavorites', id: userId },
@@ -48,7 +48,7 @@ export const actionsSlice = createApi({
 export const { 
   useGetActionsQuery, 
   useCreateActionMutation, 
-  useToggleFavoriteActionMutation, 
-  useCheckFavoriteActionQuery,
-  useGetFavoriteActionsQuery
+  useToggleSavedActionMutation, 
+  useCheckSavedActionQuery,
+  useGetSavedActionsQuery
 } = actionsSlice;

@@ -6,10 +6,10 @@ import { HeartIcon } from "../../components/Icons/Heart";
 import { PlusIcon } from "../../components/Icons/Plus";
 import { CarbonIcon } from "../../components/Icons/Carbon";
 import { ImagePill } from "../../components/Base/ImagePill";
-// import { useFavorites } from "../../hooks/useFavorites";
 import { ChevronLeft } from "../../components/Icons/ChevronLeft";
-import { useFavorites, useFavoriteStatus } from "../../context/FavoritesContext";
 import { useAuth } from "../../hooks/useAuth";
+import { useActionsSaved } from "../../hooks/useActionsSaved";
+import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus";
 
 export function Action() {
     const navigate = useNavigate();
@@ -17,19 +17,14 @@ export function Action() {
     const { id } = useParams();
     const { userId } = useAuth();
     //ESTO TAMBIEN LO USO EN ACTIONCARD, TODO: VER SI SIMPLIFICAR
-    const { toggleFavorites } = useFavorites();
-    const { isFavorite, isLoading } = useFavoriteStatus(id);
+    const { toggleAction } = useActionsSaved();
+    const { isActionSaved, isLoading } = useActionsSavedStatus(id);
     
     const handleToggle = async () => {
-        try {
-            await toggleFavorites({ 
-                userId, 
-                actionId: id 
-            });
-        // RTK Query se encarga de actualizar automáticamente
-        } catch (error) {
-        // TODO: Manejar error
-        }
+        await toggleAction({ 
+            userId, 
+            actionId: id 
+        });
     }
 
     //buscar la acción por id en el archivo, por ahora
@@ -75,14 +70,14 @@ export function Action() {
                             onClick={handleToggle} 
                             className="w-full max-w-[300px]" 
                             isArray={false}
-                            variant={isFavorite ? 'white' : 'green'}
+                            variant={isActionSaved ? 'white' : 'green'}
                         >
                             {/* TODO: VER COMO ARREGLAR Q SE VACIE CUANDO NO ESTA MARCADO Y VICEVERSA */}
                             <HeartIcon 
-                                className={`inline-block mr-2 ${isFavorite ? 'text-[#005840]' : ''}`} 
-                                isFilled={isFavorite} 
+                                className={`inline-block mr-2 ${isActionSaved ? 'text-[#005840]' : ''}`} 
+                                isFilled={isActionSaved} 
                             />
-                        {isFavorite ? 'Quitar de mis favoritos' : 'Agregar a mis favoritos'}
+                        {isActionSaved ? 'Quitar de mis favoritos' : 'Agregar a mis favoritos'}
                         </BaseButton>  
                     }
                     <BaseButton variant="outline" className="w-full max-w-[300px]">
