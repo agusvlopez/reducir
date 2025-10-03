@@ -13,6 +13,6 @@ const PostCommentLikeSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-const PostCommentLike = mongoose.model('PostCommentLike', PostCommentLikeSchema);
+const PostCommentLike = mongoose.model('PostCommentLike', PostCommentLikeSchema, 'post_comment_likes');
 
 export default PostCommentLike;

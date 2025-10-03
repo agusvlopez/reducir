@@ -143,4 +143,19 @@ export class PostRepository {
     }
   }
 
+  static async incrementCommentsCount(postId) {
+    return await Post.findByIdAndUpdate(
+      postId,
+      { $inc: { commentsCount: 1 } },
+      { new: true } // Retorna el documento actualizado
+    );
+  }
+
+  static async decrementCommentsCount(postId) {
+    return await Post.findByIdAndUpdate(
+      postId,
+      { $inc: { commentsCount: -1 } },
+      { new: true }
+    );
+  }  
 } 

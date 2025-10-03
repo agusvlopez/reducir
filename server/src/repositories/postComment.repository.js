@@ -2,16 +2,16 @@ import Post from "../models/Post.js";
 import PostComment from "../models/PostComment.js";
 
 export class PostCommentRepository {
-  static async create({ postId, userId, userInfo, content }) {   
+  static async create({ postId, userId, userInfo, content, parentCommentId, depth }) {   
     try {
       const postComment = await PostComment.create({
         postId,
         userId,
         userInfo,
         content,
+        parentCommentId,
+        depth
       });
-      //Incrementa automáticamente el commentsCount del post correspondiente
-      await Post.findByIdAndUpdate(postId, { $inc: { commentsCount: 1 } });
 
       return postComment;
     } catch (error) {
@@ -65,5 +65,12 @@ export class PostCommentRepository {
       }            
       throw error;
     }
+  }
+
+  static async incrementRepliesCount(commentId) {
+    return await PostComment.findByIdAndUpdate(
+      commentId,
+      { $inc: { repliesCount: 1 } }
+    );
   }
 }

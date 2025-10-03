@@ -3,20 +3,22 @@ import { PostCommentService } from "../services/postComment.service.js";
 
 export class PostCommentController {
   static async create(req, res) {
-    const { postId, userId, userInfo, content } = req.body;
+    const { postId, userId, userInfo, content, parentCommentId } = req.body;
 
     try {
       const comment = await PostCommentService.create({
         postId,
         userId,
         userInfo,
-        content
+        content,
+        parentCommentId
       });
       res.status(201).json(comment);
     } catch (error) {
       if (error instanceof ValidationError) {
         return res.status(400).json({ error: error.message });
       }
+      console.log(error);
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }

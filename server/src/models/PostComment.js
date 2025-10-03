@@ -33,6 +33,12 @@ const PostCommentSchema = new mongoose.Schema({
     ref: 'PostComment',
     default: null
   },
+  depth: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 2 // Límite máximo de profundidad, para que no se haga una cadena muy larga
+  },
   likesCount: {
     type: Number,
     default: 0
@@ -40,9 +46,13 @@ const PostCommentSchema = new mongoose.Schema({
   repliesCount: {
     type: Number,
     default: 0
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 
-const PostComment = mongoose.model('PostComment', PostCommentSchema);
+const PostComment = mongoose.model('PostComment', PostCommentSchema, 'post_comments');
 
 export default PostComment;
