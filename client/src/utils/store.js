@@ -8,12 +8,12 @@ export const store = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         [actionsSlice.reducerPath]: actionsSlice.reducer,
-        [postsSlice.reducerPath]: postsSlice.reducer,
+        [postsSlice.reducerPath]: postsSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
           .concat(apiSlice.middleware)
           .concat(actionsSlice.middleware)
-          .concat(postsSlice.middleware),
+          .concat(postsSlice.middleware)
 });
 

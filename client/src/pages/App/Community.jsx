@@ -42,7 +42,7 @@ export function Community() {
                 userInfo: {
                     name: user?.name, 
                     username: user?.username, 
-                    profileImage: user?.image || ""
+                    profileImage: user?.image
                 },
                 category,
                 content

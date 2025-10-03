@@ -104,8 +104,7 @@ export class UserController {
     try {
       const updatedUser = await UserService.toggleFavoriteAction({ userId, actionId });
       res.status(200).json(updatedUser);
-    } catch (error) {
-    }
+    } catch (error) {}
   }
   
   static async checkFavoriteAction(req, res) {

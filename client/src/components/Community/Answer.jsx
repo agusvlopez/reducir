@@ -7,14 +7,18 @@ export function Answer ({
     placeholder = "Comentá tu respuesta",
     name = "comment",
     srcAvatar = "https://i.pravatar.cc/300",
+    onSubmit, // Nueva prop para manejar el submit desde afuera
+    isLoading = false, // Para mostrar estado de carga
 }) {
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
         const content = formData.get(name);
-        console.log(content);
-        // TODO (FALTA LOGICA DE BACKEND)
+
+        if (onSubmit) {
+            onSubmit(content, e.target);
+        }
     }
 
     return (
@@ -28,13 +32,13 @@ export function Answer ({
             className="flex-1 flex flex-col gap-2 items-end"
             onSubmit={handleSubmitAnswer}
           >
-              <BaseTextarea
+                <BaseTextarea
                   name={name}
                   placeholder={placeholder}
-              />
-              <BaseButton buttonType="submit">
-                  { labelButton }
-              </BaseButton>
+                />
+                <BaseButton buttonType="submit" disabled={isLoading}>
+                  { isLoading ? "Enviando..." : labelButton }
+                </BaseButton>
           </form>
       </div>
       </>
