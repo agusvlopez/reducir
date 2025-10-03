@@ -23,10 +23,10 @@ export function Home() {
     //actionsSaved
     const { actionsSaved } = useActionsSaved();
 
-    const [isActionsSavedSection, setIsActionsSavedSection] = useState(true);
+    const [sectionSelected, setSectionSelected] = useState("actionsSaved");
 
-    const handleSections = () => {
-        setIsActionsSavedSection(!isActionsSavedSection);
+    const handleSections = (value) => {
+        setSectionSelected(value);
     }
 
     return (
@@ -71,12 +71,13 @@ export function Home() {
                     <DonutProgress value={72} />
                 </div>
             </section>
-            <section className="mt-[40px] flex gap-2 overflow-x-auto pl-6">
-                <Pill text="Acciones en proceso" onClick={handleSections} isActive={isActionsSavedSection} />
-                <Pill text="Acciones logradas" onClick={handleSections} isActive={!isActionsSavedSection}/>
+            <section className="mt-[40px] flex gap-4 overflow-x-auto pl-6 lg:pl-0 pb-2">
+                <Pill className="flex-shrink-0" text="Acciones en proceso" onClick={() => handleSections('actionsSaved')} isActive={sectionSelected === 'actionsSaved'} />
+                <Pill className="flex-shrink-0" text="Acciones logradas" onClick={() => handleSections('actionsAchieved')} isActive={sectionSelected === 'actionsAchieved'}/>
+                <Pill className="flex-shrink-0" text="Mis publicaciones" onClick={() => handleSections('posts')} isActive={sectionSelected === 'posts'}/>
             </section>
             
-            {isActionsSavedSection ?
+            {sectionSelected === 'actionsSaved' &&
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
@@ -106,10 +107,22 @@ export function Home() {
                     })}
                 </BaseCarousel>
             </section>
-            :
+            }
+
+            {sectionSelected === 'actionsAchieved' &&
+            //TODO
             (
                 <section>
                     <h2>Acciones logradas</h2>
+                </section>
+            )
+            }
+
+            {sectionSelected === 'posts' &&
+            //TODO
+            (
+                <section>
+                    <h2>Mis publicaciones</h2>
                 </section>
             )
             }

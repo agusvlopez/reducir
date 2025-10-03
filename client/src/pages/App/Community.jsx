@@ -5,16 +5,58 @@ import { Post } from "../../components/Community/Post";
 import { Search } from "../../components/Inputs/Search";
 import { Select } from "../../components/Inputs/Select";
 import BaseButton from "../../components/Base/BaseButton";
-import { useGetPostsQuery } from "../../api/postsSlice";
+import { useCreatePostMutation, useGetPostsQuery } from "../../api/postsSlice";
+import { useAuth } from "../../hooks/useAuth";
+import { toast } from "sonner";
+
+//TODO: PASAR ESTO A UN ARCHIVO DE CONSTANTES PARA REUTILIZARLO
+const categories = [
+    { id: 1, value: "energía", label: "Energía" },
+    { id: 2, value: "transporte", label: "Transporte" },
+    { id: 3, value: "reciclaje", label: "Reciclaje" },
+    { id: 4, value: "alimentación", label: "Alimentación" },
+    { id: 5, value: "agua", label: "Agua" },
+    { id: 6, value: "otros", label: "Otros" }
+];
 
 export function Community() {
+    const {user} = useAuth();
     const {data: posts, isError, isLoading} = useGetPostsQuery();
-    
+    const [createPost] = useCreatePostMutation();
+
     const [isNewPost, setIsNewPost] = useState(false);
 
-    const handleAddPost = () => {
+    const openFormNewPost = () => {
         setIsNewPost(true);
-    };
+    }
+    //TODO: PASAR A UN COMPONENTE APARTE ESTO JUNTO CON EL FORMULARIO
+    const handleAddPost = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const category = formData.get("category");
+        const content = formData.get("content");
+
+        const response =  await createPost({
+                userId: user?._id, 
+                userInfo: {
+                    name: user?.name, 
+                    username: user?.username, 
+                    profileImage: user?.image || ""
+                },
+                category,
+                content
+            });
+
+        if (response.error) {
+            toast.error("Error al crear el post. Por favor, intantalo de nuevo.");
+            return;
+        }
+
+        toast.success("Post creado con éxito!");
+        setIsNewPost(false);
+    }
+
 
     return (
         <section className="h-screen bg-[#005840] py-6">
@@ -28,10 +70,10 @@ export function Community() {
                 />
                 <Search className="flex-1" />
             </div>
-
+        {/* CREAR UN NUEVO POST */}
             <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20">
                 <button
-                    onClick={handleAddPost}
+                    onClick={openFormNewPost}
                     className="flex items-center gap-[10px] font-semibold mb-8 text-[#005840]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -39,27 +81,40 @@ export function Community() {
                     Compartir un nuevo logro
                 </button>
                 {isNewPost && (
-                    <div className="py-8">
+                    <form 
+                        onSubmit={handleAddPost}
+                        className="py-8"
+                    >
                         <div className="flex items-center gap-4 mb-4">
-                            {/* form */}
                             <Avatar
                                 src="https://i.pravatar.cc/300"
                                 size="sm"
                                 isBordered={true} />
-                            <Select />
+                            <Select
+                                selectId="category"
+                                selectName="category"
+                                label="Categoría"
+                                options={categories}
+                                placeholder="Seleccioná una opción"
+                                isRequired
+                             />
                         </div>
                         <textarea
+                            name="content"
+                            id="content"
+                            rows="4"
                             className="w-full h-24 p-4 text-sm border border-gray-300 rounded-[30px] focus:outline-none focus:ring-2 bg-[#F1EDEC] text-[#383838] shadow-sm"
                             placeholder="Escribí algo sobre tu logro..."
                         />
                         <div className="flex justify-end mt-4">
                             <BaseButton
-                                onClick={() => setIsNewPost(false)}
-                                color="green">
+                                type="submit"
+                                color="green"
+                            >
                                 Publicar
                             </BaseButton>
                         </div>
-                    </div>
+                    </form>
                 )}
 
                 <div className="flex flex-col gap-6">

@@ -16,10 +16,23 @@ export const AuthProvider = ({ children }) => {
   const [loginUser] = useLoginUserMutation();
   const [createUser] = useCreateUserMutation();
 
-  const [user, setUser] = useState();
+  const [user, _setUser] = useState();
   const [userId, setUserId] = useState();
   const [accessToken, setAccessToken] = useState();
   const [loading, setLoading] = useState(true);
+
+  /**
+   * Establece el usuario en el estado de forma segura,
+   * eliminando la propiedad 'password' antes de guardarlo.
+   */
+  const setUser = (userData) => {
+    if (userData) {
+      const { password, ...safeUser } = userData;
+      _setUser(safeUser);
+    } else {
+      _setUser(null);
+    }
+  };
 
   const handleRegister = async (data) => {
     const { name, username, email, password } = data;

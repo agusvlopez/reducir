@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// En tu postsSlice
 export const postsSlice = createApi({
   reducerPath: 'postsApi',
   baseQuery: fetchBaseQuery({
@@ -15,21 +14,24 @@ export const postsSlice = createApi({
         body: newPost,
       }),
       invalidatesTags: ["Posts"]
-    }),
-    
+    }),  
     getPosts: builder.query({
       query: () => "/posts",
       providesTags: ['Posts'], // Solo Posts, no PostLikes
-    }),
-    
+    }),   
     getPost: builder.query({
       query: (postId) => `/posts/${postId}`,
       providesTags: (result, error, postId) => [
         { type: 'Posts', id: postId },
         { type: 'PostLikes', id: postId } // Tag específico por post
       ]
+    }), 
+    getPostsByUser: builder.query({
+      query: (userId) => `/posts/user/${userId}`,
+      providesTags: (result, error, userId) => [
+        { type: 'Posts', id: userId },
+      ]
     }),
-    
     existsLikePost: builder.query({
       query: ({ postId, userId }) => 
         `/post-likes/exists/post/${postId}/user/${userId}`,
@@ -37,7 +39,6 @@ export const postsSlice = createApi({
         { type: 'PostLikes', id: `${postId}-${userId}` } // Tag específico
       ]
     }),
-    
     toggleLikePost: builder.mutation({
       query: ({ postId, userId }) => ({
         url: `/post-likes/toggle/post/${postId}/user/${userId}`,
@@ -52,4 +53,11 @@ export const postsSlice = createApi({
   }),
 });
 
-export const { useGetPostsQuery, useGetPostQuery, useCreatePostMutation, useToggleLikePostMutation, useExistsLikePostQuery } = postsSlice;
+export const { 
+  useCreatePostMutation,
+  useGetPostsQuery,
+  useGetPostQuery,
+  useGetPostsByUserQuery,
+  useToggleLikePostMutation,
+  useExistsLikePostQuery 
+} = postsSlice;

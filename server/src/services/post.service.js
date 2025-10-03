@@ -27,6 +27,18 @@ export class PostService {
       throw error;
     }
   }
+  //CHECKED?:
+  static async findByUserId({ userId }) {
+    try {
+      const posts = await PostRepository.findByUserId({ userId });
+      return posts;
+    } catch (error) {
+      if (error instanceof NotFoundError || error instanceof ValidationError) {
+        throw error;
+      }
+      throw error;
+    }
+  }
   //CHECKED?: ✅
   static async findAll() {
     try {

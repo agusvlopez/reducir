@@ -43,6 +43,25 @@ export class PostRepository {
       return null;
     }
   }
+  // CHECKED?:
+  static async findByUserId({ userId }) {
+    try {
+      const posts = await Post.find({ userId }).lean();
+      if(posts.length === 0) {       
+        throw new NotFoundError('No se encontraron posts para este usuario');
+      }
+      
+      return posts;
+    } catch (error) {
+      if(error.name === 'NotFoundError') {
+        throw error;
+      }
+      if(error.name === 'CastError') {
+        throw new ValidationError('ID inválido');
+      }
+      return null;
+    }
+  }
   // CHECKED?:✅
   static async findAll() {
     try {

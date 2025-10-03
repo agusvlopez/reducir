@@ -35,6 +35,22 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
+  //CHECKED?: 
+  static async findByUserId(req, res) {
+    const { userId } = req.params;
+    try {
+      const posts = await PostService.findByUserId({ userId });
+      res.status(200).json(posts);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ error: error.message });
+      }
+      if (error instanceof ValidationError) {
+        return res.status(409).json({ error: error.message });
+      }
+      return res.status(500).json({ message: 'Error inesperado' });
+    }
+  }
   //CHECKED?: ✅
   static async findAll(req, res) {
     try {
