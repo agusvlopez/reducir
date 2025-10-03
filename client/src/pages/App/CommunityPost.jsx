@@ -65,7 +65,7 @@ export function CommunityPost() {
             />
             <div className="flex flex-col gap-6">
                 <Comment 
-                likeComment={handleLikeComment}
+                likeComment={() => {}}
                 answers={comments} />
             </div>
         </section>
