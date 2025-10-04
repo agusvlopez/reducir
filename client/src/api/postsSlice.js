@@ -85,6 +85,45 @@ export const postsSlice = createApi({
         { type: 'PostComments', id: postId }
       ]
     }),
+
+    // COMMENT LIKES ← NUEVO
+    toggleCommentLike: builder.mutation({
+      query: ({ commentId, userId }) => ({
+        url: `/post-comment-likes/${commentId}/like?userId=${userId}`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, commentId) => [
+        { type: 'CommentLikes', id: commentId },
+        { type: 'PostComments', id: 'LIST' } // Invalida lista de comentarios
+      ],
+      // Optimistic update
+      async onQueryStarted(commentId, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          postsSlice.util.updateQueryData(
+            'getCommentLikeStatus',
+            commentId,
+            (draft) => {
+              draft.hasLiked = !draft.hasLiked;
+              draft.likesCount += draft.hasLiked ? 1 : -1;
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
+
+    getCommentLikeStatus: builder.query({
+      query: ({ commentId, userId }) => 
+        `/post-comment-likes/${commentId}/like/status?userId=${userId}`,
+      providesTags: (result, error, { commentId }) => [
+        { type: 'CommentLikes', id: commentId }
+      ],
+    }),
+
   }),
 });
 
@@ -97,7 +136,9 @@ export const {
   useToggleLikePostMutation,
   useGetPostCommentsQuery,
   useCreatePostCommentMutation,
-  useGetCommentsByPostQuery
+  useGetCommentsByPostQuery,
+  useToggleCommentLikeMutation,
+  useGetCommentLikeStatusQuery,  
 } = postsSlice;
 
 export default postsSlice;

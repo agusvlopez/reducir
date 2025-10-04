@@ -4,8 +4,11 @@ import { PostCommentLikeController } from "../controllers/postCommentLike.contro
 
 const postCommentLikesRouter = Router();
 
-postCommentLikesRouter.post('/', PostCommentLikeController.toggleLike);
-postCommentLikesRouter.get('/exists/comment/:commentId/user/:userId', PostCommentLikeController.existsLike);
+// Dar/quitar like
+postCommentLikesRouter.post('/:commentId/like', PostCommentLikeController.toggleLike);
+
+// Verificar si el user dio like y cantidad total de likes del post
+postCommentLikesRouter.get('/:commentId/like/status', PostCommentLikeController.getLikeStatus);
 
 
 export default postCommentLikesRouter;

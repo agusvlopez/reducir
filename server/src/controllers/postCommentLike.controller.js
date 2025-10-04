@@ -2,22 +2,32 @@ import { PostCommentLikeService } from "../services/postCommentLike.service.js";
 
 export class PostCommentLikeController {
   static async toggleLike(req, res) {
-    const { commentId, userId } = req.body;
-    try {
-      const postCommentLike = await PostCommentLikeService.toggleLike({ commentId, userId });
-      res.status(201).json(postCommentLike);
+    try {      
+      const { commentId } = req.params;
+      const { userId } = req.query;
+
+      const result = await PostCommentLikeService.toggleLike(commentId, userId);
+      
+      res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
-  static async existsLike(req, res) {
-    const { commentId, userId } = req.params;
+  static async getLikeStatus(req, res) {
     try {
-      const exists = await PostCommentLikeService.existsLike({ commentId, userId });
-      res.status(200).json(exists);
+      const { commentId } = req.params;
+      const { userId } = req.query;
+
+      const hasLiked = await PostCommentLikeService.hasUserLiked(commentId, userId);
+      const likesCount = await PostCommentLikeService.getLikesCount(commentId);
+      
+      res.status(200).json({
+        hasLiked,
+        likesCount
+      });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 }

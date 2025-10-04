@@ -51,7 +51,6 @@ export class PostCommentRepository {
   }
 
   /**
-  * 
   * Obtiene todos los comentarios de un post específico
   * Ordenados por fecha (más recientes primero o más antiguos primero)
   */
@@ -71,6 +70,22 @@ export class PostCommentRepository {
     return await PostComment.findByIdAndUpdate(
       commentId,
       { $inc: { repliesCount: 1 } }
+    );
+  }
+
+  static async incrementLikesCount(commentId) {
+    return await PostComment.findByIdAndUpdate(
+      commentId,
+      { $inc: { likesCount: 1 } },
+      { new: true }
+    );
+  }
+
+  static async decrementLikesCount(commentId) {
+    return await PostComment.findByIdAndUpdate(
+      commentId,
+      { $inc: { likesCount: -1 } },
+      { new: true }
     );
   }
 }
