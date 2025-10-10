@@ -25,7 +25,6 @@ const ITEMS_PER_LOAD = 8;
 
 export function Actions() {
     const {data: actions, isError, isLoading} = useGetActionsQuery();
-    console.log(actions);
     
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [category, setCategory] = useState("");

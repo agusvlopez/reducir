@@ -17,6 +17,7 @@ export function CommunityPost() {
     const {data: post, isError, isLoading} = useGetPostQuery(postId);
     
     const {data: comments} = useGetCommentsByPostQuery(postId);
+
     const handleComment = async (content, form) => {
         try {
             await createComment({ 
@@ -35,6 +36,14 @@ export function CommunityPost() {
     //TODO: AGREGAR LOGICA DE LIKE/DISLIKE(SÍ, ESTA EN BACKEND)
 
 
+    // Primero, en tu componente donde tienes los comments
+    const rootComments = comments?.filter(c => !c.isReply);
+
+    // Función helper para obtener las respuestas de un comentario
+    const getRepliesForComment = (commentId) => {
+    return comments?.filter(c => c.isReply && c.parentCommentId === commentId);
+    };
+
     if (isLoading) return <p>Cargando...</p>;
     if (isError) return <p>Error al cargar el post.</p>;
 
@@ -45,6 +54,7 @@ export function CommunityPost() {
                 label="Publicación"              
             />
             <div>
+                {/* POST */}
                 <Post 
                     id={post?._id}
                     name={post?.userInfo?.name}
@@ -58,16 +68,37 @@ export function CommunityPost() {
                     commentsCount={post?.commentsCount}
                     />
             </div>
+            {/* FORMULARIO DE RESPUESTA AL POST */}
             <Answer 
                 onSubmit={handleComment}
                 isLoading={isLoading}
                 srcAvatar={user?.avatar}
             />
             <div className="flex flex-col gap-6">
-                <Comment 
-                likeComment={() => {}}
-                answers={comments} />
-            </div>
+                {/* COMENTARIOS RAÍZ con sus respuestas */}
+                {rootComments?.map(comment => (
+                    <div key={comment._id}>
+                    {/* Comentario principal */}
+                    <Comment
+                        comment={comment}
+                    />
+                    
+                    {/* Respuestas a este comentario */}
+                    {getRepliesForComment(comment._id).length > 0 && (
+                        <div className="ml-12 mt-4 flex flex-col gap-4 border-l-2 border-gray-200 pl-4">
+                        {getRepliesForComment(comment._id)?.map(reply => (
+                            <Comment
+                                key={reply._id}
+                                comment={reply}
+                                isReply={true}
+                                allComments={comments}
+                            />
+                        ))}
+                        </div>
+                    )}
+                    </div>
+                ))}
+                </div>
         </section>
     )
 }

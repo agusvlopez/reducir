@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Avatar } from "../../components/Base/Avatar";
-import { Heading } from "../../components/Base/Heading";
 import { Post } from "../../components/Community/Post";
 import { Search } from "../../components/Inputs/Search";
 import { Select } from "../../components/Inputs/Select";
@@ -56,13 +55,12 @@ export function Community() {
         toast.success("Post creado con éxito!");
         setIsNewPost(false);
     }
-
-
+    
     return (
         <section className="h-screen bg-[#005840] py-6">
             <div className="flex items-center gap-6 mb-8 px-6">
                 <Avatar
-                    src="https://www.gravatar.com/avatar/"
+                    src="https://www.gravatar.com/avatar"
                     alt="User Avatar"
                     size="sm"
                     isBordered={true}
@@ -74,7 +72,7 @@ export function Community() {
             <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20">
                 <button
                     onClick={openFormNewPost}
-                    className="flex items-center gap-[10px] font-semibold mb-8 text-[#005840]">
+                    className="flex items-center gap-[10px] font-semibold mb-8 text-dark-green cursor-pointer hover:text-dark-green/90 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>

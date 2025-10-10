@@ -37,7 +37,7 @@ const PostCommentSchema = new mongoose.Schema({
     type: Number,
     default: 0,
     min: 0,
-    max: 2 // Límite máximo de profundidad, para que no se haga una cadena muy larga
+    // max: 2 // Límite máximo de profundidad, para que no se haga una cadena muy larga
   },
   likesCount: {
     type: Number,

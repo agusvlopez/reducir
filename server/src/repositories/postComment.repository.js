@@ -1,3 +1,4 @@
+import { ValidationError } from "../errors/ValidationError.js";
 import Post from "../models/Post.js";
 import PostComment from "../models/PostComment.js";
 
@@ -56,6 +57,7 @@ export class PostCommentRepository {
   */
   static async findByPostId({ postId }) {
     try {
+      // diferenciar si tiene parentCommentId o no
       const postComments = await PostComment.find({ postId }).sort({ createdAt: -1 });
       return postComments;
     } catch(error) {

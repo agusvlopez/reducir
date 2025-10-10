@@ -24,7 +24,7 @@ export const useFavoritePosts = () => {
       await toggleFavoritePost(postId);
 
     } catch (error) {
-      console.log(error);
+      console.error("Error toggling favorite post:", error);
     } finally {
       setIsProcessing(false);
     }

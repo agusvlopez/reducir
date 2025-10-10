@@ -6,8 +6,7 @@ export class PostCommentLikeService {
   static async toggleLike(commentId, userId) {
     // Verificar que el comentario existe
     const comment = await PostCommentRepository.findById({ id: commentId });
-    console.log("comment",comment);
-    
+
     if (!comment) {
       throw new Error('Comentario no encontrado');
     }

@@ -2,6 +2,7 @@ import { Avatar } from "../Base/Avatar";
 import BaseButton from "../Base/BaseButton";
 import { BaseTextarea } from "../Inputs/BaseTextarea";
 
+//TODO: CAMBIAR NOMBRE A REPLY O RESPONSE
 export function Answer ({
     labelButton = "Responder",
     placeholder = "Comentá tu respuesta",

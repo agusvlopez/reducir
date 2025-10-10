@@ -15,14 +15,16 @@ export const usePostComments = () => {
   // Implement the hook logic here
   const createComment = async ({
     postId,
-    content
+    content,
+    parentCommentId = null
   }) => {
     // Logic to create a comment
     await createPostComment({
       postId,
       userId,
       userInfo,
-      content
+      content,
+      parentCommentId
     }).unwrap();
     // Optionally return something or handle post-creation logic
     return;

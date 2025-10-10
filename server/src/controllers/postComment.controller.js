@@ -18,7 +18,6 @@ export class PostCommentController {
       if (error instanceof ValidationError) {
         return res.status(400).json({ error: error.message });
       }
-      console.log(error);
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
@@ -30,7 +29,6 @@ export class PostCommentController {
       await PostCommentService.delete({ id });
       res.sendStatus(204);
     } catch (error) {
-      console.log(error);
       if (error instanceof ValidationError) {
         return res.status(400).json({ error: error.message });
       }

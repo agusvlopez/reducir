@@ -8,7 +8,6 @@ export class PostCommentService {
     // Lógica para calcular depth
     if (parentCommentId) {
       const parentComment = await PostCommentRepository.findById({ id: parentCommentId });
-      console.log(parentComment);
       
       if (!parentComment) {
         throw new Error('Comentario padre no encontrado');
@@ -17,9 +16,9 @@ export class PostCommentService {
       depth = parentComment.depth + 1;
       
       // Validación de profundidad máxima
-      if (depth > 2) {
-        throw new Error('Máximo 2 niveles de respuestas permitidos');
-      }
+      // if (depth > 2) {
+      //   throw new Error('Máximo 2 niveles de respuestas permitidos');
+      // }
       //todo: chequear si es necesario:
 
       // Incrementar contador de respuestas del padre
@@ -35,8 +34,10 @@ export class PostCommentService {
         depth  
       });
       
-      // Incrementar contador de comentarios del post
-      await PostRepository.incrementCommentsCount(postId);
+      // Incrementar contador de comentarios del post si es un comentario raíz
+      if (!parentCommentId) {
+        await PostRepository.incrementCommentsCount(postId);
+      }
 
       return postComment;
     } catch (error) {
@@ -65,7 +66,14 @@ export class PostCommentService {
   static async findByPostId({ postId }) {
     try {
       const postComments = await PostCommentRepository.findByPostId({ postId });
-      return postComments;
+      
+      // Agregar flag isReply a cada comentario
+      const commentsWithType = postComments.map(comment => ({
+        ...comment.toObject ? comment.toObject() : comment,
+        isReply: !!comment.parentCommentId
+      }));
+      
+      return commentsWithType;
     } catch (error) {
       throw error;
     }

@@ -61,7 +61,6 @@ export class UserRepository {
   }
 
   static async toggleFavoriteAction({ userId, actionId }) {
-    console.log('Toggling favorite action for userId:', userId, 'actionId:', actionId);
     try {
       // First check if the action is already in favorites
       const user = await User.findById(userId);
@@ -71,7 +70,6 @@ export class UserRepository {
       }
       
       const isInFavorites = user?.actions_saved?.includes(actionId);
-      console.log(isInFavorites);
       
       let updatedUser;
       if (isInFavorites) {

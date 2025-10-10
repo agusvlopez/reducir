@@ -132,7 +132,6 @@ export class PostRepository {
       
       return updatedPost;
     } catch (error) {
-      console.log(error);
       if(error.name === 'NotFoundError') {
         throw error;
       }

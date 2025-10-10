@@ -1,23 +1,12 @@
-import { useState } from "react";
-
 export function HeartIcon({
     className = "",
     isFilled = false,
     handleClick,
     isLoading = false
 }) {
-    // const [filled, setFilled] = useState(isFilled);
-
-    // const handleClick = () => setFilled((prev) => !prev);
 
     return (
         <>
-            {isLoading && (
-                <div className="flex items-center gap-3">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#005840]"></div>
-                    <span className="text-[#005840] font-medium"></span>
-                </div>
-            )}
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill={isFilled ? "currentColor" : "none"}
