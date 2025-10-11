@@ -66,7 +66,7 @@ export function ComposerPost() {
             <Answer 
                 onSubmit={handleComment}
                 isLoading={isLoading}
-                srcAvatar={user?.avatar}
+                srcAvatar={user?.image}
             />
         </section>
     )

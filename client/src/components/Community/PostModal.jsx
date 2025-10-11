@@ -1,6 +1,6 @@
 import { Answer } from "./Answer";
 
-export function PostModal({ isOpen, onClose, handleComment }) {
+export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
   if (!isOpen) return null;
 
   return (
@@ -34,6 +34,7 @@ export function PostModal({ isOpen, onClose, handleComment }) {
             <Answer 
               onSubmit={handleComment}
               isLoading={false}
+              srcAvatar={srcAvatar}
             />
           </div>
 

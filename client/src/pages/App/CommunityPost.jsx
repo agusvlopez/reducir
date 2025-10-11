@@ -46,6 +46,7 @@ export function CommunityPost() {
 
     if (isLoading) return <p>Cargando...</p>;
     if (isError) return <p>Error al cargar el post.</p>;
+console.log("post", post);
 
     return (
         <section className="mx-6 my-6 flex flex-col gap-6">
@@ -72,7 +73,7 @@ export function CommunityPost() {
             <Answer 
                 onSubmit={handleComment}
                 isLoading={isLoading}
-                srcAvatar={user?.avatar}
+                srcAvatar={user?.image}
             />
             <div className="flex flex-col gap-6">
                 {/* COMENTARIOS RAÍZ con sus respuestas */}

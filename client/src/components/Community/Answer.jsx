@@ -7,7 +7,7 @@ export function Answer ({
     labelButton = "Responder",
     placeholder = "Comentá tu respuesta",
     name = "comment",
-    srcAvatar = "https://i.pravatar.cc/300",
+    srcAvatar,
     onSubmit, // Nueva prop para manejar el submit desde afuera
     isLoading = false, // Para mostrar estado de carga
 }) {

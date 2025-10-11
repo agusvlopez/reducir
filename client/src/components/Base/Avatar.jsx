@@ -1,12 +1,16 @@
-import { Avatar as HeroAvatar } from "@heroui/react";
-
-export function Avatar({ src, name, ...props }) {
-  const finalSrc = src === "" ? undefined : src;
+export function Avatar({ src, alt = "Avatar", size = "md" }) {
+  const sizes = {
+    sm: "w-8 h-8",
+    md: "w-10 h-10",
+    lg: "w-12 h-12",
+    xl: "w-16 h-16"
+  };
 
   return (
-    <HeroAvatar 
-      src={finalSrc} 
-      name={name}
-      {...props} />
+    <img
+      src={src || "https://i.pravatar.cc/150"}
+      alt={alt}
+      className={`${sizes[size]} rounded-full object-cover`}
+    />
   );
 }

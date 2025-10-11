@@ -4,6 +4,7 @@ import { usePostComments } from "../../hooks/usePostComments.js";
 import { Avatar } from "../Base/Avatar";
 import { HeartIcon } from "../Icons/Heart";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth.js";
 import { PostModal } from "./PostModal.jsx";
 import { useParams } from "react-router-dom";
 
@@ -40,6 +41,8 @@ export function Comment({ comment, allComments, level = 0 }) {
 // Componente separado para cada comentario individual
 function CommentItem({ answer }) {     
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth();
+  console.log("user", user);
   
   const handleAddComment = async () => {
     setIsModalOpen(true);
@@ -90,6 +93,7 @@ function CommentItem({ answer }) {
       <PostModal 
         handleComment={handleComment}
         isOpen={isModalOpen} 
+        srcAvatar={user?.image}
         onClose={() => setIsModalOpen(false)}
       />
     )}
