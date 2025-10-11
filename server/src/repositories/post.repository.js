@@ -1,3 +1,4 @@
+import cloudinary from "../config/cloudinary.js";
 import { ConflictError } from "../errors/ConflictError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import { ValidationError } from "../errors/ValidationError.js";
@@ -5,18 +6,33 @@ import Post from "../models/Post.js";
 
 export class PostRepository {
   // CHECKED?: ✅
-  static async create({ userId, userInfo, category, content, image }) {
+  static async create({ userId, userInfo, category, content, image }) {   
     try {
+      let imageUrl = null;
+
+      // Si hay imagen, súbela a Cloudinary
+      if (image) {
+        const uploadResult = await cloudinary.uploader.upload(image, {
+          folder: 'posts', // Carpeta en Cloudinary
+          resource_type: 'auto',
+          transformation: [
+            { width: 1200, height: 1200, crop: 'limit' }, // Límite de tamaño
+            { quality: 'auto' } // Optimización automática
+          ]
+        });
+        imageUrl = uploadResult.secure_url;
+      }
+
       const post = await Post.create({
         userId,
         userInfo,
         category,
         content,
-        image,
+        image: imageUrl // Corregido: usa la URL de Cloudinary en lugar del base64
       });
 
       return post;
-    } catch (error) {
+    } catch (error) {      
       if (error.name === 'ValidationError') {
         throw new ValidationError(`${Object.values(error.errors).map(e => e.message)}`);
       }

@@ -6,9 +6,27 @@ import { PostService } from "../services/post.service.js";
 export class PostController {
   //CHECKED?: ✅
   static async create(req, res) {
-    const { userId, userInfo, category, content, image } = req.body;
+    const { userId, category, content } = req.body;
+    const userInfo = JSON.parse(req.body.userInfo); // Parsea la cadena a un objeto
+console.log("req file", req.file);
+console.log("req image", req.image);
+
+
+    // Convertir buffer a base64 para Cloudinary
+
+    let imageBase64 = null;
+    if (req.file) {
+      imageBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    }
+
     try {
-      const post = await PostService.create({ userId, userInfo, category, content, image });
+      const post = await PostService.create({ 
+        userId, 
+        userInfo, // Ahora es un objeto
+        category, 
+        content, 
+        image: imageBase64 
+      });
       res.status(201).json(post);
     } catch (error) {      
       if (error instanceof ValidationError) {

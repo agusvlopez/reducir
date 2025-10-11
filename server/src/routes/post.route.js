@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { PostController } from "../controllers/post.controller.js";
+import { uploadPostImage } from "../middlewares/upload.middleware.js";
 
 const postsRouter = Router();
 
-postsRouter.post('/', PostController.create);
+postsRouter.post('/', uploadPostImage, PostController.create);
 postsRouter.get('/:postId', PostController.findById);
 postsRouter.get('/user/:userId', PostController.findByUserId);
 postsRouter.get('/', PostController.findAll);

@@ -34,33 +34,53 @@ export function Community() {
     }
 
     //TODO: PASAR A UN COMPONENTE APARTE ESTO JUNTO CON EL FORMULARIO
-    const handleAddPost = async (e) => {
+    const handleAddPost = async (e, imageFile) => {
         e.preventDefault();
+console.log("imageFile", imageFile);
 
         const formData = new FormData(e.target);
         const category = formData.get("category");
         const content = formData.get("content");
 
-        const response =  await createPost({
-                userId: user?._id, 
-                userInfo: {
-                    name: user?.name, 
-                    username: user?.username, 
-                    profileImage: user?.image
-                },
-                category,
-                content
-            });
-
-        if (response.error) {
-            toast.error("Error al crear el post. Por favor, intantalo de nuevo.");
-            return;
+        // Crear FormData para enviar la imagen
+        const postData = new FormData();
+        postData.append('userId', user?._id);
+        postData.append('userInfo', JSON.stringify({
+            name: user?.name, 
+            username: user?.username, 
+            profileImage: user?.image
+        }));
+        postData.append('category', category);
+        postData.append('content', content);
+        
+        // Agregar imagen si existe
+        if (imageFile) {
+            postData.append('image', imageFile);
         }
+// Ver todo el contenido de una vez
+console.log("postData:", Object.fromEntries(postData));
 
-        toast.success("Post creado con éxito!");
-        setIsModalOpen(false);
+// O más detallado
+console.log("userId:", postData.get('userId'));
+console.log("category:", postData.get('category'));
+console.log("content:", postData.get('content'));
+console.log("image:", postData.get('image')); // Verás el File object
+        try {            
+            const response = await createPost(postData);
+            console.log("response", response);
+            
+            if (response.error) {
+                toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");
+                return;
+            }
+
+            toast.success("Post creado con éxito!");
+            setIsModalOpen(false);
+        } catch (error) {
+            toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");
+        }
     }
-    
+
     const handleSearch = (value) => {
         setSearchQuery(value);
     }

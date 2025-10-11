@@ -24,7 +24,7 @@ export function Comment({ comment, allComments, level = 0 }) {
       />
       
       {replies?.length > 0 && (
-        <div className={`mt-4 flex flex-col gap-4 ${shouldIndent ? 'ml-6 lg:ml-12 border-l-2 border-gray-200 pl-4' : ''}`}>
+        <div className={`mt-4 flex flex-col gap-4 ${shouldIndent ? 'ml-6 lg:ml-12 border-l border-gray-200 pl-4' : ''}`}>
           {replies?.map(reply => (
             <Comment
               key={reply._id}
@@ -46,17 +46,6 @@ function CommentItem({ answer }) {
   
   const handleAddComment = async () => {
     setIsModalOpen(true);
-    //navigate to composer post with postId
-
-    //TODO: Abrir modal para agregar comentario(en componente aparte, usear COmposerPost.jsx)
-
-    // await createComment({
-    //   postId: answer._id,
-    //   content: answer.content, 
-    // });
-    // Lógica adicional después de crear el comentario, si es necesario
-    // toast.success("Comment created successfully");
-    // return;
   }
 
   const { data: likeStatus, isLoading: isLikeStatusLoading } = useGetCommentLikeStatusQuery({ commentId: answer._id, userId: answer.userId });
@@ -69,6 +58,7 @@ function CommentItem({ answer }) {
 
   const { postId } = useParams();
   const { createComment } = usePostComments();
+  
   //todo: pasar la logica de comentar a un custom hook, tambien usado en postFooter.jsx
   const handleComment = async (content, form) => {
     try {
