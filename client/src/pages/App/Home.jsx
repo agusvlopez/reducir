@@ -1,7 +1,5 @@
 import { Avatar } from "../../components/Base/Avatar";
 import { DonutProgress } from "../../components/DonutProgress";
-import TimeIcon from "../../assets/icons/time.png";
-import ArrowRightIcon from "../../assets/icons/arrow-next.png";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
 import { useAuth } from "../../hooks/useAuth";
@@ -52,18 +50,35 @@ export function Home() {
 
                     <p>Detalles</p>
                     <div className="flex items-center gap-1 text-[#005840] font-semibold">
-                        <img src={TimeIcon} alt="Ícono reloj" className="w-3 h-[14px]" />
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="6" cy="6" r="6" fill="#005840"/>
+                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+
                         <span>En 1 mes</span>
                     </div>
                     <div className="flex items-center gap-1 text-[#005840] font-semibold">
-                        <img src={TimeIcon} alt="Ícono reloj" className="w-3 h-[14px]" />
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="6" cy="6" r="6" fill="#005840"/>
+                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <span>Días restantes: 10</span>
                     </div>
 
                     <button
                         className="bg-[#005840] text-white py-2 rounded-[30px] flex items-center justify-center mt-2">
                         <span>Continuar progreso</span>
-                        <img src={ArrowRightIcon} alt="Ícono flecha derecha" className="inline-block ml-2 w-[15px] h-[15px]" />
+                        <svg className="inline-block ml-2 w-[15px] h-[15px]" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_2878_85)">
+                        <circle cx="7.5" cy="7.5" r="7.5" fill="#F1EDEC"/>
+                        <path d="M6 5L9 7.5L6 10" stroke="#005840" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_2878_85">
+                        <rect width="15" height="15" rx="7.5" fill="white"/>
+                        </clipPath>
+                        </defs>
+                        </svg>
                     </button>
                 </div>
                 <div>
@@ -83,7 +98,13 @@ export function Home() {
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
                     <p className="text-xs">Opciones guardadas para hacer cuando te sientas listo/a.</p>
                 </div>
-                <Link to={"/app/actions"} className="font-semibold text-[#005840]">+ Agregar una acción</Link>
+                <Link to={"/app/actions"} className="font-semibold text-[#005840] flex items-center gap-2 hover:underline w-max">
+                <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="7.5" cy="7.5" r="7.5" fill="#005840"/>
+                <path d="M7.5 4.875V10.125M4.875 7.5H10.125" stroke="#F1EDEC" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Agregar una acción
+                </Link>
 
                 <BaseCarousel>
                     {/* TODO: USE SWIPER */}

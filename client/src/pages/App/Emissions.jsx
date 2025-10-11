@@ -4,7 +4,6 @@ import { Pill } from "../../components/Base/Pill";
 import { AppHeaderSection } from "../../components/Sections/AppHeader";
 import LedImage from "../../assets/led.png";
 import PlantImage from "../../assets/plant.png";
-import InfoImage from "../../assets/icons/info.png";
 import { BaseModal } from "../../components/Base/BaseModal";
 import { useDisclosure } from "@heroui/react";
 
@@ -27,10 +26,13 @@ export function Emissions() {
                         <button
                             onClick={onOpen}
                         >
-                            <img src={InfoImage} alt="Información de las acciones" className="h-fit" />
+                            <svg width="24" height="30" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="15" r="12" fill="#ED6C1D"/>
+                            <path d="M13.272 22.536C13.272 22.952 13.136 23.304 12.864 23.592C12.592 23.864 12.248 24 11.832 24C11.416 24 11.072 23.864 10.8 23.592C10.528 23.304 10.392 22.952 10.392 22.536V12.624C10.392 12.208 10.528 11.864 10.8 11.592C11.072 11.304 11.416 11.16 11.832 11.16C12.248 11.16 12.592 11.304 12.864 11.592C13.136 11.864 13.272 12.208 13.272 12.624V22.536ZM11.808 9.6C11.264 9.6 10.88 9.512 10.656 9.336C10.432 9.16 10.32 8.848 10.32 8.4V7.944C10.32 7.48 10.44 7.168 10.68 7.008C10.936 6.832 11.32 6.744 11.832 6.744C12.392 6.744 12.784 6.832 13.008 7.008C13.232 7.184 13.344 7.496 13.344 7.944V8.4C13.344 8.864 13.224 9.184 12.984 9.36C12.744 9.52 12.352 9.6 11.808 9.6Z" fill="white"/>
+                            </svg>
                         </button>
                     </span>
-                    <p className="">Toneladas anuales de contaminación (CO2e)</p>
+                    <p>Toneladas anuales de contaminación (CO2e)</p>
                     <Pill
                         text="Tu objetivo: Reducir un 10% las emisiones anuales (CO2)" className="font-medium"
                         color="orange"

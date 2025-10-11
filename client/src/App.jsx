@@ -6,7 +6,6 @@ import { ProtectedRoute } from "./components/Routes/ProtectedRoute.jsx";
 import { Loader } from "./components/Base/Loader.jsx";
 
 
-// Lazy loading de componentes (named exports)
 const Home = lazy(() => import("./pages/App/Home").then(m => ({ default: m.Home })));
 const Actions = lazy(() => import("./pages/App/Actions").then(m => ({ default: m.Actions })));
 const Action = lazy(() => import("./pages/App/Action").then(m => ({ default: m.Action })));
