@@ -89,7 +89,7 @@ console.log("post", post);
                     
                     {/* Respuestas a este comentario */}
                     {getRepliesForComment(comment._id).length > 0 && (
-                        <div className="ml-6 lg:ml-12 mt-4 flex flex-col gap-4 border-l-2 border-gray-200 pl-4">
+                        <div className="mt-4 flex flex-col gap-4 border-l border-gray-200 pl-4 ml-4">
                         {getRepliesForComment(comment._id)?.map(reply => (
                             <Comment
                                 key={reply._id}

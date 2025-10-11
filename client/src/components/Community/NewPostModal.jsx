@@ -27,7 +27,7 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
         >
           {/* Header */}
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Nueva Publicación</h2>
+            <h2 className="text-lg font-semibold text-gray-dark">Nueva Publicación</h2>
             <button
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded transition-colors"

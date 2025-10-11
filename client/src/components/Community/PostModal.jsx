@@ -14,7 +14,7 @@ export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div 
-          className="bg-white rounded-lg shadow-xl max-w-md w-full animate-[slideUp_0.2s_ease-out]"
+          className="bg-white rounded-[30px] shadow-xl max-w-md w-full animate-[slideUp_0.2s_ease-out]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -22,9 +22,10 @@ export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
             <h2 className="text-lg font-semibold text-gray-900">Escribir comentario</h2>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              className="p-1 hover:bg-gray-100 rounded-[30px] transition-colors"
             >
-              <span className="text-gray-500">
+              {/* CLOSE ICON */}
+              <span className="text-gray-500 cursor-pointer hover:text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>

@@ -5,8 +5,10 @@
 @theme {
     --color-off-white: #F5F5F5;
     --color-gray: #6D6D6D;
+    --color-gray-soft: #AEAEAE;
     --color-gray-light: #F1EDEC;
     --color-gray-lighter: #F5F5F5;
+    --color-gray-dark: #383838;
     --color-dark-green: #005840;
 }
 

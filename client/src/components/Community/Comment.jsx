@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { PostModal } from "./PostModal.jsx";
 import { useParams } from "react-router-dom";
+import { formatDate } from "../../helpers/formatDate.js";
 
 
 export function Comment({ comment, allComments, level = 0 }) {
@@ -17,7 +18,7 @@ export function Comment({ comment, allComments, level = 0 }) {
   const shouldIndent = level < maxIndentLevel;
   
   return (
-    <div className={`${level === 0 ? 'border-b border-[#6D6D6D] pb-6' : ''}`}>
+    <div className={`${level === 0 ? 'border-b border-gray-soft pb-6' : ''}`}>
       <CommentItem 
         answer={comment}
       />
@@ -68,7 +69,7 @@ function CommentItem({ answer }) {
 
   const { postId } = useParams();
   const { createComment } = usePostComments();
-
+  //todo: pasar la logica de comentar a un custom hook, tambien usado en postFooter.jsx
   const handleComment = async (content, form) => {
     try {
         await createComment({ 
@@ -85,6 +86,7 @@ function CommentItem({ answer }) {
         toast.error("Error al comentar");
     }
   }
+  console.log("asnwer", answer);
   
   return (
     <>
@@ -106,24 +108,34 @@ function CommentItem({ answer }) {
           </div>
           <p>{answer?.content}</p>
         </div>
-        <div className="flex items-start gap-4 justify-end text-[#6D6D6D]">
-          <button 
-            className="flex flex-col items-center gap-1 hover:text-dark-green transition-colors cursor-pointer"
-            onClick={handleAddComment}
-          >
-            {/* Icono de comentario */}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-            </svg>
-            <span>{answer?.repliesCount}</span>
-          </button>
-          <button onClick={handleLike} disabled={isLoading}>
-            <HeartIcon 
-              isFilled={likeStatus?.hasLiked} 
-              isLoading={isLikeStatusLoading || isLoading} 
-            />
-            <span>{isLikeStatusLoading ? '...' : (likeStatus?.likesCount || 0)}</span>
-          </button>
+        <div className="flex items-center gap-4 justify-between text-[#6D6D6D] mt-2">
+          {/* Fecha del comentario */}
+          <div>
+            <p className="text-[#6D6D6D] text-sm">{formatDate(answer?.createdAt)}</p>
+          </div>  
+          {/* Botones de interacción */}
+          <div className="flex items-start gap-4 justify-end text-[#6D6D6D]">        
+            <button 
+              className="flex items-center gap-1 text-sm hover:text-dark-green transition-colors cursor-pointer"
+              onClick={handleAddComment}
+            >
+              {/* Icono de comentario */}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+              </svg>
+              <span>{answer?.repliesCount}</span>
+            </button>
+            <button
+              className="flex items-center gap-1 text-sm"
+              onClick={handleLike} disabled={isLoading}
+            >
+              <HeartIcon 
+                isFilled={likeStatus?.hasLiked} 
+                isLoading={isLikeStatusLoading || isLoading} 
+              />
+              <span>{isLikeStatusLoading ? '...' : (likeStatus?.likesCount || 0)}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
