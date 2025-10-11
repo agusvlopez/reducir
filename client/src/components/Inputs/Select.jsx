@@ -8,8 +8,9 @@ export function Select({
     isRequired = false,
     className = "",
 }) {
+
     return (
-        <div className="flex flex-col gap-4">
+        <div className={`flex flex-col gap-2 w-full`}>
             <label htmlFor={selectId}>{label}</label>
             <div className={`relative w-full ${className}`}>
                 <select

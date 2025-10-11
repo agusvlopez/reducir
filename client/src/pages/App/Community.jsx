@@ -7,6 +7,7 @@ import BaseButton from "../../components/Base/BaseButton";
 import { useCreatePostMutation, useGetPostsQuery } from "../../api/postsSlice";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "sonner";
+import { NewPostModal } from "../../components/Community/NewPostModal";
 
 //TODO: PASAR ESTO A UN ARCHIVO DE CONSTANTES PARA REUTILIZARLO
 const categories = [
@@ -23,11 +24,12 @@ export function Community() {
     const {data: posts, isError, isLoading} = useGetPostsQuery();
     const [createPost] = useCreatePostMutation();
 
-    const [isNewPost, setIsNewPost] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openFormNewPost = () => {
-        setIsNewPost(true);
+        setIsModalOpen(true);
     }
+
     //TODO: PASAR A UN COMPONENTE APARTE ESTO JUNTO CON EL FORMULARIO
     const handleAddPost = async (e) => {
         e.preventDefault();
@@ -53,10 +55,11 @@ export function Community() {
         }
 
         toast.success("Post creado con éxito!");
-        setIsNewPost(false);
+        setIsModalOpen(false);
     }
     
     return (
+        <>
         <section className="h-screen bg-[#005840] py-6">
             <div className="flex items-center gap-6 mb-8 px-6">
                 <Avatar
@@ -69,7 +72,7 @@ export function Community() {
                 <Search className="flex-1" />
             </div>
         {/* CREAR UN NUEVO POST */}
-            <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20">
+            <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20 h-screen overflow-y-auto">
                 <button
                     onClick={openFormNewPost}
                     className="flex items-center gap-[10px] font-semibold mb-8 text-dark-green cursor-pointer hover:text-dark-green/90 transition-colors">
@@ -78,43 +81,12 @@ export function Community() {
                     </svg>
                     Compartir un nuevo logro
                 </button>
-                {isNewPost && (
-                    <form 
-                        onSubmit={handleAddPost}
-                        className="py-8"
-                    >
-                        <div className="flex items-center gap-4 mb-4">
-                            <Avatar
-                                src="https://i.pravatar.cc/300"
-                                size="sm"
-                                isBordered={true} />
-                            <Select
-                                selectId="category"
-                                selectName="category"
-                                label="Categoría"
-                                options={categories}
-                                placeholder="Seleccioná una opción"
-                                isRequired
-                             />
-                        </div>
-                        <textarea
-                            name="content"
-                            id="content"
-                            rows="4"
-                            className="w-full h-24 p-4 text-sm border border-gray-300 rounded-[30px] focus:outline-none focus:ring-2 bg-[#F1EDEC] text-[#383838] shadow-sm"
-                            placeholder="Escribí algo sobre tu logro..."
-                        />
-                        <div className="flex justify-end mt-4">
-                            <BaseButton
-                                type="submit"
-                                color="green"
-                            >
-                                Publicar
-                            </BaseButton>
-                        </div>
-                    </form>
-                )}
-
+                <NewPostModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleAddPost}
+                categories={categories}
+                />
                 <div className="flex flex-col gap-6">
                     {isLoading && <p className="text-white">Cargando posts...</p>}
                     {isError && <p className="text-white">Error al cargar los posts.</p>}
@@ -136,5 +108,6 @@ export function Community() {
                 </div>
             </div>
         </section>
+        </>
     );
 }

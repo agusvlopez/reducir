@@ -10,6 +10,7 @@ import { ChevronLeft } from "../../components/Icons/ChevronLeft";
 import { useAuth } from "../../hooks/useAuth";
 import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus";
+import { Loader } from "../../components/Base/Loader";
 
 export function Action() {
     const navigate = useNavigate();
@@ -64,7 +65,7 @@ export function Action() {
 
                 <div className="flex flex-col items-center gap-6 text-center mt-2">
                     {isLoading ? 
-                        <p>Cargando...</p>
+                        <Loader size="sm" color="green" />
                         :
                         <BaseButton 
                             onClick={handleToggle} 

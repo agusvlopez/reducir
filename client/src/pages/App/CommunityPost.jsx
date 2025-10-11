@@ -7,6 +7,7 @@ import { useGetCommentsByPostQuery, useGetPostQuery } from "../../api/postsSlice
 import { usePostComments } from "../../hooks/usePostComments";
 import { toast } from "sonner";
 import { useAuth } from "../../hooks/useAuth";
+import { Loader } from "../../components/Base/Loader";
 
 export function CommunityPost() {
     const { postId } = useParams();
@@ -44,7 +45,7 @@ export function CommunityPost() {
     return comments?.filter(c => c.isReply && c.parentCommentId === commentId);
     };
 
-    if (isLoading) return <p>Cargando...</p>;
+    if (isLoading) return <Loader size="lg" color="green" />;
     if (isError) return <p>Error al cargar el post.</p>;
 console.log("post", post);
 
@@ -70,11 +71,13 @@ console.log("post", post);
                     />
             </div>
             {/* FORMULARIO DE RESPUESTA AL POST */}
-            <Answer 
-                onSubmit={handleComment}
-                isLoading={isLoading}
-                srcAvatar={user?.image}
-            />
+            <div className="border-b border-[#6D6D6D]">
+                <Answer 
+                    onSubmit={handleComment}
+                    isLoading={isLoading}
+                    srcAvatar={user?.image}
+                />
+            </div>
             <div className="flex flex-col gap-6">
                 {/* COMENTARIOS RAÍZ con sus respuestas */}
                 {rootComments?.map(comment => (
@@ -86,7 +89,7 @@ console.log("post", post);
                     
                     {/* Respuestas a este comentario */}
                     {getRepliesForComment(comment._id).length > 0 && (
-                        <div className="ml-12 mt-4 flex flex-col gap-4 border-l-2 border-gray-200 pl-4">
+                        <div className="ml-6 lg:ml-12 mt-4 flex flex-col gap-4 border-l-2 border-gray-200 pl-4">
                         {getRepliesForComment(comment._id)?.map(reply => (
                             <Comment
                                 key={reply._id}

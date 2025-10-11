@@ -24,7 +24,11 @@ export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded transition-colors"
             >
-              <span className="text-gray-500">X</span>
+              <span className="text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </span>
             </button>
           </div>
 
@@ -36,21 +40,6 @@ export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
               isLoading={false}
               srcAvatar={srcAvatar}
             />
-          </div>
-
-          {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200 flex gap-3 justify-end">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-            >
-              Publicar
-            </button>
           </div>
         </div>
       </div>

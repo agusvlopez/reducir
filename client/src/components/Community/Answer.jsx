@@ -25,7 +25,7 @@ export function Answer ({
     return (
       <>
       {/* POST A COMMENT (FORM) */}
-      <div className="flex items-start justify-between gap-4 border-b border-[#6D6D6D] pb-6">
+      <div className="flex items-start justify-between gap-4 pb-6">
           <Avatar
               src={srcAvatar}
           />

@@ -13,7 +13,7 @@ export function Comment({ comment, allComments, level = 0 }) {
   const replies = allComments?.filter(c => c.parentCommentId === comment._id);
   
   // Máximo 2 niveles de indentación visual
-  const maxIndentLevel = 2;
+  const maxIndentLevel = 1;
   const shouldIndent = level < maxIndentLevel;
   
   return (
@@ -23,7 +23,7 @@ export function Comment({ comment, allComments, level = 0 }) {
       />
       
       {replies?.length > 0 && (
-        <div className={`mt-4 flex flex-col gap-4 ${shouldIndent ? 'ml-12 border-l-2 border-gray-200 pl-4' : ''}`}>
+        <div className={`mt-4 flex flex-col gap-4 ${shouldIndent ? 'ml-6 lg:ml-12 border-l-2 border-gray-200 pl-4' : ''}`}>
           {replies?.map(reply => (
             <Comment
               key={reply._id}
@@ -42,7 +42,6 @@ export function Comment({ comment, allComments, level = 0 }) {
 function CommentItem({ answer }) {     
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
-  console.log("user", user);
   
   const handleAddComment = async () => {
     setIsModalOpen(true);

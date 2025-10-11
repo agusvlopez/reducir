@@ -9,6 +9,7 @@ import { useGetPostQuery } from "../../api/postsSlice";
 import { toast } from "sonner";
 import { useAuth } from "../../hooks/useAuth";
 import { usePostComments } from "../../hooks/usePostComments";
+import { Loader } from "../../components/Base/Loader";
 
 export function ComposerPost() {
     const { postId } = useParams();
@@ -18,7 +19,7 @@ export function ComposerPost() {
     const {data: post, isError, isLoading} = useGetPostQuery(postId);
 
 
-    if (isLoading) return <p>Cargando...</p>;
+    if (isLoading) return <Loader size="md" color="green" />;
     if (isError) return <p>Error al cargar el post.</p>;
 
     const handleComment = async (content, form) => {
