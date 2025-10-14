@@ -4,11 +4,18 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ 
     baseUrl: "http://localhost:3000"
-  }),
+  }),  
+  tagTypes: ["Users", "User", "Actions", "UserFavorites", "Posts", "PostLikes", "PostComments", "CommentLikes"], // Un solo lugar para todos los tags
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/users",
       providesTags: ["Users"]
+    }),
+    getUser: builder.query({
+      query: (userId) => `/users/${userId}`,
+      providesTags: (result, error, userId) => [
+        { type: 'User', id: userId }
+      ]
     }),
     createUser: builder.mutation({
       query: (newUser) => ({
@@ -17,21 +24,20 @@ export const apiSlice = createApi({
         body: newUser,
         credentials: 'include' // Necessary if the backend uses cookies for authentication
       }),
-      // invalidatesTags: ["Users"]
     }),
     loginUser: builder.mutation({
      query: (credentials) => ({
       url: "/users/login",
       method: "POST",
       body: credentials,
-      credentials: 'include' // Necessary if the backend uses cookies for authentication
+      credentials: 'include'
      }),
     }),
     logoutUser: builder.mutation({
       query: () => ({
         url: "/users/logout",
         method: "POST",
-        credentials: 'include' // Necessary if the backend uses cookies for authentication
+        credentials: 'include' 
       }),
     }),
     createCarbon: builder.mutation({
@@ -48,6 +54,7 @@ export const apiSlice = createApi({
 
 export const { 
   useGetUsersQuery,
+  useGetUserQuery,
   useCreateUserMutation,
   useLoginUserMutation,
   useLogoutUserMutation,

@@ -7,6 +7,7 @@ export default function BaseButton({
     children,
     className,
     isArray = true, //TODO: CHANGE NAME TO withArrow
+    isDisabled = false,
     ...props
 }) {
     // Define the base styles for the button depending on the variant
@@ -25,6 +26,7 @@ export default function BaseButton({
 
     return (
         <button
+            disabled={isDisabled}
             type={buttonType}
             className={`cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md font-medium ${className} ${variantStyles[variant]} ${sizeStyles[size]}`}
             {...props}

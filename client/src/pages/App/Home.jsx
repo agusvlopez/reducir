@@ -4,21 +4,25 @@ import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
 import { useAuth } from "../../hooks/useAuth";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
 import { useActionsSaved } from "../../hooks/useActionsSaved";
+import { useGetUserQuery } from "../../api/apiSlice";
 
 export function Home() {
-    const { user } = useAuth();
+    const { userId } = useAuth();
+    
+    const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
 
+    const actionsAchieved = useMemo(() => userData?.actions_achieved || [], [userData]);
+    
     // Usamos useGetActionsQuery para obtener todas las acciones
     //TODO: pasar a un hook ? 
     //Esto va una vez que acomode la API de actions
     // const { data: actions, error: isError, isLoading } = useGetActionsQuery();
     // console.log("actions", actions);
 
-    //actionsSaved
     const { actionsSaved } = useActionsSaved();
 
     const [sectionSelected, setSectionSelected] = useState("actionsSaved");
@@ -33,11 +37,11 @@ export function Home() {
                 <div className="flex items-center gap-4">
                     <Avatar src={"https://i.pravatar.cc/300"} alt="User Avatar" className="mb-4" />
                     <div>
-                        <p>¡Hola <span className="font-semibold">{user?.name}</span>!</p>
+                        <p>¡Hola <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
                         <p>Tu huella de carbono este mes:</p>
                         <div>
                             <span></span>
-                            <p className="font-semibold"><span className="font-bold">{user?.carbon}</span> kg de CO2</p>
+                            <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbon}</span> kg de CO2</p>
                         </div>
 
                     </div>
@@ -52,7 +56,7 @@ export function Home() {
                     <div className="flex items-center gap-1 text-[#005840] font-semibold">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="6" cy="6" r="6" fill="#005840"/>
-                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
 
                         <span>En 1 mes</span>
@@ -60,7 +64,7 @@ export function Home() {
                     <div className="flex items-center gap-1 text-[#005840] font-semibold">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="6" cy="6" r="6" fill="#005840"/>
-                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                         <span>Días restantes: 10</span>
                     </div>
@@ -69,9 +73,9 @@ export function Home() {
                         className="bg-[#005840] text-white py-2 rounded-[30px] flex items-center justify-center mt-2">
                         <span>Continuar progreso</span>
                         <svg className="inline-block ml-2 w-[15px] h-[15px]" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_2878_85)">
+                        <g clipPath="url(#clip0_2878_85)">
                         <circle cx="7.5" cy="7.5" r="7.5" fill="#F1EDEC"/>
-                        <path d="M6 5L9 7.5L6 10" stroke="#005840" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 5L9 7.5L6 10" stroke="#005840" strokeLinecap="round" strokeLinejoin="round"/>
                         </g>
                         <defs>
                         <clipPath id="clip0_2878_85">
@@ -96,12 +100,12 @@ export function Home() {
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
-                    <p className="text-xs">Opciones guardadas para hacer cuando te sientas listo/a.</p>
+                    <p className="text-sm">Opciones guardadas para hacer cuando te sientas listo/a.</p>
                 </div>
                 <Link to={"/app/actions"} className="font-semibold text-[#005840] flex items-center gap-2 hover:underline w-max">
                 <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="7.5" cy="7.5" r="7.5" fill="#005840"/>
-                <path d="M7.5 4.875V10.125M4.875 7.5H10.125" stroke="#F1EDEC" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7.5 4.875V10.125M4.875 7.5H10.125" stroke="#F1EDEC" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 Agregar una acción
                 </Link>
@@ -133,8 +137,29 @@ export function Home() {
             {sectionSelected === 'actionsAchieved' &&
             //TODO
             (
-                <section>
-                    <h2>Acciones logradas</h2>
+            <section className="mt-[40px] px-6 flex flex-col gap-4">
+                <div>
+                    <h2 className="text-[20px] font-semibold">Acciones logradas</h2>
+                    <p className="text-sm">Estas son las acciones que lograste hasta el momento. ¿Querés compartilo con tu comunidad?</p>
+                </div>
+                    <BaseCarousel>
+                        {actionsAchieved?.map((actionId) => {
+                            const achievedAction = ACTIONS?.find(a => a._id === actionId);                        
+                            
+                            if (!achievedAction) return null;
+
+                            return (
+                                <CarouselCard
+                                    key={achievedAction._id}
+                                    actionId={achievedAction._id}
+                                    title={achievedAction?.title}
+                                    imageSrc={achievedAction?.image?.url}
+                                    imageAlt={achievedAction?.title}
+                                    className="mt-4"
+                                />
+                            );
+                        })}
+                    </BaseCarousel>
                 </section>
             )
             }
@@ -142,8 +167,12 @@ export function Home() {
             {sectionSelected === 'posts' &&
             //TODO
             (
-                <section>
-                    <h2>Mis publicaciones</h2>
+            <section className="mt-[40px] px-6 flex flex-col gap-4">
+                <div>
+                    <h2 className="text-[20px] font-semibold">Mis publicaciones</h2>
+                    <p className="text-sm mb-2">Todas tus publicaciones se muestran acá.</p>
+                    <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
+                </div>
                 </section>
             )
             }

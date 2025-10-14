@@ -4,6 +4,8 @@ import { ImagePill } from "../Base/ImagePill.jsx";
 import { useAuth } from "../../hooks/useAuth.js";
 import { useActionsSaved } from "../../hooks/useActionsSaved.js";
 import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus.js";
+import { useCheckAchievedActionQuery } from "../../api/actionsSlice.js";
+import AchievementIcon from "../../assets/icons/Achievement.webp";
 
 export function ActionCard({
     id,
@@ -26,6 +28,12 @@ export function ActionCard({
             actionId: id 
         });
     }
+
+    
+    const { data: isActionAchieved = false } = useCheckAchievedActionQuery(
+        { userId, actionId: id },
+        { skip: !userId || !id }
+    );
 
     return (
         <div
@@ -61,9 +69,13 @@ export function ActionCard({
                         <p className="text-small text-foreground/80 line-clamp-2">{description}</p>
                     </div>
                 </Link>
-                <button>
-                    <HeartIcon isFilled={isActionSaved} handleClick={handleToggle} isLoading={isLoading} />
-                </button>
+                {isActionAchieved ? 
+                    <img className="w-9.5 h-9.5" src={AchievementIcon} alt="Acción lograda"/>
+                    :
+                    <button className="self-start mt-2 mr-1">
+                        <HeartIcon isFilled={isActionSaved} handleClick={handleToggle} isLoading={isLoading} />
+                    </button>   
+                }
             </div>
         </div>
     );

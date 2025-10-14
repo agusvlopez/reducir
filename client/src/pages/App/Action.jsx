@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Heading } from "../../components/Base/Heading";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import BaseButton from "../../components/Base/BaseButton";
@@ -11,8 +11,10 @@ import { useAuth } from "../../hooks/useAuth";
 import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus";
 import { Loader } from "../../components/Base/Loader";
+import { useAddAchievedActionMutation, useCheckAchievedActionQuery } from "../../api/actionsSlice";
 
 export function Action() {
+
     const navigate = useNavigate();
 
     const { id } = useParams();
@@ -20,7 +22,18 @@ export function Action() {
     //ESTO TAMBIEN LO USO EN ACTIONCARD, TODO: VER SI SIMPLIFICAR
     const { toggleAction } = useActionsSaved();
     const { isActionSaved, isLoading } = useActionsSavedStatus(id);
+
+    const [ addAchievedAction ] = useAddAchievedActionMutation();
+
+    const { data: isActionAchieved = false } = useCheckAchievedActionQuery(
+        { userId, actionId: id },
+        { skip: !userId || !id }
+    );
     
+    //buscar la acción por id en el archivo, por ahora
+    //TODO: se llamara a la API para obtener la acción
+    const action = ACTIONS.find(action => action._id === id);
+
     const handleToggle = async () => {
         await toggleAction({ 
             userId, 
@@ -28,9 +41,17 @@ export function Action() {
         });
     }
 
-    //buscar la acción por id en el archivo, por ahora
-    //TODO: se llamara a la API para obtener la acción
-    const action = ACTIONS.find(action => action._id === id);
+    const handleAddToAchieved = async () => {
+        console.log("agregando", action?.carbon, id, userId)
+        const response = await addAchievedAction({ 
+            userId, 
+            actionId: id,
+            carbon: action?.carbon
+        });
+        console.log("response", response);
+        
+        console.log("agregado")
+    }
 
     const goBack = () => {
         navigate(-1);
@@ -58,18 +79,19 @@ export function Action() {
                 <div className="w-full flex items-center justify-end gap-2 text-[#005840] font-semibold">
                     <CarbonIcon className="inline-block" />
                     <span>
-                        Reducirás -{action?.carbon} kg
+                        {isActionAchieved ? 'Reduciste' : 'Reducirás'} -{action?.carbon} kg
                     </span>
 
                 </div>
 
                 <div className="flex flex-col items-center gap-6 text-center mt-2">
-                    {isLoading ? 
+                    {!isActionAchieved && (
+                        isLoading ? 
                         <Loader size="sm" color="green" />
                         :
                         <BaseButton 
                             onClick={handleToggle} 
-                            className="w-full max-w-[300px]" 
+                            className="w-full lg:w-[300px]" 
                             isArray={false}
                             variant={isActionSaved ? 'white' : 'green'}
                         >
@@ -80,11 +102,28 @@ export function Action() {
                             />
                         {isActionSaved ? 'Quitar de mis favoritos' : 'Agregar a mis favoritos'}
                         </BaseButton>  
-                    }
-                    <BaseButton variant="outline" className="w-full max-w-[300px]">
-                        <PlusIcon className="inline-block mr-2" />
-                        Marcar como completado
-                    </BaseButton>
+                    )}
+                    <div className="flex items-center justify-center w-full">
+                        <BaseButton 
+                            onClick={handleAddToAchieved} 
+                            isDisabled={isActionAchieved}
+                            variant="outline" 
+                            isArray={!isActionAchieved} 
+                            className={`min-w-[280px] lg:w-[300px] ${isActionAchieved ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                            {!isActionAchieved && <PlusIcon className="inline-block mr-2" />}
+                            {isActionAchieved ? '¡Acción lograda!' : 'Marcar como completado'}
+                        </BaseButton>
+                        {isActionAchieved && (
+                            // TODO: ACOMODAR COMO MANEJAR EL LINK, SI AGREGAR UNA RUTA DIRECTA A HACER EL POST
+                            <Link 
+                                className="flex-1 flex justify-end pl-4 font-semibold text-dark-green cursor-pointer"
+                                to={`/app/community`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                                </svg>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </section>
         </div>

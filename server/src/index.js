@@ -42,5 +42,5 @@ app.get('/users', authMiddleware, async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`El servidor está levantado! http://localhost:${PORT}`);
+  console.log(`El servidor está levantado! http://localhost:${PORT}`);
 });

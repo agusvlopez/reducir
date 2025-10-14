@@ -1,5 +1,6 @@
 import { ConflictError } from "../errors/ConflictError.js";
 import { ValidationError } from "../errors/ValidationError.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 import User from "../models/User.js";
 import { TokenService } from "../services/token.service.js";
 import { UserService } from "../services/user.service.js";
@@ -131,5 +132,58 @@ export class UserController {
     }
   }
 
+  static async findById(req, res) {
+    const { userId } = req.params;
+
+    try {
+      const user = await UserService.findById({ id: userId });
+      res.status(200).json(user);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ error: error.message });
+      }
+      if (error instanceof ValidationError) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ message: 'Error inesperado' });
+    }
+  }
+  //TODO: CHECK
+  static async addAchievedAction(req, res) {
+    const { userId, actionId, carbon } = req.body;
+
+    try {
+      const updatedUser = await UserService.addAchievedAction({ userId, actionId, carbon });
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      if(error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ message: 'Error inesperado' });
+    }
+  }
+
+  static async checkAchievedAction(req, res) {
+    const { userId, actionId } = req.params;
+
+    try {
+      const isAchieved = await UserService.checkAchievedAction({ userId, actionId });
+      res.status(200).json(isAchieved);
+    } catch (error) {
+      if(error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ message: 'Error inesperado' });
+    }
+  }
+
+  static async checkCarbon(req, res) {
+    const { userId } = req.params;
+
+    try {
+      const carbon = await UserService.checkCarbon({ userId });
+      res.status(200).json(carbon);
+    } catch (error) {}
+  }
 
 }

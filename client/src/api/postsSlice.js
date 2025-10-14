@@ -1,12 +1,8 @@
 // postsSlice.js
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "./apiSlice";
 
-export const postsSlice = createApi({
-  reducerPath: 'postsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000',
-  }),
-  tagTypes: ['Posts', 'PostLikes', 'PostComments'], // Agrega PostComments
+export const postsSlice = apiSlice.injectEndpoints({
+  overrideExisting: false,
   endpoints: (builder) => ({
     createPost: builder.mutation({
       query: (newPost) => ({
@@ -128,7 +124,7 @@ export const postsSlice = createApi({
   }),
 });
 
-export const { 
+export const {
   useCreatePostMutation,
   useGetPostsQuery,
   useGetPostQuery,
@@ -141,5 +137,3 @@ export const {
   useToggleCommentLikeMutation,
   useGetCommentLikeStatusQuery,  
 } = postsSlice;
-
-export default postsSlice;

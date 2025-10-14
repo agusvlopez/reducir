@@ -124,4 +124,45 @@ export class UserRepository {
     }
   }
 
+  static async addAchievedAction({ userId, actionId, carbon }) {
+    try {
+      //agregar logro a actions_achieved y reducir el carbon
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { actions_achieved: actionId }, $inc: { carbon: -carbon } },
+        { new: true, runValidators: true }
+      );
+      //si la accion esta en actions_saved eliminarla
+      if (updatedUser.actions_saved.includes(actionId)) {
+        updatedUser.actions_saved = updatedUser.actions_saved.filter(id => id !== actionId);
+        await updatedUser.save();
+      }
+      return updatedUser;
+    } catch (error){
+      return null;
+    }
+  
+  }
+
+  static async checkAchievedAction({ userId, actionId }) {
+    try {
+      const result = await User.findById(userId, 'actions_achieved').lean();
+      const achievedActions = result?.actions_achieved;
+      
+      //devolver true o false
+      if (!achievedActions) return false;
+      return achievedActions.includes(actionId);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  static async checkCarbon({ userId }) {
+    try {
+      const result = await User.findById(userId, 'carbon').lean();
+      return result?.carbon || 0;
+    } catch (error) {
+      return 0;
+    }
+  }
 }

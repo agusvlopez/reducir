@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from "../repositories/user.repository.js";
+import { NotFoundError } from '../errors/NotFoundError.js';
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALT_ROUNDS } from "../config.js";
 import { validateUserCreate, validateUserLogin } from "../validations/user.schema.js";
 import { ValidationError } from "../errors/ValidationError.js";
@@ -100,6 +101,12 @@ export class UserService {
     return updatedUser;
   } 
 
+  static async findById({ id }) {
+    const user = await UserRepository.findById({ id });
+    if (!user) throw new NotFoundError('Usuario no encontrado');
+    return user;
+  }
+
   static async checkFavoriteAction({ userId, actionId }){
     const isFavorite = await UserRepository.checkFavoriteAction({ userId, actionId });
     return isFavorite;
@@ -108,6 +115,21 @@ export class UserService {
   static async getSavedActions(userId) {
     const favoriteActions = await UserRepository.getSavedActions(userId);
     return favoriteActions;
+  }
+
+  static async addAchievedAction({ userId, actionId, carbon }){
+    const updatedUser = await UserRepository.addAchievedAction({ userId, actionId, carbon });
+    return updatedUser;
+  }
+
+  static async checkAchievedAction({ userId, actionId }){
+    const isAchieved = await UserRepository.checkAchievedAction({ userId, actionId });
+    return isAchieved;
+  }
+
+  static async checkCarbon({ userId }){
+    const carbon = await UserRepository.checkCarbon({ userId });
+    return carbon;
   }
 
 }
