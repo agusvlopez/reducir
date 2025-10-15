@@ -12,6 +12,7 @@ import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus";
 import { Loader } from "../../components/Base/Loader";
 import { useAddAchievedActionMutation, useCheckAchievedActionQuery } from "../../api/actionsSlice";
+import { toast } from "sonner";
 
 export function Action() {
 
@@ -31,7 +32,7 @@ export function Action() {
     );
     
     //buscar la acción por id en el archivo, por ahora
-    //TODO: se llamara a la API para obtener la acción
+    //TODO: se llamará a la API para obtener la acción
     const action = ACTIONS.find(action => action._id === id);
 
     const handleToggle = async () => {
@@ -49,8 +50,9 @@ export function Action() {
             carbon: action?.carbon
         });
         console.log("response", response);
-        
-        console.log("agregado")
+        if(response?.data?.goalAchievement) {
+            toast(response?.data?.goalAchievement?.message)
+        }
     }
 
     const goBack = () => {

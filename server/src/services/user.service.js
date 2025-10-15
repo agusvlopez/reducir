@@ -137,4 +137,26 @@ export class UserService {
     return achievedActions;
   }
 
+  static async setCarbonGoal({ userId, reductionPercentage }){
+    const user = await UserRepository.findById({ id: userId });
+    if (!user) throw new Error('Usuario no encontrado');
+    
+    const currentYear = new Date().getFullYear();
+    const baselineValue = user.carbon;
+    const targetValue = Math.round(baselineValue * (1 - reductionPercentage / 100));
+
+    const newGoal = {
+      year: currentYear,
+      targetReductionPercentage: reductionPercentage,
+      baselineValue,
+      targetValue,
+      startDate: new Date(),
+      status: 'active'
+    };
+
+    const updatedUser = await UserRepository.setCarbonGoal({ userId, carbonGoal: newGoal });
+    return updatedUser;
+  }
+
+
 }

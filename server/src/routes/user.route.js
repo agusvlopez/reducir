@@ -15,5 +15,6 @@ usersRouter.get('/:userId', UserController.findById);
 usersRouter.patch('/add-achieved-action', UserController.addAchievedAction);
 usersRouter.get('/:userId/achieved-actions/:actionId', UserController.checkAchievedAction);
 usersRouter.get('/:userId/carbon', UserController.checkCarbon);
+usersRouter.patch('/set-carbon-goal', UserController.setCarbonGoal);
 
 export default usersRouter;

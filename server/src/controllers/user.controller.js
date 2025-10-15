@@ -196,7 +196,21 @@ export class UserController {
       if(error.name === 'ValidationError') {
         return res.status(400).json({ error: error.message });
       }
-      
+      return res.status(500).json({ message: 'Error inesperado' });
+    }
+  }
+
+  static async setCarbonGoal(req, res) {
+    const { userId, reductionPercentage } = req.body;
+
+    try {
+      const updatedUser = await UserService.setCarbonGoal({ userId, reductionPercentage });
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      if(error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ message: 'Error inesperado' });
     }
   }
 

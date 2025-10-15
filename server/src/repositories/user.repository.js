@@ -24,9 +24,7 @@ export class UserRepository {
       return null;
     }
   }
-  
-  //todo: revisar si funciona ok
-  //        .select('-password -__v')
+
   static async findById({ id }) {
     try {
       const user = await User.findById(id)
@@ -59,7 +57,7 @@ export class UserRepository {
       return null;
     }
   }
-
+  //TODO: pasar logica a service, aca solo manejar la conexion con la bbdd
   static async toggleFavoriteAction({ userId, actionId }) {
     try {
       // First check if the action is already in favorites
@@ -123,24 +121,78 @@ export class UserRepository {
     }
   }
 
+  //TODO: pasar logica a service, aca solo manejar la conexion con la bbdd
   static async addAchievedAction({ userId, actionId, carbon }) {
     try {
-      //agregar logro a actions_achieved y reducir el carbon
+      // Agregar logro a actions_achieved y reducir el carbon
       const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { $addToSet: { actions_achieved: actionId }, $inc: { carbon: -carbon } },
+        { 
+          $addToSet: { actions_achieved: actionId }, 
+          $inc: { carbon: -carbon } 
+        },
         { new: true, runValidators: true }
       );
-      //si la accion esta en actions_saved eliminarla
+
+      // Si la accion esta en actions_saved eliminarla
       if (updatedUser.actions_saved.includes(actionId)) {
         updatedUser.actions_saved = updatedUser.actions_saved.filter(id => id !== actionId);
         await updatedUser.save();
       }
-      return updatedUser;
-    } catch (error){
+
+      // NUEVO: Verificar si cumplió el objetivo
+      let goalAchievement = null;
+      
+      if (updatedUser.carbonGoal && updatedUser.carbonGoal.status === 'active') {
+        const goal = updatedUser.carbonGoal;
+        const currentCarbon = updatedUser.carbon;
+        
+        // Verificar si alcanzó o superó la meta
+        if (currentCarbon <= goal.targetValue) {
+          // Marcar la meta como completada
+          await User.updateOne(
+            { _id: userId },
+            { 
+              $set: { 
+                'carbonGoal.status': 'completed',
+                'carbonGoal.completedAt': new Date()
+              } 
+            }
+          );
+          
+          goalAchievement = {
+            achieved: true,
+            message: '¡Felicitaciones! Has alcanzado tu meta de reducción de carbono',
+            goal: {
+              targetReduction: goal.targetReductionPercentage,
+              targetValue: goal.targetValue,
+              achievedValue: currentCarbon,
+              exceededBy: goal.targetValue - currentCarbon
+            }
+          };
+        } else {
+          // Calcular progreso actual
+          const totalReduction = goal.baselineValue - goal.targetValue;
+          const currentReduction = goal.baselineValue - currentCarbon;
+          const progress = Math.round((currentReduction / totalReduction) * 100);
+          
+          goalAchievement = {
+            achieved: false,
+            progress: progress,
+            remaining: currentCarbon - goal.targetValue,
+            message: `Vas por buen camino. Te faltan ${Math.round(currentCarbon - goal.targetValue)} unidades para tu meta`
+          };
+        }
+      }
+
+      return {
+        user: updatedUser,
+        goalAchievement
+      };
+    } catch (error) {
+      console.error('Error en addAchievedAction:', error);
       return null;
     }
-  
   }
 
   static async checkAchievedAction({ userId, actionId }) {
@@ -172,6 +224,19 @@ export class UserRepository {
      
     } catch (error) {
       return [];
+    }
+  }
+
+  static async setCarbonGoal({ userId, carbonGoal }) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { carbonGoal },
+        { new: true, runValidators: true }
+      );
+      return updatedUser;
+    } catch (error) {
+      return null;
     }
   }
 

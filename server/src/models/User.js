@@ -41,7 +41,17 @@ const UserSchema = new mongoose.Schema({
   actions_achieved: {
     type: [String],
     default: []
-  }
+  },
+  // Nuevo: Meta de reducción de carbono
+  carbonGoal: {
+    year: Number,
+    targetReductionPercentage: Number,
+    baselineValue: Number,
+    targetValue: Number,
+    startDate: Date,
+    completedAt: Date,
+    status: { type: String, enum: ['active', 'completed', 'abandoned'], default: 'active' }
+  },
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);

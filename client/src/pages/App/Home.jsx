@@ -11,6 +11,7 @@ import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useGetUserQuery } from "../../api/apiSlice";
 import { useGetPostsByUserQuery } from "../../api/postsSlice";
 import { PostCard } from "../../components/Cards/PostCard";
+import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
 
 export function Home() {    
     const [sectionSelected, setSectionSelected] = useState("actionsSaved");
@@ -51,47 +52,14 @@ export function Home() {
                 </div>
             </section>
             <section className="w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
-                <div className="text-xs text-[#383838] flex flex-col gap-1">
-                    <p>Objetivo</p>
-                    <span className="bg-[#ED6C1D] p-1 px-2 rounded-[30px] text-xs text-white">Reducir la huella un 10%</span>
-
-                    <p>Detalles</p>
-                    <div className="flex items-center gap-1 text-[#005840] font-semibold">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="6" cy="6" r="6" fill="#005840"/>
-                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-
-                        <span>En 1 mes</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[#005840] font-semibold">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="6" cy="6" r="6" fill="#005840"/>
-                        <path d="M6 4V6.5L7.5 8.5" stroke="#D9D9D9" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        <span>Días restantes: 10</span>
-                    </div>
-
-                    <button
-                        className="bg-[#005840] text-white py-2 rounded-[30px] flex items-center justify-center mt-2">
-                        <span>Continuar progreso</span>
-                        <svg className="inline-block ml-2 w-[15px] h-[15px]" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clipPath="url(#clip0_2878_85)">
-                        <circle cx="7.5" cy="7.5" r="7.5" fill="#F1EDEC"/>
-                        <path d="M6 5L9 7.5L6 10" stroke="#005840" strokeLinecap="round" strokeLinejoin="round"/>
-                        </g>
-                        <defs>
-                        <clipPath id="clip0_2878_85">
-                        <rect width="15" height="15" rx="7.5" fill="white"/>
-                        </clipPath>
-                        </defs>
-                        </svg>
-                    </button>
-                </div>
-                <div>
-                    {/* PROGRESS DONUT */}
-                    <DonutProgress value={72} />
-                </div>
+                <GoalProgressCard 
+                    targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
+                    baselineValue={userData?.carbonGoal?.baselineValue}
+                    targetValue={userData?.carbonGoal?.targetValue}
+                    currentCarbon={userData?.carbon}
+                    startDate={userData?.carbonGoal?.startDate}
+                    year={userData?.carbonGoal?.year}
+                />
             </section>
             <section className="mt-[40px] flex gap-4 overflow-x-auto pl-6 lg:pl-0 pb-2">
                 <Pill className="flex-shrink-0" text="Acciones en proceso" onClick={() => handleSections('actionsSaved')} isActive={sectionSelected === 'actionsSaved'} />

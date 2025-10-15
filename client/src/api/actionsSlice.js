@@ -47,7 +47,6 @@ export const actionsSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data
       }),
-      // Invalida las queries relacionadas para que se vuelvan a obtener del servidor
       invalidatesTags: (result, error, { userId, actionId }) => [
         { type: 'User', id: userId },
         { type: 'AchievedAction', id: `${userId}-${actionId}` }
