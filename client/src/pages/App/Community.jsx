@@ -2,27 +2,17 @@ import { useEffect, useState } from "react";
 import { Avatar } from "../../components/Base/Avatar";
 import { Post } from "../../components/Community/Post";
 import { Search } from "../../components/Inputs/Search";
-import { useCreatePostMutation, useGetPostsQuery } from "../../api/postsSlice";
-import { useAuth } from "../../hooks/useAuth";
-import { toast } from "sonner";
 import { NewPostModal } from "../../components/Community/NewPostModal";
 import { Loader } from "../../components/Base/Loader";
-
-
-//TODO: PASAR ESTO A UN ARCHIVO DE CONSTANTES PARA REUTILIZARLO
-const categories = [
-    { id: 1, value: "energía", label: "Energía" },
-    { id: 2, value: "transporte", label: "Transporte" },
-    { id: 3, value: "reciclaje", label: "Reciclaje" },
-    { id: 4, value: "alimentación", label: "Alimentación" },
-    { id: 5, value: "agua", label: "Agua" },
-    { id: 6, value: "otros", label: "Otros" }
-];
+import { usePosts } from "../../hooks/usePosts";
+import { useGetPostsQuery } from "../../api/postsSlice";
+import { CATEGORIES } from "../../constants/categories";
 
 export function Community() {
-    const {user} = useAuth();
+    //const {user} = useAuth();
+    const { addPost } = usePosts();
     const {data: posts, isError, isLoading} = useGetPostsQuery();
-    const [createPost] = useCreatePostMutation();
+    //const [createPost] = useCreatePostMutation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -32,44 +22,10 @@ export function Community() {
         setIsModalOpen(true);
     }
 
-    //TODO: PASAR A UN COMPONENTE APARTE ESTO JUNTO CON EL FORMULARIO
-    const handleAddPost = async (e, imageFile, actionId, carbon) => {
-        e.preventDefault();
-
-        const formData = new FormData(e.target);
-        const category = formData.get("category");
-        const content = formData.get("content");
-        const achievedAction = formData.get("achieved_action");
-
-        const postData = new FormData();
-        postData.append('userId', user?._id);
-        postData.append('userInfo', JSON.stringify({
-            name: user?.name, 
-            username: user?.username, 
-            profileImage: user?.image
-        }));
-        postData.append('category', category);
-        postData.append('content', content);
-        postData.append('achievedAction', achievedAction);
-        postData.append('actionId', actionId);
-        postData.append('carbon_reduced', carbon);
-
-        if (imageFile) {
-            postData.append('image', imageFile);
-        }
-
-        try {            
-            const response = await createPost(postData);
-            
-            if (response.error) {
-                toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");
-                return;
-            }
-
-            toast.success("Post creado con éxito!");
+    const handleAddPost = async (...args) => {
+        const success = await addPost(...args);
+        if (success) {
             setIsModalOpen(false);
-        } catch (error) {
-            toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");
         }
     }
 
@@ -134,7 +90,7 @@ export function Community() {
                         isOpen={isModalOpen}
                         onClose={() => setIsModalOpen(false)}
                         onSubmit={handleAddPost}
-                        categories={categories}
+                        categories={CATEGORIES}
                     />
                     
                     <div className="flex flex-col gap-6">

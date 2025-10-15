@@ -48,7 +48,7 @@ export function BaseCarousel({children}) {
             {/* Botón izquierdo */}
             <button
               onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-gradient-to-r from-[#f3f4f6e6] via-[#f3f4f6b3] to-transparent hover:from-[#f3f4f6f2] hover:via-[#f3f4f6cc] hover:to-transparent p-2 pr-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer h-[91%] flex items-center justify-start disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-gradient-to-r from-[#f3f4f6e6] via-[#f3f4f6b3] to-transparent hover:from-[#f3f4f6f2] hover:via-[#f3f4f6cc] hover:to-transparent p-2 pr-2 lg:pr-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer h-[91%] flex items-center justify-start disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-6 h-6 text-[#005840]" stroke={2} />
             </button>
@@ -56,7 +56,7 @@ export function BaseCarousel({children}) {
             {/* Botón derecho */}
             <button
               onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-gradient-to-l from-[#f3f4f6e6] via-[#f3f4f6b3] to-transparent hover:from-[#f3f4f6f2] hover:via-[#f3f4f6cc] hover:to-transparent p-2 pl-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer h-[91%] flex items-center justify-end disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-gradient-to-l from-[#f3f4f6e6] via-[#f3f4f6b3] to-transparent hover:from-[#f3f4f6f2] hover:via-[#f3f4f6cc] hover:to-transparent p-2 pl-2 lg:pl-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer h-[91%] flex items-center justify-end disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight className="w-6 h-6 text-[#005840]" stroke={2} />
             </button>

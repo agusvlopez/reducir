@@ -1,5 +1,4 @@
 import { Avatar } from "../../components/Base/Avatar";
-import { DonutProgress } from "../../components/DonutProgress";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
 import { useAuth } from "../../hooks/useAuth";
@@ -12,6 +11,8 @@ import { useGetUserQuery } from "../../api/apiSlice";
 import { useGetPostsByUserQuery } from "../../api/postsSlice";
 import { PostCard } from "../../components/Cards/PostCard";
 import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
+import { Post } from "../../components/Community/Post";
+import { AchievementCard } from "../../components/Cards/AchievementCard";
 
 export function Home() {    
     const [sectionSelected, setSectionSelected] = useState("actionsSaved");
@@ -21,7 +22,6 @@ export function Home() {
     const {data: userPostsData, isLoading: isPostsLoading} = useGetPostsByUserQuery(userId, { skip: !userId });
 
     const actionsAchieved = useMemo(() => userData?.actions_achieved || [], [userData]);
-    
 
     // Usamos useGetActionsQuery para obtener todas las acciones
     //TODO: pasar a un hook ? 
@@ -120,7 +120,7 @@ export function Home() {
                             if (!achievedAction) return null;
 
                             return (
-                                <CarouselCard
+                                <AchievementCard
                                     key={achievedAction._id}
                                     actionId={achievedAction._id}
                                     title={achievedAction?.title}
@@ -136,7 +136,7 @@ export function Home() {
             }
 
             {sectionSelected === 'posts' &&
-            //TODO
+            //TODO: HACERLO EN UN COMPONENTE SEPARADO
             (
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
@@ -144,13 +144,28 @@ export function Home() {
                     <p className="text-sm mb-2">Todas tus publicaciones se muestran acá.</p>
                     <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
 
+                {/* //TODO: AGREGAR UN FILTRO */}
                     <div>
                         {userPostsData?.map((post) => {
                             return (
-<>
-{/* <PostCard>
-</PostCard> */}
-</>
+                            <div
+                            className="mt-8 pt-4 border-t border-gray-300" 
+                            key={post._id}>
+                            <Post 
+                                id={post._id}
+                                name={post.userInfo.name}
+                                username={post.userInfo.username}
+                                profileImage={post.userInfo.profileImage}
+                                image={post.image}
+                                content={post.content}
+                                category={post.category}
+                                createdAt={post.createdAt}
+                                likesCount={post.likesCount}
+                                commentsCount={post.commentsCount}
+                                actionId={post?.actionId}
+                                carbon={post?.carbon_reduced}
+                            />
+                            </div>
                         );
                         })}
                     </div>

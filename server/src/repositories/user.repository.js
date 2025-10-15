@@ -180,7 +180,7 @@ export class UserRepository {
             achieved: false,
             progress: progress,
             remaining: currentCarbon - goal.targetValue,
-            message: `Vas por buen camino. Te faltan ${Math.round(currentCarbon - goal.targetValue)} unidades para tu meta`
+            message: `Vas por buen camino. Te faltan ${Math.max(0, currentCarbon - goal.targetValue).toFixed(1)} kg de reducción para tu meta`
           };
         }
       }

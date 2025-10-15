@@ -7,6 +7,7 @@ export function Select({
     selectName = "",
     isRequired = false,
     className = "",
+    value = "",
 }) {
 
     return (
@@ -17,13 +18,14 @@ export function Select({
                     id={selectId}
                     name={selectName}
                     required={isRequired}
+                    value={value}
                     onChange={(e) => onChange(e.target.value)}
                     className="w-full h-10 px-4 text-sm border rounded-full focus:outline-none focus:ring-2 appearance-none border-gray-300 bg-[#F1EDEC] text-[#383838] cursor-pointer focus:ring-[#005840] focus:border-[#005840] shadow-sm"
                 >
-                    <option value="" disabled>
+                    <option value="" disabled hidden>
                         {placeholder}
                     </option>
-                    {options.map((option) => (
+                    {options?.map((option) => (
                         <option key={option.id} value={option.value} className="text-[#383838] border-b border-gray-200 hover:bg-gray-100">
                             {option.label}
                         </option>

@@ -35,7 +35,6 @@ export function GoalProgressCard({
 
   const progressPercentage = calculateProgress();
   
-
   // 1️⃣ Convertimos las fechas a objetos Date
   const start = new Date(startDate);
   const endOfYear = new Date(year, 11, 31); // mes 11 = diciembre (0-indexed)
@@ -46,7 +45,6 @@ export function GoalProgressCard({
   // 3️⃣ Convertimos a días
   const daysRemaining = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-  console.log(daysRemaining); // 👉 cantidad de días restantes
   return (
     <>
       {goalAchieved && (
@@ -61,7 +59,7 @@ export function GoalProgressCard({
         <div className="flex items-center gap-2 pl-0.5 text-[#005840] font-semibold mb-0.5">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="9" cy="9" r="9" fill="#005840"/>
-          <path d="M9 6V9.75L11.25 12.75" stroke="#F1EDEC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 6V9.75L11.25 12.75" stroke="#F1EDEC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <span>Días restantes: {daysRemaining}</span>
         </div>

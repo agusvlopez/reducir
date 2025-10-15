@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar } from "../Base/Avatar";
 import BaseButton from "../Base/BaseButton";
 import { Select } from "../Inputs/Select";
@@ -6,11 +6,10 @@ import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import { useAuth } from "../../hooks/useAuth";
 import { useGetUserQuery } from "../../api/apiSlice";
 
-export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
-  
+export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [selectedActionId, setSelectedActionId] = useState("");
+  const [selectedActionId, setSelectedActionId] = useState(actionSelectedId || "");
 
   const { user } = useAuth();
   const { data: userData, isLoading: isUserLoading } = useGetUserQuery(user?._id, { skip: !user?._id });
@@ -22,6 +21,12 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
 
   // Buscamos la acción seleccionada para obtener sus datos
   const selectedAction = achievedActions?.find(action => action._id === selectedActionId);
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedActionId(actionSelectedId || "");
+    }
+  }, [isOpen, actionSelectedId]);
 
   const handleActionChange = (value) => {
     setSelectedActionId(value);
@@ -56,21 +61,18 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(e, selectedImage, selectedActionId, selectedAction?.carbon); 
-  
-    setImagePreview(null);
-    setSelectedActionId("");
+    onSubmit(e, selectedImage, selectedActionId, selectedAction?.carbon, selectedAction?.category); 
   };
 
   const handleClose = () => {
-    // Limpiar estado al cerrar
     setSelectedImage(null);
     setImagePreview(null);
+    setSelectedActionId(""); 
     onClose();
-    setSelectedActionId("");
   };
 
   if (!isOpen) return null;
+  
   return (
     <>
       {/* Overlay */}
@@ -106,48 +108,35 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
                 size="lg"
                 isBordered={true}
               />
-              <Select
-                selectId="category"
-                selectName="category"
-                label="Categoría"
-                options={categories}
-                placeholder="Categoría"
-                isRequired
-              />
-            </div>
-            {/* Aca un select donde muestra todas las achieved actions: */}
-            <div className="mb-4">
-              <Select
-                selectId="achieved_action"
-                selectName="achieved_action"
-                label="Acción lograda"
-                options={achievedActions?.map(action => ({
-                  value: action._id,
-                  label: action.title,
-                })) || []}
-                disabled={isUserLoading || !achievedActions}
-                placeholder="Seleccioná la acción lograda"
-                onChange={handleActionChange}
-                value={selectedActionId}
-                // isRequired
-                className="mb-1"
-              />
-              {/* dependiendo de la accion seleccionada, mostrar el carbon reducido(el campo carbon de action) */}
-              <span className="text-sm text-gray-600">
-                Carbono reducido: <span className="font-semibold text-dark-green">{selectedAction ? `-${selectedAction.carbon} kg` : '-'}</span>
-              </span>
+              {/* Aca un select donde muestra todas las achieved actions: */}
+              <div className="">
+                <Select
+                  selectId="achieved_action"
+                  selectName="achieved_action"
+                  label="Acción lograda"
+                  options={achievedActions?.map(action => ({
+                    value: action._id,
+                    label: action.title,
+                  })) || []}
+                  disabled={isUserLoading || !achievedActions}
+                  placeholder="Seleccioná la acción lograda"
+                  onChange={handleActionChange}
+                  value={selectedActionId}
+                  // isRequired
+                  className="mb-1"
+                />
+              </div>
             </div>
             <textarea
               name="content"
               id="content"
               rows="4"
-              className="w-full h-24 p-4 text-sm border border-gray-300 rounded-[30px] focus:outline-none focus:ring-2 bg-[#F1EDEC] text-[#383838] shadow-sm mb-4"
+              className="w-full h-24 p-4 text-sm border border-gray-300 rounded-[30px] focus:outline-none focus:ring-2 bg-[#F1EDEC] text-[#383838] shadow-sm mb-2"
               placeholder="Escribí algo sobre tu logro..."
               required
             />
-
             {/* Botón para agregar imagen */}
-            <div className="mb-4">
+            <div className="mb-2">
               <input 
                 type="file" 
                 accept="image/*"
@@ -186,6 +175,14 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
               </div>
             )}
             
+            {/* dependiendo de la accion seleccionada, mostrar el carbon reducido(el campo carbon de action) */}
+            <div className="mb-4 flex flex-col">
+              <div className="text-sm text-gray-600">
+                Carbono reducido: <span className="">{selectedAction ? `-${selectedAction.carbon} kg` : '-'}</span>
+              </div>
+              <div className="text-sm text-gray-600">Categoría: <span className="">{selectedAction?.category}</span></div>
+            </div>
+
             <div className="flex justify-end gap-3 mt-4">
               <button
                 type="button"
