@@ -1,3 +1,5 @@
+// TODO: ACOMODAR UNA VEZ HECHO EL BACKEND
+
 import { Link } from "react-router-dom";
 import { HeartIcon } from "../Icons/Heart";
 import { ImagePill } from "../Base/ImagePill.jsx";
@@ -7,7 +9,7 @@ import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus.js";
 import { useCheckAchievedActionQuery } from "../../api/actionsSlice.js";
 import AchievementIcon from "../../assets/icons/Achievement.webp";
 
-export function ActionCard({
+export function PostCard({
     id,
     title,
     category = "",

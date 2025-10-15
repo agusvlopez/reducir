@@ -9,14 +9,19 @@ import { Link } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
 import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useGetUserQuery } from "../../api/apiSlice";
+import { useGetPostsByUserQuery } from "../../api/postsSlice";
+import { PostCard } from "../../components/Cards/PostCard";
 
-export function Home() {
-    const { userId } = useAuth();
+export function Home() {    
+    const [sectionSelected, setSectionSelected] = useState("actionsSaved");
     
+    const { userId } = useAuth();
     const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
+    const {data: userPostsData, isLoading: isPostsLoading} = useGetPostsByUserQuery(userId, { skip: !userId });
 
     const actionsAchieved = useMemo(() => userData?.actions_achieved || [], [userData]);
     
+
     // Usamos useGetActionsQuery para obtener todas las acciones
     //TODO: pasar a un hook ? 
     //Esto va una vez que acomode la API de actions
@@ -24,8 +29,6 @@ export function Home() {
     // console.log("actions", actions);
 
     const { actionsSaved } = useActionsSaved();
-
-    const [sectionSelected, setSectionSelected] = useState("actionsSaved");
 
     const handleSections = (value) => {
         setSectionSelected(value);
@@ -172,6 +175,17 @@ export function Home() {
                     <h2 className="text-[20px] font-semibold">Mis publicaciones</h2>
                     <p className="text-sm mb-2">Todas tus publicaciones se muestran acá.</p>
                     <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
+
+                    <div>
+                        {userPostsData?.map((post) => {
+                            return (
+<>
+{/* <PostCard>
+</PostCard> */}
+</>
+                        );
+                        })}
+                    </div>
                 </div>
                 </section>
             )

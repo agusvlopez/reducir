@@ -132,4 +132,9 @@ export class UserService {
     return carbon;
   }
 
+  static async getAchievedActions(userId) {
+    const achievedActions = await UserRepository.getAchievedActions(userId);
+    return achievedActions;
+  }
+
 }

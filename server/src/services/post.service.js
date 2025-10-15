@@ -4,9 +4,9 @@ import { NotFoundError } from "../errors/NotFoundError.js";
 
 export class PostService {
   //CHECKED?: ✅
-  static async create({ userId, userInfo, category, content, image}) {
+  static async create({ userId, actionId, carbon_reduced, userInfo, category, content, image}) {
     try {
-      const post = await PostRepository.create({ userId, userInfo, category, content, image });
+      const post = await PostRepository.create({ userId, actionId, carbon_reduced, userInfo, category, content, image });
       return post;
     } catch (error) {
       throw error;

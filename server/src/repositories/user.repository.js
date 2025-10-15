@@ -106,8 +106,7 @@ export class UserRepository {
     try {
       const result = await User.findById(userId, 'actions_saved').lean();
       const favorites = result?.actions_saved;
-      
-      //devolver true o false
+
       if (!favorites) return false;
       return favorites.includes(actionId);
     } catch (error) {
@@ -148,8 +147,7 @@ export class UserRepository {
     try {
       const result = await User.findById(userId, 'actions_achieved').lean();
       const achievedActions = result?.actions_achieved;
-      
-      //devolver true o false
+
       if (!achievedActions) return false;
       return achievedActions.includes(actionId);
     } catch (error) {
@@ -165,4 +163,16 @@ export class UserRepository {
       return 0;
     }
   }
+
+  static async getAchievedActions(userId) {
+    try {
+      const result = await User.findById(userId, 'actions_achieved').lean();
+      //ahora buscar 
+      return result?.actions_achieved || [];
+     
+    } catch (error) {
+      return [];
+    }
+  }
+
 }

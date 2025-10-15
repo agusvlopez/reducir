@@ -2,13 +2,31 @@ import { useState } from "react";
 import { Avatar } from "../Base/Avatar";
 import BaseButton from "../Base/BaseButton";
 import { Select } from "../Inputs/Select";
+import ACTIONS from "../../assets/data/greenSteps.actions.json";
+import { useAuth } from "../../hooks/useAuth";
+import { useGetUserQuery } from "../../api/apiSlice";
 
 export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
+  
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [selectedActionId, setSelectedActionId] = useState("");
 
-  if (!isOpen) return null;
+  const { user } = useAuth();
+  const { data: userData, isLoading: isUserLoading } = useGetUserQuery(user?._id, { skip: !user?._id });
+  const actionsAchievedInUser = userData?.actions_achieved || [];
+  
+  const achievedActions = actionsAchievedInUser?.map((actionId) => {
+    return ACTIONS?.find(a => a._id === actionId);
+  }).filter(Boolean); // Filtramos por si alguna acción no se encuentra
 
+  // Buscamos la acción seleccionada para obtener sus datos
+  const selectedAction = achievedActions?.find(action => action._id === selectedActionId);
+
+  const handleActionChange = (value) => {
+    setSelectedActionId(value);
+  };
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
@@ -38,11 +56,10 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(e, selectedImage); // Pasamos la imagen también
-    
-    // Limpiar estado
-    //setSelectedImage(null);
+    onSubmit(e, selectedImage, selectedActionId, selectedAction?.carbon); 
+  
     setImagePreview(null);
+    setSelectedActionId("");
   };
 
   const handleClose = () => {
@@ -50,8 +67,10 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
     setSelectedImage(null);
     setImagePreview(null);
     onClose();
+    setSelectedActionId("");
   };
 
+  if (!isOpen) return null;
   return (
     <>
       {/* Overlay */}
@@ -96,7 +115,28 @@ export function NewPostModal({ isOpen, onClose, onSubmit, categories }) {
                 isRequired
               />
             </div>
-            
+            {/* Aca un select donde muestra todas las achieved actions: */}
+            <div className="mb-4">
+              <Select
+                selectId="achieved_action"
+                selectName="achieved_action"
+                label="Acción lograda"
+                options={achievedActions?.map(action => ({
+                  value: action._id,
+                  label: action.title,
+                })) || []}
+                disabled={isUserLoading || !achievedActions}
+                placeholder="Seleccioná la acción lograda"
+                onChange={handleActionChange}
+                value={selectedActionId}
+                // isRequired
+                className="mb-1"
+              />
+              {/* dependiendo de la accion seleccionada, mostrar el carbon reducido(el campo carbon de action) */}
+              <span className="text-sm text-gray-600">
+                Carbono reducido: <span className="font-semibold text-dark-green">{selectedAction ? `-${selectedAction.carbon} kg` : '-'}</span>
+              </span>
+            </div>
             <textarea
               name="content"
               id="content"

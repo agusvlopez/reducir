@@ -15,7 +15,9 @@ export function Post({
     category,
     createdAt,
     likesCount,
-    commentsCount
+    commentsCount,
+    actionId,
+    carbon
 }) {
     const { userId } = useAuth();
 
@@ -32,6 +34,8 @@ export function Post({
                     image={image} 
                     content={content}
                     category={category}
+                    actionId={actionId}
+                    carbon={carbon}
                 />
             </Link>
             <PostFooter 

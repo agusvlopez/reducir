@@ -16,7 +16,6 @@ export function CommunityPost() {
     
     const { createComment } = usePostComments();
     const {data: post, isError, isLoading} = useGetPostQuery(postId);
-    
     const {data: comments} = useGetCommentsByPostQuery(postId);
 
     const handleComment = async (content, form) => {
@@ -34,20 +33,16 @@ export function CommunityPost() {
         }
     }
 
-    //TODO: AGREGAR LOGICA DE LIKE/DISLIKE(SÍ, ESTA EN BACKEND)
-
-
-    // Primero, en tu componente donde tienes los comments
     const rootComments = comments?.filter(c => !c.isReply);
 
     // Función helper para obtener las respuestas de un comentario
     const getRepliesForComment = (commentId) => {
-    return comments?.filter(c => c.isReply && c.parentCommentId === commentId);
+        return comments?.filter(c => c.isReply && c.parentCommentId === commentId);
     };
 
     if (isLoading) return <Loader size="lg" color="green" />;
     if (isError) return <p>Error al cargar el post.</p>;
-console.log("post", post);
+
 
     return (
         <section className="mx-6 my-6 flex flex-col gap-6">
@@ -68,7 +63,9 @@ console.log("post", post);
                     createdAt={post?.createdAt}
                     likesCount={post?.likesCount}
                     commentsCount={post?.commentsCount}
-                    />
+                    actionId={post?.actionId}
+                    carbon={post?.carbon_reduced}
+                />
             </div>
             {/* FORMULARIO DE RESPUESTA AL POST */}
             <div className="border-b border-[#6D6D6D]">

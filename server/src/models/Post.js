@@ -6,6 +6,23 @@ const PostSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  actionId: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+    validate: {
+      validator: function (v) {
+        return (
+          mongoose.Types.ObjectId.isValid(v) ||
+          typeof v === 'string'
+        );
+      },
+      message: props => `${props.value} no es un ID válido`
+    }
+  },
+  carbon_reduced: {
+    type: Number,
+    required: true
+  },
   userInfo: {
     name: {
       type: String,

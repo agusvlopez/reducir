@@ -10,7 +10,8 @@ usersRouter.patch('/carbon', UserController.createCarbon);
 usersRouter.patch('/toggle-favorite-action', UserController.toggleFavoriteAction);
 usersRouter.get('/:userId/favorite-actions/:actionId', UserController.checkFavoriteAction);
 usersRouter.get('/:userId/favorite-actions', UserController.getSavedActions);
-usersRouter.get('/:userId', UserController.findById); // <-- AÑADIR ESTA LÍNEA
+usersRouter.get('/:userId/achieved-actions', UserController.getAchievedActions);
+usersRouter.get('/:userId', UserController.findById);
 usersRouter.patch('/add-achieved-action', UserController.addAchievedAction);
 usersRouter.get('/:userId/achieved-actions/:actionId', UserController.checkAchievedAction);
 usersRouter.get('/:userId/carbon', UserController.checkCarbon);

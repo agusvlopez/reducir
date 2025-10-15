@@ -186,4 +186,18 @@ export class UserController {
     } catch (error) {}
   }
 
+  static async getAchievedActions(req, res) {
+    const { userId } = req.params;
+
+    try {
+      const achievedActions = await UserService.getAchievedActions(userId);
+      res.status(200).json(achievedActions);
+    }catch(error){
+      if(error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message });
+      }
+      
+    }
+  }
+
 }

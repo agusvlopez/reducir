@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Avatar } from "../../components/Base/Avatar";
 import { Post } from "../../components/Community/Post";
 import { Search } from "../../components/Inputs/Search";
-import { Select } from "../../components/Inputs/Select";
-import BaseButton from "../../components/Base/BaseButton";
 import { useCreatePostMutation, useGetPostsQuery } from "../../api/postsSlice";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "sonner";
 import { NewPostModal } from "../../components/Community/NewPostModal";
 import { Loader } from "../../components/Base/Loader";
+
 
 //TODO: PASAR ESTO A UN ARCHIVO DE CONSTANTES PARA REUTILIZARLO
 const categories = [
@@ -34,15 +33,14 @@ export function Community() {
     }
 
     //TODO: PASAR A UN COMPONENTE APARTE ESTO JUNTO CON EL FORMULARIO
-    const handleAddPost = async (e, imageFile) => {
+    const handleAddPost = async (e, imageFile, actionId, carbon) => {
         e.preventDefault();
-console.log("imageFile", imageFile);
 
         const formData = new FormData(e.target);
         const category = formData.get("category");
         const content = formData.get("content");
+        const achievedAction = formData.get("achieved_action");
 
-        // Crear FormData para enviar la imagen
         const postData = new FormData();
         postData.append('userId', user?._id);
         postData.append('userInfo', JSON.stringify({
@@ -52,22 +50,16 @@ console.log("imageFile", imageFile);
         }));
         postData.append('category', category);
         postData.append('content', content);
-        
-        // Agregar imagen si existe
+        postData.append('achievedAction', achievedAction);
+        postData.append('actionId', actionId);
+        postData.append('carbon_reduced', carbon);
+
         if (imageFile) {
             postData.append('image', imageFile);
         }
-// Ver todo el contenido de una vez
-console.log("postData:", Object.fromEntries(postData));
 
-// O más detallado
-console.log("userId:", postData.get('userId'));
-console.log("category:", postData.get('category'));
-console.log("content:", postData.get('content'));
-console.log("image:", postData.get('image')); // Verás el File object
         try {            
             const response = await createPost(postData);
-            console.log("response", response);
             
             if (response.error) {
                 toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");
@@ -186,6 +178,8 @@ console.log("image:", postData.get('image')); // Verás el File object
                                 createdAt={post.createdAt}
                                 likesCount={post.likesCount}
                                 commentsCount={post.commentsCount}
+                                actionId={post?.actionId}
+                                carbon={post?.carbon_reduced}
                             />
                         ))}
                     </div>

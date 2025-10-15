@@ -6,11 +6,10 @@ import Post from "../models/Post.js";
 
 export class PostRepository {
   // CHECKED?: ✅
-  static async create({ userId, userInfo, category, content, image }) {   
+  static async create({ userId, actionId, carbon_reduced, userInfo, category, content, image }) {   
     try {
       let imageUrl = null;
 
-      // Si hay imagen, súbela a Cloudinary
       if (image) {
         const uploadResult = await cloudinary.uploader.upload(image, {
           folder: 'posts', // Carpeta en Cloudinary
@@ -25,10 +24,12 @@ export class PostRepository {
 
       const post = await Post.create({
         userId,
+        actionId,
+        carbon_reduced,
         userInfo,
         category,
         content,
-        image: imageUrl // Corregido: usa la URL de Cloudinary en lugar del base64
+        image: imageUrl
       });
 
       return post;
