@@ -8,6 +8,7 @@ import { BaseModal } from "../../components/Base/BaseModal";
 import { useDisclosure } from "@heroui/react";
 import { useGetUserQuery } from "../../api/apiSlice";
 import { useAuth } from "../../hooks/useAuth";
+import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
 
 export function Emissions() {
     const { userId } = useAuth();
@@ -37,16 +38,17 @@ export function Emissions() {
                         </button>
                     </span>
                     <p>Toneladas anuales de contaminación (CO2e)</p>
-                    <Pill
-                        text={`Tu objetivo: Reducir un ${userData?.carbonGoal?.targetReductionPercentage} las emisiones anuales (CO2)`}
-                        color="orange"
-                        size="sm"
-                        className="font-medium w-fit"
-                    />
                 </div>
             </AppHeaderSection>
             <section className="max-w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
-                {/* Estadisticas: en BarLineChart */}
+                <GoalProgressCard 
+                    targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
+                    baselineValue={userData?.carbonGoal?.baselineValue}
+                    targetValue={userData?.carbonGoal?.targetValue}
+                    currentCarbon={userData?.carbon}
+                    startDate={userData?.carbonGoal?.startDate}
+                    year={userData?.carbonGoal?.year}
+                />
             </section>
             <section className="mx-auto py-8 flex flex-col gap-4 items-center justify-center">
                 <BaseCard
