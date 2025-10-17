@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ 
     baseUrl: "http://localhost:3000"
   }),  
-  tagTypes: ["Users", "User", "Actions", "UserFavorites", "Posts", "PostLikes", "PostComments", "CommentLikes"], // Un solo lugar para todos los tags
+  tagTypes: ["Users", "User", "Actions", "UserFavorites", "Posts", "PostLikes", "PostComments", "CommentLikes"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/users",
@@ -22,7 +22,7 @@ export const apiSlice = createApi({
         url: "/users",
         method: "POST",
         body: newUser,
-        credentials: 'include' // Necessary if the backend uses cookies for authentication
+        credentials: 'include' 
       }),
     }),
     loginUser: builder.mutation({
@@ -47,7 +47,16 @@ export const apiSlice = createApi({
         body: data
       }),
       invalidatesTags: ["Users"]
-    })
+    }),
+    setCarbonGoal: builder.mutation({
+      query: (data) => ({
+        url: "/users/set-carbon-goal",
+        method: "PATCH",
+        body: data
+      }),
+      invalidatesTags: ["User"]
+    }),
+
   }),
 });
 
@@ -58,5 +67,6 @@ export const {
   useCreateUserMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
-  useCreateCarbonMutation
+  useCreateCarbonMutation,
+  useSetCarbonGoalMutation
 } = apiSlice;

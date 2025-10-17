@@ -10,7 +10,7 @@ const Home = lazy(() => import("./pages/App/Home").then(m => ({ default: m.Home 
 const Actions = lazy(() => import("./pages/App/Actions").then(m => ({ default: m.Actions })));
 const Action = lazy(() => import("./pages/App/Action").then(m => ({ default: m.Action })));
 const Emissions = lazy(() => import("./pages/App/Emissions").then(m => ({ default: m.Emissions })));
-const Goals = lazy(() => import("./pages/App/Goals").then(m => ({ default: m.Goals })));
+const Goals = lazy(() => import("./pages/App/Goals/Goals.jsx").then(m => ({ default: m.Goals })));
 const Community = lazy(() => import("./pages/App/Community").then(m => ({ default: m.Community })));
 const CommunityPost = lazy(() => import("./pages/App/CommunityPost").then(m => ({ default: m.CommunityPost })));
 const ComposerPost = lazy(() => import("./pages/App/ComposerPost").then(m => ({ default: m.ComposerPost })));

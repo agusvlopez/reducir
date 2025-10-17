@@ -1,22 +1,41 @@
 import "./Goals.css";
 import { useDisclosure } from "@heroui/react";
-import { AppHeaderSection } from "../../components/Sections/AppHeader";
-import { BaseModal } from "../../components/Base/BaseModal";
-import { Heading } from "../../components/Base/Heading";
-import InfoImage from "../../assets/icons/info.png";
+import { AppHeaderSection } from "../../../components/Sections/AppHeader";
+import { BaseModal } from "../../../components/Base/BaseModal";
+import { Heading } from "../../../components/Base/Heading";
+import InfoImage from "../../../assets/icons/info.png";
 import { Link } from "react-router-dom";
-import CarbonReduceIcon from "../../assets/icons/carbon-reduce.png";
-import BaseButton from "../../components/Base/BaseButton";
+import CarbonReduceIcon from "../../../assets/icons/carbon-reduce.png";
+import BaseButton from "../../../components/Base/BaseButton";
 import { useState } from "react";
+import { useSetCarbonGoalMutation } from "../../../api/apiSlice";
+import { useAuth } from "../../../hooks/useAuth";
+import { toast } from "sonner";
 
 
 export function Goals() {
+    const { userId } = useAuth();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [setCarbonGoal] = useSetCarbonGoalMutation();
 
     const [customGoal, setCustomGoal] = useState(false);
-    const [sliderValue, setSliderValue] = useState(70);
+    const [sliderValue, setSliderValue] = useState(10);
 
     const handleCustomGoal = () => setCustomGoal(!customGoal);
+
+    const handleSetGoal = async () => {
+        try {
+            const response = await setCarbonGoal({
+                userId,
+                reductionPercentage: sliderValue
+            });
+            console.log("response", response);
+            
+            toast.success("Objetivo establecido con éxito");
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
 
     return (
         <>
@@ -60,7 +79,10 @@ export function Goals() {
                             <span className="absolute top-[25%] left-[30%] text-lg font-semibold text-[#005840]">{sliderValue}%</span>
                             <img src={CarbonReduceIcon} alt="Reducción de dióxido de carbono" className="w-[93px] mx-auto" />
                         </div>
-                        <BaseButton>
+                        <BaseButton 
+                            onClick={handleSetGoal}
+                            className="mx-auto"
+                        >
                             Establecer objetivo
                         </BaseButton>
 
@@ -89,7 +111,10 @@ export function Goals() {
                             <span className="absolute top-[25%] left-[30%] text-xl font-semibold text-[#005840]">10%</span>
                             <img src={CarbonReduceIcon} alt="Reducción de dióxido de carbono" className="w-[93px] mx-auto" />
                         </div>
-                        <BaseButton>
+                        <BaseButton
+                            onClick={handleSetGoal}
+                            className="mx-auto"
+                        >
                             Reducir un 10%
                         </BaseButton>
                     </>

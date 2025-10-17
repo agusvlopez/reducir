@@ -6,9 +6,13 @@ import LedImage from "../../assets/led.png";
 import PlantImage from "../../assets/plant.png";
 import { BaseModal } from "../../components/Base/BaseModal";
 import { useDisclosure } from "@heroui/react";
+import { useGetUserQuery } from "../../api/apiSlice";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Emissions() {
+    const { userId } = useAuth();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
 
     return (
         <>
@@ -34,9 +38,10 @@ export function Emissions() {
                     </span>
                     <p>Toneladas anuales de contaminación (CO2e)</p>
                     <Pill
-                        text="Tu objetivo: Reducir un 10% las emisiones anuales (CO2)" className="font-medium"
+                        text={`Tu objetivo: Reducir un ${userData?.carbonGoal?.targetReductionPercentage} las emisiones anuales (CO2)`}
                         color="orange"
                         size="sm"
+                        className="font-medium w-fit"
                     />
                 </div>
             </AppHeaderSection>
