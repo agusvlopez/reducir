@@ -158,9 +158,9 @@ export function Home() {
                             key={post._id}>
                             <Post 
                                 id={post._id}
-                                name={post.userInfo.name}
-                                username={post.userInfo.username}
-                                profileImage={post.userInfo.profileImage}
+                                name={post.userId?.name}
+                                username={post.userId?.username}
+                                profileImage={post.userId?.image}
                                 image={post.image}
                                 content={post.content}
                                 category={post.category}

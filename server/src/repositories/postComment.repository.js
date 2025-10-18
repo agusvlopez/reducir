@@ -58,7 +58,10 @@ export class PostCommentRepository {
   static async findByPostId({ postId }) {
     try {
       // diferenciar si tiene parentCommentId o no
-      const postComments = await PostComment.find({ postId }).sort({ createdAt: -1 });
+      const postComments = await PostComment.
+      find({ postId })
+      .populate('userId', 'name username image')
+      .sort({ createdAt: -1 });
       return postComments;
     } catch(error) {
       if (error.name === 'ValidationError') {

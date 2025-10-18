@@ -75,8 +75,7 @@ function CommentItem({ answer }) {
         console.error(error);
         toast.error("Error al comentar");
     }
-  }
-  console.log("asnwer", answer);
+  }  
   
   return (
     <>
@@ -89,7 +88,7 @@ function CommentItem({ answer }) {
       />
     )}
     <div className="flex justify-between gap-4">
-      <Avatar src={answer?.userInfo?.profileImage} />
+      <Avatar src={answer?.userId?.image} />
       <div className="flex-1 flex flex-col gap-2">
         <div>
           <div className="flex items-center gap-1">

@@ -1,6 +1,6 @@
-import { SALT_ROUNDS } from "../config.js";
 import cloudinary from "../config/cloudinary.js";
 import User from "../models/User.js";
+import { PostRepository } from "./post.repository.js";
 
 export class UserRepository {
   static async create({ name, username, email, hashedPassword, image }) {
@@ -62,6 +62,14 @@ export class UserRepository {
         { $set: updateData },
         { new: true, runValidators: true }
       );
+
+      const userInfo ={
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        image: user.image
+      }
+
 
       return user;
     } catch (error) {

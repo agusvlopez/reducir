@@ -43,7 +43,6 @@ export function Post({
                 createdAt={createdAt}
                 likesCount={likesCount}
                 commentsCount={commentsCount}
-                userId={userId}
             />
         </section>
     );

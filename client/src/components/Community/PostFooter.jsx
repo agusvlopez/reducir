@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { usePostComments } from "../../hooks/usePostComments";
 import { PostModal } from "./PostModal";
+import { useAuth } from "../../hooks/useAuth";
 
 export function PostFooter({
     id,
@@ -12,6 +13,7 @@ export function PostFooter({
     likesCount,
     commentsCount
 }) {
+    const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { handleToggleFavoritePost } = useFavoritePosts();
@@ -50,6 +52,7 @@ export function PostFooter({
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 handleComment={handleComment}
+                srcAvatar={user?.image}
             />
         )}
         <div className="text-[#383838] flex items-center gap-4 justify-between">

@@ -17,6 +17,7 @@ export function CommunityPost() {
     const { createComment } = usePostComments();
     const {data: post, isError, isLoading} = useGetPostQuery(postId);
     const {data: comments} = useGetCommentsByPostQuery(postId);
+console.log("post", post);
 
     const handleComment = async (content, form) => {
         try {
@@ -54,9 +55,9 @@ export function CommunityPost() {
                 {/* POST */}
                 <Post 
                     id={post?._id}
-                    name={post?.userInfo?.name}
-                    username={post?.userInfo?.username}
-                    profileImage={post?.userInfo?.profileImage}
+                    name={post?.userId?.name}
+                    username={post?.userId?.username}
+                    profileImage={post?.userId?.image}
                     image={post?.image}
                     content={post?.content}
                     category={post?.category}

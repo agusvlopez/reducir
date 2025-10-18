@@ -12,6 +12,8 @@ export function Community() {
     //const {user} = useAuth();
     const { addPost } = usePosts();
     const {data: posts, isError, isLoading} = useGetPostsQuery();
+    console.log("posts", posts);
+    
     //const [createPost] = useCreatePostMutation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -125,9 +127,9 @@ export function Community() {
                             <Post 
                                 key={post._id}
                                 id={post._id}
-                                name={post.userInfo.name}
-                                username={post.userInfo.username}
-                                profileImage={post.userInfo.profileImage}
+                                name={post.userId?.name}
+                                username={post?.userId?.username}
+                                profileImage={post?.userId?.image}
                                 image={post.image}
                                 content={post.content}
                                 category={post.category}

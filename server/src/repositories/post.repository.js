@@ -11,11 +11,11 @@ export class PostRepository {
 
       if (image) {
         const uploadResult = await cloudinary.uploader.upload(image, {
-          folder: 'posts', // Carpeta en Cloudinary
+          folder: 'posts', 
           resource_type: 'auto',
           transformation: [
-            { width: 1200, height: 1200, crop: 'limit' }, // Límite de tamaño
-            { quality: 'auto' } // Optimización automática
+            { width: 1200, height: 1200, crop: 'limit' }, 
+            { quality: 'auto' } 
           ]
         });
         imageUrl = uploadResult.secure_url;
@@ -40,10 +40,36 @@ export class PostRepository {
       throw error;
     }
   }
+
+  //TODO: finish it
+  static async update({userId, actionId, carbon_reduced, userInfo, category, content, image}) {
+    try {
+      //opcionales
+      const updateData = {};
+      if (userId) updateData.userId = userId;
+      if (actionId) updateData.actionId = actionId;
+      if (carbon_reduced) updateData.carbon_reduced = carbon_reduced;
+      if (userInfo) updateData.userInfo = userInfo;
+      if (category) updateData.category = category;
+      if (content) updateData.content = content;
+      if (image) updateData.image = image;
+
+      const updatedPost = await Post.findOneAndUpdate(
+        { userId, actionId },
+        updateData,
+        { new: true, runValidators: true }
+      );
+
+      return updatedPost;
+    } catch (error) {}
+  }
+
   // CHECKED?: ✅
   static async findById({ postId }) {
     try {
-      const post = await Post.findById(postId).lean();
+      const post = await Post.findById(postId)
+      .populate('userId', 'name username image')
+      .lean();
       if(post === null) {       
         throw new NotFoundError('No se encontró el post');
       }
@@ -59,10 +85,12 @@ export class PostRepository {
       return null;
     }
   }
-  // CHECKED?:
+  // CHECKED?: ✅
   static async findByUserId({ userId }) {
     try {
-      const posts = await Post.find({ userId }).lean();
+      const posts = await Post.find({ userId })
+      .populate('userId', 'name username image')
+      .lean();
       if(posts.length === 0) {       
         throw new NotFoundError('No se encontraron posts para este usuario');
       }
@@ -82,9 +110,10 @@ export class PostRepository {
   static async findAll() {
     try {
       const posts = await Post.find()
-      .sort({ createdAt: -1 })
-      .limit(200)
-      .lean();
+        .populate('userId', 'name username image') // Trae solo estos campos del usuario
+        .sort({ createdAt: -1 })
+        .limit(200)
+        .lean();
 
       return posts;
     } catch (error) {
