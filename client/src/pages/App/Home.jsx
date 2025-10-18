@@ -39,7 +39,12 @@ export function Home() {
         <>
             <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-24 rounded-b-[30px]">
                 <div className="flex items-center gap-4">
-                    <Avatar src={"https://i.pravatar.cc/300"} alt="User Avatar" className="mb-4" />
+                    <Avatar 
+                        size="xl"
+                        src={userData?.image}
+                        alt={userData?.name}
+                        className="mb-4"   
+                    />
                     <div>
                         <p>¡Hola <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
                         <p>Tu huella de carbono este mes:</p>

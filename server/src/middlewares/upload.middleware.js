@@ -1,4 +1,3 @@
-// middlewares/upload.js
 import multer from 'multer';
 
 // Configuración de Multer para memoria (no guarda en disco)
@@ -16,8 +15,4 @@ const upload = multer({
   }
 });
 
-// Middleware para procesar la imagen del post
-export const uploadPostImage = upload.single('image');
-
-// Si necesitas múltiples imágenes en el futuro:
-// export const uploadMultipleImages = upload.array('images', 5); // máximo 5
+export const uploadImage = upload.single('image');

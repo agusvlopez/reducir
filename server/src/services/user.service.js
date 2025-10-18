@@ -10,6 +10,7 @@ import { TokenService } from './token.service.js';
 
 export class UserService {
   static async create({ name, username, email, password }){
+
     const validationResult = validateUserCreate({ name, username, email, password });
     if (validationResult.error) throw new ValidationError(validationResult.error.message);
 
@@ -51,6 +52,16 @@ export class UserService {
     });
 
     return { userId: user._id, accessToken, refreshToken };
+  }
+
+  static async update({ userId, name, username, password, email, image }){
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+      password = hashedPassword;
+    }
+
+    const userUpdated = UserRepository.update({ userId, name, username, password, email, image });
+    return userUpdated;  
   }
 
   static async login({ email, password }){

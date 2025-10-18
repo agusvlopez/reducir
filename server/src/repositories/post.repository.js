@@ -5,7 +5,6 @@ import { ValidationError } from "../errors/ValidationError.js";
 import Post from "../models/Post.js";
 
 export class PostRepository {
-  // CHECKED?: ✅
   static async create({ userId, actionId, carbon_reduced, userInfo, category, content, image }) {   
     try {
       let imageUrl = null;

@@ -1,17 +1,71 @@
+import { SALT_ROUNDS } from "../config.js";
+import cloudinary from "../config/cloudinary.js";
 import User from "../models/User.js";
 
 export class UserRepository {
-  static async create({ name, username, email, hashedPassword }) {
+  static async create({ name, username, email, hashedPassword, image }) {
     try {
       const user = await User.create({ 
         name,
         username,
         email,
-        password: hashedPassword,
+        password: hashedPassword
       });
 
       return user;      
     } catch (error) {
+      return null;
+    }
+  }
+
+  //TODO: PASAR LOGICA A SERVICE O UN HELPER
+  static async update({ userId, name, username, password, email, image }) {
+    try {
+      // 1. Buscar el usuario actual para obtener la URL de la imagen antigua
+      const currentUser = await User.findById(userId).lean();
+      if (!currentUser) {
+        //TODO:lanzar un error de "no encontrado"
+        return null;
+      }
+
+      const updateData = {};
+      
+      if (image) {
+        // 2. Si hay una imagen antigua, eliminarla de Cloudinary
+        if (currentUser.image) {
+          // Extraer el public_id de la URL:
+          const publicId = currentUser.image.split('/').pop().split('.')[0];
+          const folder = currentUser.image.split('/')[currentUser.image.split('/').length - 2];
+          await cloudinary.uploader.destroy(`${folder}/${publicId}`);
+        }
+
+        // 3. Subir la nueva imagen
+        const uploadResult = await cloudinary.uploader.upload(image, {
+          folder: 'users', // Carpeta en Cloudinary
+          resource_type: 'auto',
+          transformation: [
+            { width: 1200, height: 1200, crop: 'limit' },
+            { quality: 'auto' } 
+          ]
+        });
+        updateData.image = uploadResult.secure_url;
+      }
+
+      if (name) updateData.name = name;
+      if (username) updateData.username = username;
+      if (email) updateData.email = email;
+      if (password) updateData.password = password;
+      
+      // 4. Actualizar el usuario en la base de datos
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+
+      return user;
+    } catch (error) {
+      console.error("Error al actualizar el usuario:", error);
       return null;
     }
   }

@@ -42,7 +42,6 @@ const UserSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
-  // Nuevo: Meta de reducción de carbono
   carbonGoal: {
     year: Number,
     targetReductionPercentage: Number,

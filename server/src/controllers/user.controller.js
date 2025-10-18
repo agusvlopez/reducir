@@ -14,7 +14,7 @@ export class UserController {
         name, 
         username, 
         email, 
-        password 
+        password
       });
   
       res
@@ -34,6 +34,29 @@ export class UserController {
       }      
       return res.status(500).send({ message: 'Ocurrió un error inesperado en el servidor.' });
     }  
+  }
+
+  static async update(req, res) {
+    const { userId } = req.params;
+    const { name, username, password, email } = req.body;    
+    
+    let imageBase64 = null;
+    if (req.file) {
+      imageBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    }
+
+    try {
+      const updatedUser = await UserService.update({ userId, name, username, password, email, image: imageBase64 });
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        return res.status(400).send(error.message);
+      }
+      return res.status(500).json({ message: 'Ocurrió un error inesperado en el servidor.' });
+    }
   }
 
   static async login(req, res) {
@@ -148,7 +171,7 @@ export class UserController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //TODO: CHECK
+
   static async addAchievedAction(req, res) {
     const { userId, actionId, carbon } = req.body;
 

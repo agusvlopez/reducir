@@ -25,6 +25,15 @@ export const apiSlice = createApi({
         credentials: 'include' 
       }),
     }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/users/${data.userId}`,
+        method: "PATCH",
+        body: data.body,
+        credentials: 'include' 
+      }),
+      invalidatesTags: ["User"]
+    }),
     loginUser: builder.mutation({
      query: (credentials) => ({
       url: "/users/login",
@@ -56,7 +65,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["User"]
     }),
-
+    
   }),
 });
 
@@ -65,6 +74,7 @@ export const {
   useGetUsersQuery,
   useGetUserQuery,
   useCreateUserMutation,
+  useUpdateUserMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
   useCreateCarbonMutation,

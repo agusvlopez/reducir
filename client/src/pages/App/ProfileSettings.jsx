@@ -5,11 +5,19 @@ import BaseInput from "../../components/Inputs/BaseInput";
 import { useState } from "react";
 import BaseButton from "../../components/Base/BaseButton";
 import { useAuth } from "../../hooks/useAuth";
+import { useGetUserQuery, useUpdateUserMutation } from "../../api/apiSlice";
+import { toast } from "sonner";
 
 export function ProfileSettings() {
-  const { handleLogout } = useAuth();
+  const { handleLogout, userId } = useAuth();
+  const [updateUser] = useUpdateUserMutation();
+  const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
 
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
+  const [editImageModal, setEditImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+console.log("userId",userId);
 
   const toggleDeleteAccountModal = () => {
     setDeleteAccountModal(!deleteAccountModal);
@@ -19,10 +27,104 @@ export function ProfileSettings() {
     toggleDeleteAccountModal();
   }
 
-  const [editImageModal, setEditImageModal] = useState(false);
-
   const toggleEditImageModal = () => {
     setEditImageModal(!editImageModal);
+    // Limpiar el preview al cerrar
+    if (editImageModal) {
+      setSelectedImage(null);
+      setImagePreview(null);
+    }
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    
+    if (file) {
+      // Validar tamaño (5MB máximo)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen no puede superar los 5MB');
+        return;
+      }
+
+      // Validar tipo de archivo
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona un archivo de imagen válido');
+        return;
+      }
+
+      setSelectedImage(file);
+      
+      // Crear preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEditImage = async (e) => {
+    e.preventDefault();
+    
+    if (!selectedImage) {
+      alert('Por favor selecciona una imagen');
+      return;
+    }
+    
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedImage);
+
+      const response = await updateUser({ userId, body: formData });
+      console.log(response);
+      toast.success('Imagen actualizada con éxito');
+
+      // Limpiar estados y cerrar modal
+      setSelectedImage(null);
+      setImagePreview(null);
+      toggleEditImageModal();
+    } catch (error) {
+      console.error('Error al actualizar la imagen:', error);
+      toast.error('Hubo un error al actualizar la imagen');
+    }
+  }
+
+  const handleEditNameEmail = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get('name');
+    const email = formData.get('email');
+
+    const updateBody = { name, email };
+    // Solo incluimos 'image' en el cuerpo de la actualización si se ha seleccionado una nueva imagen.
+    // Si selectedImage es null, significa que no se eligió una nueva imagen, por lo que no tocamos el campo de imagen.
+    // Si quisiéramos una funcionalidad explícita de "eliminar imagen", entonces selectedImage podría ser null para ese propósito.
+
+    try {
+      const response = await updateUser({ userId, body: updateBody });
+      console.log(response);
+      toast.success('Información actualizada con éxito');
+    } catch (error) {
+      console.error('Error al actualizar la información:', error);
+      toast.error('Hubo un error al actualizar la información');
+    }
+  }
+
+  const handleEditPassword = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const newPassword = formData.get('newPassword');
+
+    const updateBody = { password: newPassword };
+
+    try {
+      const response = await updateUser({ userId, body: updateBody });
+      console.log(response);
+      toast.success('Contraseña actualizada con éxito');
+    } catch (error) {
+      console.error('Error al actualizar la contraseña:', error);
+      toast.error('Hubo un error al actualizar la contraseña');
+    }
   }
 
   return (
@@ -53,25 +155,54 @@ export function ProfileSettings() {
       {/* Modal de edición de imagen */}
       {editImageModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-[30px] shadow-lg max-w-[80%] flex flex-col gap-2">
+          <div className="bg-white p-6 rounded-[30px] shadow-lg max-w-[80%] flex flex-col gap-4">
             <Heading tag="h3" size="h4" weight="semibold">Editar imagen de perfil</Heading>
-            <p className="mb-4">Subir nueva imagen de perfil.</p>
-            <form className="flex flex-col gap-4">
-              <BaseInput
-                label="Selecciona una imagen"
-                inputName="profileImage"
-                inputType="file"
-                accept="image/*"
-              />
+            <p>Subir nueva imagen de perfil.</p>
+            
+            <form onSubmit={handleEditImage} className="flex flex-col gap-4">
+              {/* Preview de la imagen */}
+              {(imagePreview || userData?.image) && (
+                <div className="flex justify-center mb-4">
+                  <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-[#005840]">
+                    <img 
+                      src={imagePreview || userData.image} 
+                      alt="Imagen de perfil" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {/* Botón para agregar imagen */}
+              <div className="mb-2">
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  id="image-upload"
+                  className="hidden"
+                />
+                <label 
+                  htmlFor="image-upload"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-dark-green hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                  </svg>
+                  {selectedImage || userData.image ? 'Cambiar imagen' : 'Agregar imagen'}
+                </label>
+            </div>
+              
               <div className="flex justify-end gap-4">
                 <BaseButton
                   type="submit"
-                  onClick={toggleEditImageModal}
+                  disabled={!selectedImage}
                 >
                   Guardar cambios
                 </BaseButton>
                 <BaseButton
                   variant="outline"
+                  type="button"
                   onClick={toggleEditImageModal}>
                   Cancelar
                 </BaseButton>
@@ -89,9 +220,9 @@ export function ProfileSettings() {
       <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20 flex flex-col gap-8">
         <div className="relative w-fit mx-auto mt-4 flex flex-col items-center gap-8">
           <Avatar 
-            src="https://i.pravatar.cc/300"
-            alt="Avatar de usuario"
-            size="lg"
+            src={userData?.image}
+            alt={userData?.name}
+            size="xxl"
           />
           <button 
           onClick={toggleEditImageModal}
@@ -100,19 +231,19 @@ export function ProfileSettings() {
           </button>
         </div>
         <div>
-          <form className="flex flex-col gap-6">
+          <form onSubmit={handleEditNameEmail} className="flex flex-col gap-6">
             <BaseInput 
               label="Nombre"
               inputName="name"
               inputType="text"
-              placeholder="Tu nombre"
+              inputPlaceholder={userData?.name}
               className="mb-4"
             />
             <BaseInput 
               label="Correo electrónico"
               inputName="email"
               inputType="email"
-              placeholder="Tu correo electrónico"
+              inputPlaceholder={userData?.email}
               className="mb-4"
             />
             <div className="flex self-end justify-end">
@@ -128,12 +259,12 @@ export function ProfileSettings() {
         <span className="h-[1px] w-full bg-[#6D6D6D] mx-auto"></span>
         <div className="flex flex-col gap-4">
           <Heading tag="h2" size="h3" weight="semibold" align="left" color="green">Cambiar contraseña</Heading>
-          <form className="flex flex-col gap-6" action="">
+          <form onSubmit={handleEditPassword} className="flex flex-col gap-6" action="">
             <BaseInput 
               label="Nueva contraseña"
               inputName="newPassword"
               inputType="password"
-              placeholder="Tu nueva contraseña"
+              inputPlaceholder="Tu nueva contraseña"
               className="mb-4"
             />
             <div className="flex self-end justify-end">

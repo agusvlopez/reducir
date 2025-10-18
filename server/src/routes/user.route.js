@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user.controller.js";
+import { uploadImage } from "../middlewares/upload.middleware.js";
 
 const usersRouter = Router();
 
-usersRouter.post('/', UserController.create);
+usersRouter.post('/', uploadImage, UserController.create);
 usersRouter.post('/login', UserController.login);
 usersRouter.post('/logout', UserController.logout);
+usersRouter.patch('/:userId', uploadImage, UserController.update);
 usersRouter.patch('/carbon', UserController.createCarbon);
 usersRouter.patch('/toggle-favorite-action', UserController.toggleFavoriteAction);
 usersRouter.get('/:userId/favorite-actions/:actionId', UserController.checkFavoriteAction);
