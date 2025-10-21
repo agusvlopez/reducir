@@ -25,6 +25,7 @@
     "react-router-dom": "7.7.1",
     "sonner": "2.0.7",
     "tailwindcss": "4.1.11",
+    "vivus": "^0.4.6",
     "zod": "^4.0.17"
   },
   "devDependencies": {

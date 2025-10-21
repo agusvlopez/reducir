@@ -53,6 +53,9 @@ importers:
       tailwindcss:
         specifier: 4.1.11
         version: 4.1.11
+      vivus:
+        specifier: ^0.4.6
+        version: 0.4.6
       zod:
         specifier: ^4.0.17
         version: 4.0.17
@@ -2481,6 +2484,9 @@ packages:
         optional: true
       yaml:
         optional: true
+
+  vivus@0.4.6:
+    resolution: {integrity: sha512-q6cDPTGqw/bq9sKF2h2T6GJ9PlwAFncHq7MdaK95WTSyd/7gz//UHTZbJ3B+r8f7AhcISPTC3sv9+u65BmmFbw==}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -5562,6 +5568,8 @@ snapshots:
       jiti: 2.4.2
       lightningcss: 1.30.1
       yaml: 2.8.0
+
+  vivus@0.4.6: {}
 
   which@2.0.2:
     dependencies:

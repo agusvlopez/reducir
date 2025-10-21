@@ -4,7 +4,7 @@ import { AppLayout } from "./layouts/AppLayout";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { ProtectedRoute } from "./components/Routes/ProtectedRoute.jsx";
 import { Loader } from "./components/Base/Loader.jsx";
-
+import LandingPage from "./pages/Home/LandingPage/LandingPage.jsx";
 
 const Home = lazy(() => import("./pages/App/Home").then(m => ({ default: m.Home })));
 const Actions = lazy(() => import("./pages/App/Actions").then(m => ({ default: m.Actions })));
@@ -39,6 +39,8 @@ function App() {
       </div>
     }>
       <Routes>
+        {/* Rutas Públicas */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

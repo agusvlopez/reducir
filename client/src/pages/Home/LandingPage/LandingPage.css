@@ -1,0 +1,19 @@
+
+
+.bg-hero {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.616), rgba(255, 255, 255, 0.301)),
+    url('../../../assets/banner-home-old.webp');
+  background-size: cover;
+  background-position: center ;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .bg-hero {
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)),
+      url('../../../assets/banner-home-old.webp');
+  }
+}

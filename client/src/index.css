@@ -10,6 +10,11 @@
     --color-gray-lighter: #F5F5F5;
     --color-gray-dark: #383838;
     --color-dark-green: #005840;
+    --color-light-green: #C9D641;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
