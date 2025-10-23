@@ -22,7 +22,7 @@ export function Login() {
     });
 
     const onSubmit = handleSubmit((data) => {
-        handleLogin(data);         
+        handleLogin(data);
     });
 
     return (

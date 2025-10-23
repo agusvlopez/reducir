@@ -50,7 +50,7 @@ function App() {
         {/* Rutas Protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route element={<LayoutApp />}>
-            <Route path="/app/home" element={<Home />} />
+            <Route path="/app/home/:userId" element={<Home />} />
             <Route path="/app/actions" element={<Actions />} />
             <Route path="/app/actions/:id" element={<Action />} />
             <Route path="/app/emissions" element={<Emissions />} />

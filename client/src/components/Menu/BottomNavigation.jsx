@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 export function BottomNavigation() {
+    const { userId } = useAuth();
+    
     return (
         <div className="fixed z-20 bottom-0 left-0 right-0 bg-white shadow-md">
             <nav className="flex justify-around p-4">
-                <Link to="/app/home" className="">
+                <Link to={`/app/home/${userId}`} className="">
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                 <rect x="12" y="12" width="24" height="24" fill="url(#pattern0_2878_371)"/>
                 <defs>

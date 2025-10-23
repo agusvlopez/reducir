@@ -1,7 +1,7 @@
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export const DonutProgress = ({ value }) => {
+export const DonutProgress = ({ value = 0 }) => {
     return (
         <div className="mt-2 lg:w-[130px] lg:h-[130px]" style={{ width: 130, height: 130 }}>
             <CircularProgressbar

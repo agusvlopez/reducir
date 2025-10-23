@@ -34,6 +34,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+    // ✅ Extraer fetchAccessToken como función independiente
+  const fetchAccessToken = async () => {
+    try {
+      const response = await axios.post(`${baseURL}/tokens`, {}, {
+        withCredentials: true
+      });
+      console.log("response fetchAccessToken", response);
+
+      setAccessToken(response?.data?.accessToken);
+      setUserId(response?.data?.userId);
+      setUser(response?.data?.user);
+      
+      return response?.data; // Retornar los datos
+    } catch (error) {        
+      setAccessToken(null);
+      setUserId(null);
+      setUser(null);
+      throw error; // Re-lanzar el error si falla
+    }
+  };
+
   const handleRegister = async (data) => {
     const { name, username, email, password } = data;
 
@@ -44,19 +65,20 @@ export const AuthProvider = ({ children }) => {
         email,
         password
       }).unwrap(); 
-
-      const token = response?.data?.accessToken;
- 
-      if (token) {
-        setAccessToken(token);        
-        setUserId(response?.data?.userId);
+      
+      if (response) {
+        setAccessToken(response.accessToken);        
+        setUserId(response?.userId);
+        //TODO: cambiar esto porque no guarda nada, ver si eliminarlo directamente la logica de guardar user en authContext
         setUser(response?.data?.user);
-        //TODO: CHECK porque no funciona el navigate
-        navigate('/app/home', { replace: true });
+        
+        await fetchAccessToken();
+
+        navigate(`/test/intro`, { replace: true });
       }
+
+      return false; 
     } catch (error) {
-      console.error("Error al registrarse:", error);
-      // Extraemos el mensaje de error de la respuesta de la API
       const errorMessage = error.data || "Ocurrió un error inesperado. Inténtalo de nuevo.";
       toast.error(errorMessage, {
         duration: Infinity,
@@ -70,6 +92,7 @@ export const AuthProvider = ({ children }) => {
           fontFamily: 'Inter, sans-serif',
         }
       });
+      return false;
     }
   }
 
@@ -81,17 +104,19 @@ export const AuthProvider = ({ children }) => {
         email, 
         password 
       }).unwrap(); 
-
-      const token = response?.accessToken;     
-
-      if (token) {
-        setAccessToken(token);
-        setUserId(response?.userId);
+      
+      if (response) {
+        setAccessToken(response?.accessToken);
+        setUserId(response?.user?._id);
         setUser(response?.user);
-        navigate('/app/home', { replace: true });
+
+        await fetchAccessToken();
+
+        navigate(`/app/home/${response?.user?._id}`, { replace: true });
       }
+
+      return false; 
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
       const errorMessage = error.data || "Email o contraseña incorrectos.";
       toast.error(errorMessage, {
         duration: Infinity,
@@ -105,6 +130,7 @@ export const AuthProvider = ({ children }) => {
           fontFamily: 'Inter, sans-serif',
         }
       });
+      return false;
     }
   }
 
@@ -122,27 +148,19 @@ export const AuthProvider = ({ children }) => {
     }
   }
   
+  // ✅ Llamar fetchAccessToken al cargar la app
   useEffect(() => {    
-    const fetchAccessToken = async () => {
+    const initAuth = async () => {
       try {
-        const response = await axios.post(`${baseURL}/tokens`, {}, {
-          withCredentials: true
-        });
-
-        setAccessToken(response?.data?.accessToken);
-        setUserId(response?.data?.userId);
-        setUser(response?.data?.user);
-        
-      } catch {        
-        setAccessToken(null);
-        setUserId(null);
-        setUser(null);
+        await fetchAccessToken();
+      } catch {
+        // Error ya manejado en fetchAccessToken
       } finally {
         setLoading(false); 
       }
-    }
+    };
 
-    fetchAccessToken();
+    initAuth();
   }, []);
 
 

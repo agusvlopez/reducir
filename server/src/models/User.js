@@ -49,7 +49,7 @@ const UserSchema = new mongoose.Schema({
     targetValue: Number,
     startDate: Date,
     completedAt: Date,
-    status: { type: String, enum: ['active', 'completed', 'abandoned'], default: 'active' }
+    status: { type: String, enum: ['inactive', 'active', 'completed', 'abandoned'], default: 'inactive' }
   },
 }, { timestamps: true });
 

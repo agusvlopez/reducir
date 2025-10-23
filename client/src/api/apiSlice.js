@@ -55,7 +55,7 @@ export const apiSlice = createApi({
         method: "PATCH",
         body: data
       }),
-      invalidatesTags: ["Users"]
+      invalidatesTags: ["Users", "User"]
     }),
     setCarbonGoal: builder.mutation({
       query: (data) => ({
@@ -65,7 +65,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["User"]
     }),
-    
   }),
 });
 
@@ -78,5 +77,6 @@ export const {
   useLoginUserMutation,
   useLogoutUserMutation,
   useCreateCarbonMutation,
-  useSetCarbonGoalMutation
+  useSetCarbonGoalMutation,
+  useAddFollowerMutation
 } = apiSlice;

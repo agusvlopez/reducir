@@ -12,7 +12,6 @@ export function Community() {
     //const {user} = useAuth();
     const { addPost } = usePosts();
     const {data: posts, isError, isLoading} = useGetPostsQuery();
-    console.log("posts", posts);
     
     //const [createPost] = useCreatePostMutation();
 
@@ -73,10 +72,20 @@ export function Community() {
                     <Search 
                         className="flex-1"
                         onSearch={handleSearch}
-                        placeholder="Buscar publicaciones..."
+                        placeholder="Buscar..."
                     />
                 </div>
                 
+                <div className="px-6 mb-2">
+                    <h2 className="text-white">Personas sugeridas</h2>
+                    <div className="flex gap-4 py-4">
+                        <Avatar size="lg" />
+                        <Avatar size="lg"/>
+                        <Avatar size="lg"/>
+                        <Avatar size="lg"/>
+                        <Avatar size="lg"/>
+                    </div>
+                </div>
                 {/* CREAR UN NUEVO POST */}
                 <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20 h-screen overflow-y-auto">
                     <button

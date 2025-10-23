@@ -35,9 +35,9 @@ function LandingPage () {
     <section>
       <div className="bg-hero flex items-center justify-center md:justify-start rounded-b-[60px] relative">
         {/* Logo */}
-        <div className='absolute top-10 left-6 md:left-20'>
+        <Link to="/" className='absolute top-10 left-6 md:left-20'>
           <img src={Logo} alt="" />
-        </div>
+        </Link>
         {/* Nav Container */}
         <div className='absolute top-10 right-4 md:right-8'>
           {/* Desktop Nav */}
@@ -80,11 +80,10 @@ function LandingPage () {
           <h1 className="text-5xl md:text-7xl font-medium">
             Estás a un <span className="text-dark-green font-semibold">click</span> de <strong className="text-dark-green font-semibold">cambiar el mundo</strong>
           </h1>
-          <BaseButton 
+          <Link 
             to="/register"
-            isArray={false}
-            size='lg'
-          >Conocer la App</BaseButton>
+            className='cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md border border-dark-green bg-dark-green text-white text-lg py-3 px-6 hover:bg-[#005841ee] transition-all'
+          >Conocer la App</Link>
         </div>
       </div>
     </section>
@@ -113,16 +112,15 @@ function LandingPage () {
       <div className='flex flex-col gap-6 flex-1 text-center items-center lg:items-start lg:text-left'>
         <h2 className='text-4xl md:text-5xl font-medium'>Haciendo posible un mundo mejor</h2>
         <p>Desde actividades divertidas y sociales hasta acciones para reducir tu huella de carbono, elegí lo que te haga bien y descubrí el impacto que generás.</p>
-        <BaseButton 
+        <Link 
           to="/register"
-          isArray={false}
-          size='lg'
-        >Conocer la App</BaseButton>
+          className='cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md border border-dark-green bg-dark-green text-white text-lg py-3 px-6 hover:bg-[#005841ee] transition-all'
+        >Conocer la App</Link>
       </div>
     </section>
 
     <CommunitySection />
-    
+
     <footer className='my-10 mx-10 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0'>
       <p>© 2025 Reducir App. Todos los derechos reservados.</p>
       <div className='flex gap-6 items-center'>

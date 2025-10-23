@@ -7,7 +7,7 @@ export function Select({
     selectName = "",
     isRequired = false,
     className = "",
-    value = "",
+    defaultValue = "",
 }) {
 
     return (
@@ -18,7 +18,7 @@ export function Select({
                     id={selectId}
                     name={selectName}
                     required={isRequired}
-                    value={value}
+                    defaultValue={defaultValue}
                     onChange={(e) => onChange(e.target.value)}
                     className="w-full h-10 px-4 text-sm border rounded-full focus:outline-none focus:ring-2 appearance-none border-gray-300 bg-[#F1EDEC] text-[#383838] cursor-pointer focus:ring-[#005840] focus:border-[#005840] shadow-sm"
                 >

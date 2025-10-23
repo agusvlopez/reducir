@@ -7,35 +7,36 @@ import InfoImage from "../../../assets/icons/info.png";
 import { Link } from "react-router-dom";
 import CarbonReduceIcon from "../../../assets/icons/carbon-reduce.png";
 import BaseButton from "../../../components/Base/BaseButton";
-import { useState } from "react";
-import { useSetCarbonGoalMutation } from "../../../api/apiSlice";
+import { useGetUserQuery } from "../../../api/apiSlice";
 import { useAuth } from "../../../hooks/useAuth";
-import { toast } from "sonner";
+import FlipCard from "../../../components/Cards/FlipCard.jsx";
+import { GoalsProvider } from "../../../context/GoalsContext.jsx";
+import { useGoals } from "../../../hooks/useGoals.js";
+import { getGoalProgressInfo } from "../../../helpers/getGoalProgress.js";
+import { useEffect } from "react";
 
 
-export function Goals() {
+function GoalsContent() {
     const { userId } = useAuth();
+    const { data: userData } = useGetUserQuery(userId);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [setCarbonGoal] = useSetCarbonGoalMutation();
+    const { customGoal, setSliderValue } = useGoals();
 
-    const [customGoal, setCustomGoal] = useState(false);
-    const [sliderValue, setSliderValue] = useState(10);
-
-    const handleCustomGoal = () => setCustomGoal(!customGoal);
-
-    const handleSetGoal = async () => {
-        try {
-            const response = await setCarbonGoal({
-                userId,
-                reductionPercentage: sliderValue
-            });
-            console.log("response", response);
-            
-            toast.success("Objetivo establecido con éxito");
-        } catch (error) {
-            toast.error(error.message);
+    const goalInfo = getGoalProgressInfo({
+        baselineValue: userData?.carbonGoal?.baselineValue,
+        targetReductionPercentage: userData?.carbonGoal?.targetReductionPercentage,
+        targetValue: userData?.carbonGoal?.targetValue,
+        currentCarbon: userData?.carbon,
+        startDate: userData?.carbonGoal?.startDate,
+        year: userData?.carbonGoal?.year
+    });
+    
+    useEffect(() => {
+        if (userData) {
+            const targetReduction = userData.carbonGoal?.targetReductionPercentage ?? 0;
+            setSliderValue(targetReduction);
         }
-    }
+    }, [userData, setSliderValue]);
 
     return (
         <>
@@ -44,7 +45,7 @@ export function Goals() {
                 onOpenChange={onOpenChange}
                 title="¿Qué son las metas?"
             >
-                {/* DESCRIPCION DE LAS EMISIONES */}
+            {/* DESCRIPCION DE LAS EMISIONES */}
             </BaseModal>
             <AppHeaderSection>
                 <div className="flex flex-col gap-3">
@@ -66,75 +67,30 @@ export function Goals() {
                     <p className="">Establecé un objetivo para reducir emisiones. Establecé el que estas dispuesto a cumplir. ¡Podés cambiarlo cuando quieras!</p>
                 </div>
             </AppHeaderSection>
-            <section className="max-w-[354px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-6 flex flex-col items-center gap-6">
-                {/* Estadisticas: en BarLineChart */}
 
-                <div>
-                    <Heading tag="h3" size="h3" weight="semibold" align="left" color="green">Objetivo anual</Heading>
-                    <p>El mínimo ideal es reducir un 10%. </p>
-                </div>
-                {customGoal ? (
-                    <>
-                        <div className="relative">
-                            <span className="absolute top-[25%] left-[30%] text-lg font-semibold text-[#005840]">{sliderValue}%</span>
-                            <img src={CarbonReduceIcon} alt="Reducción de dióxido de carbono" className="w-[93px] mx-auto" />
-                        </div>
-                        <BaseButton 
-                            onClick={handleSetGoal}
-                            className="mx-auto"
-                        >
-                            Establecer objetivo
-                        </BaseButton>
-
-                        {/* slider */}
-                        <div className="w-full mt-4">
-                            <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                value={sliderValue}
-                                onChange={e => setSliderValue(Number(e.target.value))}
-                                className="goals-slider"
-                            />
-                            <div className="flex justify-between text-xs text-gray-500 mt-2">
-                                <span>0%</span>
-                                <span>25%</span>
-                                <span>50%</span>
-                                <span>75%</span>
-                                <span>100%</span>
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="relative">
-                            <span className="absolute top-[25%] left-[30%] text-xl font-semibold text-[#005840]">10%</span>
-                            <img src={CarbonReduceIcon} alt="Reducción de dióxido de carbono" className="w-[93px] mx-auto" />
-                        </div>
-                        <BaseButton
-                            onClick={handleSetGoal}
-                            className="mx-auto"
-                        >
-                            Reducir un 10%
-                        </BaseButton>
-                    </>
-                )}
+            {/* CARD */}
+            <section className="max-w-[354px] mx-auto mt-[-70px] rounded-[30px] flex flex-col items-center gap-6">
+                <FlipCard 
+                    customGoal={customGoal}
+                    goalSelectedPercentage={userData?.carbonGoal?.targetReductionPercentage}
+                    goalProgress={goalInfo?.progressPercentage}
+                />
             </section>
+
             <section className="px-6 py-12 flex flex-col gap-6 items-center">
-
-                <BaseButton
-                    variant="outline"
-                    className="mx-auto"
-                    onClick={handleCustomGoal}>
-                    {!customGoal ? "Reducción personalizada" : "Cambiar objetivo"}
-                </BaseButton>
-
-
-                <div className="text-center">
-                    <p className="text-sm mb-3">Tenemos que reducir las emisiones a la mitad para 2030.</p>
-                    <p className="text-sm">Si te propones reducir al menos un 10% al año, serás parte de este proyecto.</p>
+                <div className="text-center font-medium">
+                    <p className="mb-3">Tenemos que reducir las emisiones a la mitad para 2030.</p>
+                    <p className="">Si te propones reducir al menos un 10% al año, serás parte de este proyecto.</p>
                 </div>
             </section>
         </>
     );
+}
+
+export function Goals() {
+    return (
+        <GoalsProvider>
+            <GoalsContent />
+        </GoalsProvider>
+    )
 }

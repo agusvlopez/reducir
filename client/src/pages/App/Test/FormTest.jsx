@@ -27,7 +27,7 @@ export function FormTest() {
     const result = await createCarbon({ userId, carbon }).unwrap();
 
     if (result.success) {
-      navigate('/app/home');
+      navigate(`/app/home/${userId}`);
     }
   }
 

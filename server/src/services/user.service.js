@@ -153,21 +153,36 @@ export class UserService {
     if (!user) throw new Error('Usuario no encontrado');
     
     const currentYear = new Date().getFullYear();
-    const baselineValue = user.carbon;
+    let baselineValue;
+    let startDate = new Date();
+
+    if (user.carbonGoal && user.carbonGoal.status === 'active') {
+      const existingGoal = user.carbonGoal;
+      
+      if (existingGoal.year === currentYear) {
+        baselineValue = existingGoal.baselineValue;
+        startDate = existingGoal.startDate;
+      } else {
+        // Si es un año nuevo, usar el carbono actual como nuevo baseline
+        baselineValue = user.carbon;
+      }
+    } else {
+      // No hay goal previo o está inactivo, usar el carbono actual como baseline
+      baselineValue = user.carbon;
+    }
+
     const targetValue = Math.round(baselineValue * (1 - reductionPercentage / 100));
 
     const newGoal = {
       year: currentYear,
       targetReductionPercentage: reductionPercentage,
-      baselineValue,
+      baselineValue, 
       targetValue,
-      startDate: new Date(),
+      startDate, 
       status: 'active'
     };
 
     const updatedUser = await UserRepository.setCarbonGoal({ userId, carbonGoal: newGoal });
     return updatedUser;
   }
-
-
 }

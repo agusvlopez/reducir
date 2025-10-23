@@ -1,10 +1,9 @@
 import { Avatar } from "../../components/Base/Avatar";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
-import { useAuth } from "../../hooks/useAuth";
 import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
 import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useGetUserQuery } from "../../api/apiSlice";
@@ -14,12 +13,13 @@ import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
 import { Post } from "../../components/Community/Post";
 import { AchievementCard } from "../../components/Cards/AchievementCard";
 
-export function Home() {    
+export function Home() { 
+    const { userId } = useParams()  
+
     const [sectionSelected, setSectionSelected] = useState("actionsSaved");
-    
-    const { userId } = useAuth();
+
     const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
-    const {data: userPostsData, isLoading: isPostsLoading} = useGetPostsByUserQuery(userId, { skip: !userId });
+    const {data: userPostsData} = useGetPostsByUserQuery(userId, { skip: !userId });
 
     const actionsAchieved = useMemo(() => userData?.actions_achieved || [], [userData]);
 
@@ -57,6 +57,25 @@ export function Home() {
                 </div>
             </section>
             <section className="w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
+                {userData?.carbonGoal?.status === 'inactive' ? 
+
+                <div>
+                    {userData?.carbon === 0 ? 
+                        <>
+                            <h3>¿Ya hiciste el test para medir tu huella de carbono anual?</h3>
+                            <p>Con este dato, va a ser mucho más divertido usar reducir, ya que a medida que vas cumpliendo con tus acciones, tu huella se va reduciendo y podrás verlo.</p>
+                            <Link to="/test/intro">Realizar test</Link>
+                        </>   
+                    :
+                        <>
+                            <h3>Establecé una meta anual para generar un cambio enorme en el planeta</h3>
+                            <Link to={"/app/emissions/goals"}>Establecer meta</Link>
+                        </>
+                    }
+                </div>
+                    
+                :
+
                 <GoalProgressCard 
                     targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
                     baselineValue={userData?.carbonGoal?.baselineValue}
@@ -65,6 +84,7 @@ export function Home() {
                     startDate={userData?.carbonGoal?.startDate}
                     year={userData?.carbonGoal?.year}
                 />
+            }
             </section>
             <section className="mt-[40px] flex gap-4 overflow-x-auto pl-6 lg:pl-0 pb-2">
                 <Pill className="flex-shrink-0" text="Acciones en proceso" onClick={() => handleSections('actionsSaved')} isActive={sectionSelected === 'actionsSaved'} />
