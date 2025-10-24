@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary.js";
 import User from "../models/User.js";
 import { PostRepository } from "./post.repository.js";
@@ -70,7 +71,6 @@ export class UserRepository {
         image: user.image
       }
 
-
       return user;
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
@@ -110,7 +110,7 @@ export class UserRepository {
     try {
       const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { $inc: { carbon } },
+        { $set: { carbon } },
         { new: true, runValidators: true }
       );
       return updatedUser;
@@ -119,6 +119,7 @@ export class UserRepository {
       return null;
     }
   }
+
   //TODO: pasar logica a service, aca solo manejar la conexion con la bbdd
   static async toggleFavoriteAction({ userId, actionId }) {
     try {
@@ -302,4 +303,22 @@ export class UserRepository {
     }
   }
 
+  static async getRandomUsers({ excludeIds = [], limit = 5 }) {
+    return await User.aggregate([
+      // Excluir usuarios específicos
+      { $match: { _id: { $nin: excludeIds.map(id => new mongoose.Types.ObjectId(id)) } } },
+      // Ordenar aleatoriamente
+      { $sample: { size: limit } },
+      // Seleccionar solo los campos necesarios
+      { 
+        $project: { 
+          _id: 1,
+          name: 1, 
+          username: 1, 
+          image: 1,
+          carbon: 1
+        } 
+      }
+    ]);
+  }
 }

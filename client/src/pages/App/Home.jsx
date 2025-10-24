@@ -12,14 +12,30 @@ import { PostCard } from "../../components/Cards/PostCard";
 import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
 import { Post } from "../../components/Community/Post";
 import { AchievementCard } from "../../components/Cards/AchievementCard";
+import { useAuth } from "../../hooks/useAuth";
+import { useFollowUserMutation, useGetFollowCountsQuery, useIsFollowingQuery, useUnfollowUserMutation } from "../../api/followSlice";
 
 export function Home() { 
-    const { userId } = useParams()  
+    const { userId } = useParams();
+    const { userId: authUserId } = useAuth();
+    const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
+
+    const { data: ownUserPostsData } = useGetPostsByUserQuery(authUserId, { skip: !authUserId });
+    const { data: userPostsData } = useGetPostsByUserQuery(userId, { skip: !userId });
+    const { data: followCountsData } = useGetFollowCountsQuery(userId, { skip: !userId });
+    console.log("followCountsData", followCountsData);
+    
+    const isOwnProfile = userId === authUserId;
+
+    const { data: isFollowingData } = useIsFollowingQuery(
+        { followerId: authUserId, followingId: userId },
+        { skip: !userId || isOwnProfile }
+    );
+
+    const [ followUser ] = useFollowUserMutation();
+    const [ unfollowUser ] = useUnfollowUserMutation();
 
     const [sectionSelected, setSectionSelected] = useState("actionsSaved");
-
-    const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
-    const {data: userPostsData} = useGetPostsByUserQuery(userId, { skip: !userId });
 
     const actionsAchieved = useMemo(() => userData?.actions_achieved || [], [userData]);
 
@@ -34,65 +50,129 @@ export function Home() {
     const handleSections = (value) => {
         setSectionSelected(value);
     }
+    
+    const [isFollowing, setIsFollowing] = useState(isFollowingData);
+
+    const handleFollowToggle = async () => {
+        try {
+            if (isFollowing) {
+                await unfollowUser({
+                    followerId: authUserId,
+                    followingId: userId
+                });                
+                setIsFollowing(false);
+            } else {
+                await followUser({
+                    followerId: authUserId,
+                    followingId: userId
+                });
+                setIsFollowing(true);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
     return (
         <>
-            <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-24 rounded-b-[30px]">
-                <div className="flex items-center gap-4">
+            <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-22 rounded-b-[30px]">
+                <div className="flex items-start gap-4">
+                    
                     <Avatar 
                         size="xl"
                         src={userData?.image}
                         alt={userData?.name}
                         className="mb-4"   
                     />
-                    <div>
-                        <p>¡Hola <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
-                        <p>Tu huella de carbono este mes:</p>
+                    {isOwnProfile ? 
                         <div>
-                            <span></span>
-                            <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbon}</span> kg de CO2</p>
+                            <p>¡Hola <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
+                            <p>Tu huella de carbono este mes:</p>
+                            <div>
+                                <span></span>
+                                <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbon}</span> kg de CO2</p>
+                            </div>
                         </div>
-
-                    </div>
+                        :
+                        <>
+                            <div>
+                                <div className="flex flex-col mb-2">
+                                    <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>
+                                    <span className="text-sm">@{userData?.username}</span>
+                                </div>  
+                                <p className="text-sm">Huella de carbono este mes:</p>
+                                <div>
+                                    <span></span>
+                                    <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbon}</span> kg de CO2</p>
+                                </div>                                                      
+                            </div>
+                            <div className="flex-1 flex justify-end">
+                                <button 
+                                    className={`rounded-full transition-colors  ${
+                                    isFollowing 
+                                        ? 'bg-[#005840] text-white hover:bg-[#004030]' 
+                                        : 'bg-gray-100 text-[#005840] hover:bg-gray-200'
+                                    }`}
+                                    onClick={handleFollowToggle}
+                                    disabled={isUserLoading}
+                                >
+                                {isFollowing ? (
+                                    <div className="font-medium bg-white text-dark-green rounded-[30px] text-xs px-2 py-1">Siguiendo</div>
+                                ) : (
+                                        <div className="font-medium bg-white rounded-[30px] text-xs px-2 py-1">Seguir</div>
+                                    )}
+                                </button>  
+                            </div>                          
+                        </>
+                    }  
+                                  
+                </div>
+                <div className="mt-4 flex items-center justify-center gap-4">
+                    {/* following y followers */}
+                    <div><span className="font-semibold">{followCountsData?.followingCount}</span> Siguiendo</div>
+                    <div><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</div>
                 </div>
             </section>
             <section className="w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
                 {userData?.carbonGoal?.status === 'inactive' ? 
 
-                <div>
-                    {userData?.carbon === 0 ? 
-                        <>
-                            <h3>¿Ya hiciste el test para medir tu huella de carbono anual?</h3>
-                            <p>Con este dato, va a ser mucho más divertido usar reducir, ya que a medida que vas cumpliendo con tus acciones, tu huella se va reduciendo y podrás verlo.</p>
-                            <Link to="/test/intro">Realizar test</Link>
-                        </>   
+                    <div>
+                        {/* TODO: ESTILAR */}
+                        {userData?.carbon === 0 ? 
+                            <>
+                                <h3>¿Ya hiciste el test para medir tu huella de carbono anual?</h3>
+                                <p>Con este dato, va a ser mucho más divertido usar reducir, ya que a medida que vas cumpliendo con tus acciones, tu huella se va reduciendo y podrás verlo.</p>
+                                <Link to="/test/intro">Realizar test</Link>
+                            </>   
+                        :
+                            <>
+                                <h3>Establecé una meta anual para generar un cambio enorme en el planeta</h3>
+                                <Link to={"/app/emissions/goals"}>Establecer meta</Link>
+                            </>
+                        }
+                    </div>                    
                     :
-                        <>
-                            <h3>Establecé una meta anual para generar un cambio enorme en el planeta</h3>
-                            <Link to={"/app/emissions/goals"}>Establecer meta</Link>
-                        </>
-                    }
-                </div>
-                    
-                :
+                    <GoalProgressCard 
+                        targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
+                        baselineValue={userData?.carbonGoal?.baselineValue}
+                        targetValue={userData?.carbonGoal?.targetValue}
+                        currentCarbon={userData?.carbon}
+                        startDate={userData?.carbonGoal?.startDate}
+                        year={userData?.carbonGoal?.year}
+                        isOwnProgress={isOwnProfile}
+                    />
+                }
+            </section>
 
-                <GoalProgressCard 
-                    targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
-                    baselineValue={userData?.carbonGoal?.baselineValue}
-                    targetValue={userData?.carbonGoal?.targetValue}
-                    currentCarbon={userData?.carbon}
-                    startDate={userData?.carbonGoal?.startDate}
-                    year={userData?.carbonGoal?.year}
-                />
+            {isOwnProfile &&
+                <section className="mt-[40px] flex gap-4 overflow-x-auto pl-6 lg:pl-0 pb-2">
+                    <Pill className="flex-shrink-0" text="Acciones en proceso" onClick={() => handleSections('actionsSaved')} isActive={sectionSelected === 'actionsSaved'} />
+                    <Pill className="flex-shrink-0" text="Acciones logradas" onClick={() => handleSections('actionsAchieved')} isActive={sectionSelected === 'actionsAchieved'}/>
+                    <Pill className="flex-shrink-0" text="Mis publicaciones" onClick={() => handleSections('posts')} isActive={sectionSelected === 'posts'}/>
+                </section>
             }
-            </section>
-            <section className="mt-[40px] flex gap-4 overflow-x-auto pl-6 lg:pl-0 pb-2">
-                <Pill className="flex-shrink-0" text="Acciones en proceso" onClick={() => handleSections('actionsSaved')} isActive={sectionSelected === 'actionsSaved'} />
-                <Pill className="flex-shrink-0" text="Acciones logradas" onClick={() => handleSections('actionsAchieved')} isActive={sectionSelected === 'actionsAchieved'}/>
-                <Pill className="flex-shrink-0" text="Mis publicaciones" onClick={() => handleSections('posts')} isActive={sectionSelected === 'posts'}/>
-            </section>
-            
-            {sectionSelected === 'actionsSaved' &&
+
+            {sectionSelected === 'actionsSaved' && isOwnProfile &&
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
@@ -130,7 +210,7 @@ export function Home() {
             </section>
             }
 
-            {sectionSelected === 'actionsAchieved' &&
+            {sectionSelected === 'actionsAchieved' && isOwnProfile &&
             //TODO
             (
             <section className="mt-[40px] px-6 flex flex-col gap-4">
@@ -160,7 +240,7 @@ export function Home() {
             )
             }
 
-            {sectionSelected === 'posts' &&
+            {sectionSelected === 'posts' && isOwnProfile &&
             //TODO: HACERLO EN UN COMPONENTE SEPARADO
             (
             <section className="mt-[40px] px-6 flex flex-col gap-4">
@@ -171,33 +251,63 @@ export function Home() {
 
                 {/* //TODO: AGREGAR UN FILTRO */}
                     <div>
-                        {userPostsData?.map((post) => {
+                        {ownUserPostsData?.map((post) => {
                             return (
-                            <div
-                            className="mt-8 pt-4 border-t border-gray-300" 
-                            key={post._id}>
-                            <Post 
-                                id={post._id}
-                                name={post.userId?.name}
-                                username={post.userId?.username}
-                                profileImage={post.userId?.image}
-                                image={post.image}
-                                content={post.content}
-                                category={post.category}
-                                createdAt={post.createdAt}
-                                likesCount={post.likesCount}
-                                commentsCount={post.commentsCount}
-                                actionId={post?.actionId}
-                                carbon={post?.carbon_reduced}
-                            />
-                            </div>
-                        );
+                                <div
+                                className="mt-8 pt-4 border-t border-gray-300" 
+                                key={post._id}>
+                                <Post 
+                                    id={post._id}
+                                    name={post.userId?.name}
+                                    username={post.userId?.username}
+                                    profileImage={post.userId?.image}
+                                    image={post.image}
+                                    content={post.content}
+                                    category={post.category}
+                                    createdAt={post.createdAt}
+                                    likesCount={post.likesCount}
+                                    commentsCount={post.commentsCount}
+                                    actionId={post?.actionId}
+                                    carbon={post?.carbon_reduced}
+                                />
+                                </div>
+                            );
                         })}
                     </div>
                 </div>
                 </section>
             )
             }
+
+            {!isOwnProfile &&
+                <section className="mt-[40px] px-6 flex flex-col gap-4">
+                {/* //TODO: AGREGAR UN FILTRO */}
+                    <div>
+                        <h2 className="text-[20px] font-semibold">Publicaciones de {userData?.name}</h2>
+                        {userPostsData?.map((post) => {
+                            return (
+                                <div
+                                className="mt-8 pt-4 border-t border-gray-300" 
+                                key={post._id}>
+                                <Post 
+                                    id={post._id}
+                                    name={post.userId?.name}
+                                    username={post.userId?.username}
+                                    profileImage={post.userId?.image}
+                                    image={post.image}
+                                    content={post.content}
+                                    category={post.category}
+                                    createdAt={post.createdAt}
+                                    likesCount={post.likesCount}
+                                    commentsCount={post.commentsCount}
+                                    actionId={post?.actionId}
+                                    carbon={post?.carbon_reduced}
+                                />
+                                </div>
+                            );
+                        })}
+                    </div>                
+                </section>}
         </>
     );
 }

@@ -7,12 +7,15 @@ import { Loader } from "../../components/Base/Loader";
 import { usePosts } from "../../hooks/usePosts";
 import { useGetPostsQuery } from "../../api/postsSlice";
 import { CATEGORIES } from "../../constants/categories";
+import { useGetSuggestedUsersQuery } from "../../api/apiSlice";
+import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 export function Community() {
-    //const {user} = useAuth();
+    const { userId } = useAuth();
     const { addPost } = usePosts();
     const {data: posts, isError, isLoading} = useGetPostsQuery();
-    
+    const { data: suggestedUsers } = useGetSuggestedUsersQuery(userId);
     //const [createPost] = useCreatePostMutation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,7 +60,7 @@ export function Community() {
 
     const filteredPosts = getFilteredPosts();
     const isSearching = searchQuery !== debouncedQuery;
-
+console.log("filteredPosts", filteredPosts);
     return (
         <>
             <section className="h-screen bg-[#005840] py-6">
@@ -79,11 +82,14 @@ export function Community() {
                 <div className="px-6 mb-2">
                     <h2 className="text-white">Personas sugeridas</h2>
                     <div className="flex gap-4 py-4">
-                        <Avatar size="lg" />
-                        <Avatar size="lg"/>
-                        <Avatar size="lg"/>
-                        <Avatar size="lg"/>
-                        <Avatar size="lg"/>
+                        {suggestedUsers?.data?.map((user) => (
+                            <Link to={`/app/home/${user._id}`} key={user._id}>
+                                <Avatar
+                                    src={user?.image}
+                                    alt={user?.name}
+                                    size="lg" />
+                            </Link>
+                        ))}
                     </div>
                 </div>
                 {/* CREAR UN NUEVO POST */}
@@ -147,6 +153,7 @@ export function Community() {
                                 commentsCount={post.commentsCount}
                                 actionId={post?.actionId}
                                 carbon={post?.carbon_reduced}
+                                postUserId={post?.userId?._id}
                             />
                         ))}
                     </div>

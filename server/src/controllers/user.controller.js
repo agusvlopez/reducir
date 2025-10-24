@@ -1,7 +1,6 @@
 import { ConflictError } from "../errors/ConflictError.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
-import User from "../models/User.js";
 import { TokenService } from "../services/token.service.js";
 import { UserService } from "../services/user.service.js";
 
@@ -44,6 +43,7 @@ export class UserController {
     if (req.file) {
       imageBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     }
+console.log("req", req);
 
     try {
       const updatedUser = await UserService.update({ userId, name, username, password, email, image: imageBase64 });
@@ -237,4 +237,27 @@ export class UserController {
     }
   }
 
+  static async getSuggestedUsers(req, res) {
+    try {
+      const { userId } = req.params;
+      console.log("userId", userId);
+      
+      const { limit = 5 } = req.query;
+
+      const suggestions = await UserService.getSuggestedUsers({ 
+        userId, 
+        limit: parseInt(limit) 
+      });
+      
+      res.status(200).json({
+        success: true,
+        data: suggestions
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }  
 }

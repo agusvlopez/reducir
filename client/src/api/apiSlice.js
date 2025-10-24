@@ -65,6 +65,10 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["User"]
     }),
+    getSuggestedUsers: builder.query({
+      query: (userId) => `/users/suggested-users/${userId}`,
+      providesTags: ["Users"]
+    }),
   }),
 });
 
@@ -78,5 +82,5 @@ export const {
   useLogoutUserMutation,
   useCreateCarbonMutation,
   useSetCarbonGoalMutation,
-  useAddFollowerMutation
+  useGetSuggestedUsersQuery
 } = apiSlice;

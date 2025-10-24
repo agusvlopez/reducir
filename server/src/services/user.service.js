@@ -7,6 +7,7 @@ import { validateUserCreate, validateUserLogin } from "../validations/user.schem
 import { ValidationError } from "../errors/ValidationError.js";
 import { ConflictError } from "../errors/ConflictError.js";
 import { TokenService } from './token.service.js';
+import { FollowRepository } from '../repositories/follow.repository.js';
 
 export class UserService {
   static async create({ name, username, email, password }){
@@ -184,5 +185,19 @@ export class UserService {
 
     const updatedUser = await UserRepository.setCarbonGoal({ userId, carbonGoal: newGoal });
     return updatedUser;
+  }
+
+  static async getSuggestedUsers({ userId, limit = 5 }) {
+    const followingIds = await FollowRepository.getFollowingIds(userId);
+
+    // Buscar usuarios aleatorios excluyendo:
+    // - El usuario actual
+    // - Los que ya sigo
+    const suggestions = await UserRepository.getRandomUsers({
+      excludeIds: [userId, ...followingIds],
+      limit
+    });
+    
+    return suggestions;
   }
 }

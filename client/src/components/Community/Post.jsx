@@ -17,19 +17,21 @@ export function Post({
     likesCount,
     commentsCount,
     actionId,
-    carbon
+    carbon,
+    postUserId
 }) {
     const { userId } = useAuth();
 
     return (
         <section className="flex flex-col gap-4 border-b border-[#6D6D6D] pb-6">
-            <Link to={`/app/${userId}/post/${id}`}
-                className={`${className}`}>
                 <PostHeader
+                    userId={postUserId}
                     name={name}
                     username={username}
                     profileImage={profileImage}
                 />
+                <Link to={`/app/${userId}/post/${id}`}
+                className={`${className}`}>
                 <PostContent
                     image={image} 
                     content={content}

@@ -13,6 +13,7 @@ import postsRouter from './routes/post.route.js';
 import postLikesRouter from './routes/postLike.route.js';
 import postCommentsRouter from './routes/postComment.route.js';
 import postCommentLikesRouter from './routes/postCommentLike.route.js';
+import followRouter from './routes/follow.route.js';
 
 const corsOptions = {
     origin: true, //todo: change it
@@ -34,6 +35,8 @@ app.use('/posts', postsRouter);
 app.use('/post-likes', postLikesRouter);
 app.use('/post-comments', postCommentsRouter);
 app.use('/post-comment-likes', postCommentLikesRouter);
+app.use('/follow', followRouter);
+
 
 //TESTING:
 app.get('/users', authMiddleware, async (req, res) => {

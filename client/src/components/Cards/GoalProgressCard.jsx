@@ -8,7 +8,8 @@ export function GoalProgressCard({
   targetValue = 0,        
   currentCarbon = 0,
   startDate = 0,
-  year = 0   
+  year = 0,
+  isOwnProgress = false,  
 }) {
   //TODO: PASAR ESTA LOGICA A UN HELPER 
   // Calcular el porcentaje de progreso
@@ -44,7 +45,6 @@ export function GoalProgressCard({
 
   // 3️⃣ Convertimos a días
   const daysRemaining = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-console.log("progressPercentage", progressPercentage);
 
   return (
     <>
@@ -90,23 +90,24 @@ console.log("progressPercentage", progressPercentage);
               <CarbonIcon />
               <span>Reducir {remaining} kg</span>
           </div>
-          
-        <Link to={"/app/actions"}
-            className="bg-[#005840] text-white py-2 rounded-[30px] flex items-center justify-center mt-2">
-            <span>Continuar progreso</span>
-            
-            <svg className="inline-block ml-2 w-[15px] h-[15px]" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g clipPath="url(#clip0_2878_85)">
-              <circle cx="7.5" cy="7.5" r="7.5" fill="#F1EDEC"/>
-              <path d="M6 5L9 7.5L6 10" stroke="#005840" strokeLinecap="round" strokeLinejoin="round"/>
-              </g>
-              <defs>
-              <clipPath id="clip0_2878_85">
-              <rect width="15" height="15" rx="7.5" fill="white"/>
-              </clipPath>
-              </defs>
-            </svg>
-        </Link>
+        {isOwnProgress &&  
+          <Link to={"/app/actions"}
+              className="bg-[#005840] text-white py-2 rounded-[30px] flex items-center justify-center mt-2">
+              <span>Continuar progreso</span>
+              
+              <svg className="inline-block ml-2 w-[15px] h-[15px]" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clipPath="url(#clip0_2878_85)">
+                <circle cx="7.5" cy="7.5" r="7.5" fill="#F1EDEC"/>
+                <path d="M6 5L9 7.5L6 10" stroke="#005840" strokeLinecap="round" strokeLinejoin="round"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_2878_85">
+                <rect width="15" height="15" rx="7.5" fill="white"/>
+                </clipPath>
+                </defs>
+              </svg>
+          </Link>
+        }
         </>
       } 
     </div>

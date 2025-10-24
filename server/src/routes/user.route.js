@@ -18,5 +18,6 @@ usersRouter.get('/:userId/achieved-actions/:actionId', UserController.checkAchie
 usersRouter.get('/:userId/carbon', UserController.checkCarbon);
 usersRouter.patch('/set-carbon-goal', UserController.setCarbonGoal);
 usersRouter.patch('/:userId', uploadImage, UserController.update);
+usersRouter.get('/suggested-users/:userId', UserController.getSuggestedUsers);
 
 export default usersRouter;
