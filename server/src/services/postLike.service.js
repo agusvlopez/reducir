@@ -4,7 +4,7 @@ import { ValidationError } from "../errors/ValidationError.js";
 import { PostLikeRepository } from "../repositories/postLike.repository.js";
 
 export class PostLikeService {
-  //CHECKED?: ✅
+
   static async create({ userId, postId }) {
     try {
       const postLike = await PostLikeRepository.create({ userId, postId });
@@ -16,7 +16,7 @@ export class PostLikeService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async findByUserId({ userId }) {
     try {
       const posts = await PostLikeRepository.findByUserId({ userId });
@@ -28,7 +28,7 @@ export class PostLikeService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async findByPostId({ postId }) {
     try {
       const posts = await PostLikeRepository.findByPostId({ postId });
@@ -40,7 +40,7 @@ export class PostLikeService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async deleteByPostAndUser({ userId, postId }) {
     try {
       const postLike = await PostLikeRepository.deleteByPostAndUser({ userId, postId });
@@ -55,7 +55,7 @@ export class PostLikeService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async toggleLike({ postId, userId }) {
     try {
       const postLike = await PostLikeRepository.toggleLike({ postId, userId });
@@ -70,7 +70,7 @@ export class PostLikeService {
       throw error;
     }
   }
-  //CHECKED?:✅
+
   static async existsLike({ postId, userId }) {
     try {
       const postLike = await PostLikeRepository.existsLike({ postId, userId });
@@ -83,4 +83,15 @@ export class PostLikeService {
     }
   }
 
+  static async getPostLikedByUserId({ userId }) {
+    try {
+      const posts = await PostLikeRepository.getPostLikedByUserId({ userId });
+
+      return posts;
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+    }
+  }
 }

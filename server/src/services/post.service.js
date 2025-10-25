@@ -3,7 +3,7 @@ import { ValidationError } from "../errors/ValidationError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 
 export class PostService {
-  //CHECKED?: ✅
+
   static async create({ userId, actionId, carbon_reduced, userInfo, category, content, image}) {
     try {
       const post = await PostRepository.create({ userId, actionId, carbon_reduced, userInfo, category, content, image });
@@ -12,7 +12,7 @@ export class PostService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async findById({ postId }) {
     try {
       const post = await PostRepository.findById({ postId });
@@ -27,7 +27,7 @@ export class PostService {
       throw error;
     }
   }
-  //CHECKED?:
+
   static async findByUserId({ userId }) {
     try {
       const posts = await PostRepository.findByUserId({ userId });
@@ -39,7 +39,7 @@ export class PostService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async findAll() {
     try {
       const posts = await PostRepository.findAll();
@@ -48,7 +48,7 @@ export class PostService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async deleteById({ postId }) {
     try {
       const result = await PostRepository.deleteById({ postId });
@@ -63,7 +63,7 @@ export class PostService {
       throw error;
     }
   }
-  //CHECEKD?: ✅
+
   static async incrementLikesCount({ postId }) {
     try {
       const updatedPost = await PostRepository.incrementLikesCount({ postId });
@@ -78,7 +78,7 @@ export class PostService {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async decrementLikesCount({ postId }) {
     try {
       const updatedPost = await PostRepository.decrementLikesCount({ postId });
@@ -93,6 +93,5 @@ export class PostService {
       throw error;
     }
   }
-
 
 }

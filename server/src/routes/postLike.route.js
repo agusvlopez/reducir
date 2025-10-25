@@ -9,5 +9,6 @@ postLikesRouter.get('/post/:postId', PostLikeController.findByPostId);
 postLikesRouter.delete('/user/:userId/post/:postId', PostLikeController.deleteByPostAndUser);
 postLikesRouter.patch('/toggle/post/:postId/user/:userId', PostLikeController.toggleLike);
 postLikesRouter.get('/exists/post/:postId/user/:userId', PostLikeController.existsLike);
+postLikesRouter.get('/user/:userId/liked', PostLikeController.getPostLikedByUserId);
 
 export default postLikesRouter;

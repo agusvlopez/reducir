@@ -38,7 +38,7 @@ export const postsSlice = apiSlice.injectEndpoints({
       query: ({ postId, userId }) => 
         `/post-likes/exists/post/${postId}/user/${userId}`,
       providesTags: (result, error, { postId, userId }) => [
-        { type: 'PostLikes', id: `${postId}-${userId}` }
+        { type: 'PostLikes', id: `${postId}-${userId}` },
       ]
     }),
     
@@ -48,7 +48,7 @@ export const postsSlice = apiSlice.injectEndpoints({
         method: "PATCH",
       }),
       invalidatesTags: (result, error, { postId, userId }) => [
-        'Posts', // Invalida todos los posts (para likesCount)
+        'Posts',
         { type: 'PostLikes', id: `${postId}-${userId}` },
         { type: 'PostLikes', id: postId }
       ]
@@ -91,7 +91,7 @@ export const postsSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, commentId) => [
         { type: 'CommentLikes', id: commentId },
-        { type: 'PostComments', id: 'LIST' } // Invalida lista de comentarios
+        { type: 'PostComments', id: 'LIST' },
       ],
       // Optimistic update
       async onQueryStarted(commentId, { dispatch, queryFulfilled }) {
@@ -121,6 +121,11 @@ export const postsSlice = apiSlice.injectEndpoints({
       ],
     }),
 
+    //obtener los posts likeadeos por userId
+    getPostsLikedByUserId: builder.query({
+      query: (userId) => `/post-likes/user/${userId}/liked`,
+      providesTags: ["Posts"],
+    }),
   }),
 });
 
@@ -135,5 +140,6 @@ export const {
   useCreatePostCommentMutation,
   useGetCommentsByPostQuery,
   useToggleCommentLikeMutation,
-  useGetCommentLikeStatusQuery,  
+  useGetCommentLikeStatusQuery, 
+  useGetPostsLikedByUserIdQuery 
 } = postsSlice;

@@ -5,7 +5,7 @@ import Post from "../models/Post.js";
 import PostLike from "../models/PostLike.js";
 
 export class PostLikeRepository {
-  //CHECKED?: ✅
+
   /**
   * Crea un nuevo like para un post específico
   * Debe verificar que no exista ya un like del mismo usuario para ese post
@@ -40,7 +40,7 @@ export class PostLikeRepository {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   /**
   * Obtiene todos los likes que ha dado un usuario (Útil para el historial de likes del usuario)
   * 
@@ -56,7 +56,7 @@ export class PostLikeRepository {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   /**
   * Obtiene todos los likes de un post específico (Útil para mostrar quién dio like a un post)
   */
@@ -71,7 +71,7 @@ export class PostLikeRepository {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   /**
   * 
   * Elimina el like de un usuario específico en un post específico (unlike)
@@ -98,7 +98,7 @@ export class PostLikeRepository {
       throw error;
     }
   }
-  //CHECKED?: ✅
+
   static async toggleLike({ postId, userId }) {
     try {
       const postLike = await PostLike.findOne({ postId, userId });
@@ -128,7 +128,7 @@ export class PostLikeRepository {
       throw error;
     }
   }
-  //CHECKED?:✅
+
   static async existsLike({ postId, userId }) {
     try {
       const postLike = await PostLike.findOne({ postId, userId });
@@ -141,4 +141,23 @@ export class PostLikeRepository {
       throw error;
     }
   }
+
+  static async getPostLikedByUserId({ userId }) {
+      try {
+        const posts = await PostLike.find({ userId }).populate({
+          path: 'postId',
+          populate: {
+            path: 'userId',
+            select: 'name username image'
+          }
+        }).lean();
+        return posts;
+      } catch (error) {
+        if (error instanceof NotFoundError || error instanceof ValidationError) {
+          throw error;
+        }
+        throw error;
+      }
+    }
+
 }

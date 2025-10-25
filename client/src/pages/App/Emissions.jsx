@@ -40,7 +40,7 @@ export function Emissions() {
                     <p>Toneladas anuales de contaminación (CO2e)</p>
                 </div>
             </AppHeaderSection>
-            <section className="max-w-[354px] h-[182px] mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
+            <section className="max-w-[354px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
                 <GoalProgressCard 
                     targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
                     baselineValue={userData?.carbonGoal?.baselineValue}
