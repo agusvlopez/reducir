@@ -8,6 +8,7 @@ followRouter.delete('/', FollowController.unfollowUser);
 followRouter.get('/counts/:userId', FollowController.getFollowCounts);
 followRouter.get('/is-following/:followerId/:followingId', FollowController.isFollowing);
 followRouter.get('/followers/:userId', FollowController.getFollowers);
+followRouter.get('/following/:userId', FollowController.getFollowing);
 
 
 export default followRouter;

@@ -5,6 +5,8 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import { ProtectedRoute } from "./components/Routes/ProtectedRoute.jsx";
 import { Loader } from "./components/Base/Loader.jsx";
 import LandingPage from "./pages/Home/LandingPage/LandingPage.jsx";
+import { Followers } from "./pages/App/Followers.jsx";
+import { Following } from "./pages/App/Following.jsx";
 
 const Home = lazy(() => import("./pages/App/Home").then(m => ({ default: m.Home })));
 const Actions = lazy(() => import("./pages/App/Actions").then(m => ({ default: m.Actions })));
@@ -51,6 +53,8 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<LayoutApp />}>
             <Route path="/app/home/:userId" element={<Home />} />
+            <Route path="/app/:userId/followers" element={<Followers />} />
+            <Route path="/app/:userId/following" element={<Following />} />
             <Route path="/app/actions" element={<Actions />} />
             <Route path="/app/actions/:id" element={<Action />} />
             <Route path="/app/emissions" element={<Emissions />} />

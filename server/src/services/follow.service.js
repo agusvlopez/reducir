@@ -81,6 +81,13 @@ export class FollowService {
     return followers;
   }
 
+  static async getFollowing({ userId, page, limit }) {
+    const following = await FollowRepository.getFollowing({ userId, page, limit });
+    console.log("following", following);
+    
+    return following;
+  }
+
 
   
 }

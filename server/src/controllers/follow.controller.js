@@ -75,4 +75,17 @@ export class FollowController {
     }
   }
 
+  static async getFollowing(req, res) {
+    const { userId } = req.params;
+    const { page, limit } = req.query;
+
+    try {
+      const following = await FollowService.getFollowing({ userId, page, limit });
+      res.status(200).json(following);
+    } catch (error) {
+      res.status(500).json({ message: 'Error al obtener los usuarios que el usuario sigue' });
+    }
+  }
+
+
 }

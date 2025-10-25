@@ -50,15 +50,21 @@ export class FollowRepository {
   
   static async getFollowers({ userId, page = 1, limit = 20 }) {
     return await Follow.find({ following: userId })
-      .populate('follower', 'name username profilePicture')
+      .populate('follower', 'name username image')
       .skip((page - 1) * limit)
       .limit(limit)
       .sort({ createdAt: -1 });
   }
 
-  static async getFollowingIds(userId) {
-    console.log("userId in follow repository", userId);
-    
+  static async getFollowing({ userId, page = 1, limit = 20}) {
+    return await Follow.find({ follower: userId })
+      .populate('following', 'name username image')
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+  }
+
+  static async getFollowingIds(userId) {   
     const following = await Follow.find({ follower: userId })
       .select('following -_id')
       .lean();

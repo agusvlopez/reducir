@@ -130,8 +130,8 @@ console.log("userPostsData", userPostsData);
                 </div>
                 <div className="mt-4 flex items-center justify-center gap-4">
                     {/* following y followers */}
-                    <div><span className="font-semibold">{followCountsData?.followingCount}</span> Siguiendo</div>
-                    <div><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</div>
+                    <Link to={`/app/${userId}/following`}><span className="font-semibold">{followCountsData?.followingCount}</span> Siguiendo</Link>
+                    <Link to={`/app/${userId}/followers`}><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</Link>
                 </div>
             </section>
             <section className="w-[354px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">

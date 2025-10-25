@@ -28,10 +28,25 @@ export const followSlice = apiSlice.injectEndpoints({
     getFollowCounts: builder.query({
       query: (userId) => `/follow/counts/${userId}`,
       providesTags: ["User"]
-    })
+    }),
+    getFollowers: builder.query({
+      query: ({ userId, page, limit }) => `/follow/followers/${userId}?page=${page}&limit=${limit}`,
+      providesTags: ["User"]
+    }),
+    getFollowing: builder.query({
+      query: ({ userId, page, limit }) => `/follow/following/${userId}?page=${page}&limit=${limit}`,
+      providesTags: ["User"]
+    }),
   }),
 });
 
-export const { useFollowUserMutation, useUnfollowUserMutation, useIsFollowingQuery, useGetFollowCountsQuery } = followSlice;
+export const { 
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+  useIsFollowingQuery,
+  useGetFollowCountsQuery,
+  useGetFollowersQuery,
+  useGetFollowingQuery
+} = followSlice;
 
   
