@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')).render(
               <FavoritePostsProvider>
                 <App />
               </FavoritePostsProvider>
-              <Toaster richColors />
+              <Toaster richColors position="top-right" />
             </ActionsSavedProvider>
           </AuthProvider>
         </HeroUIProvider>

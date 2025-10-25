@@ -72,7 +72,6 @@ export function Home() {
             console.error('Error:', error);
         }
     }
-console.log("userPostsData", userPostsData);
 
     return (
         <>
@@ -118,9 +117,9 @@ console.log("userPostsData", userPostsData);
                                     disabled={isUserLoading}
                                 >
                                 {isFollowing ? (
-                                    <div className="font-medium bg-white text-dark-green rounded-[30px] text-xs px-2 py-1">Siguiendo</div>
+                                    <button className="font-semibold bg-white text-dark-green rounded-[30px] text-xs px-2 py-1 hover:bg-gray-200 transition-all cursor-pointer">Siguiendo</button>
                                 ) : (
-                                        <div className="font-medium bg-white rounded-[30px] text-xs px-2 py-1">Seguir</div>
+                                        <button className="font-semibold bg-white rounded-[30px] text-xs px-2 py-1 hover:bg-gray-200 transition-all cursor-pointer">Seguir</button>
                                     )}
                                 </button>  
                             </div>                          
@@ -130,8 +129,8 @@ console.log("userPostsData", userPostsData);
                 </div>
                 <div className="mt-4 flex items-center justify-center gap-4">
                     {/* following y followers */}
-                    <Link to={`/app/${userId}/following`}><span className="font-semibold">{followCountsData?.followingCount}</span> Siguiendo</Link>
-                    <Link to={`/app/${userId}/followers`}><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</Link>
+                    <Link to={`/app/${userId}/following`} className="hover:text-gray-200 hover:underline transition-all"><span className="font-semibold">{followCountsData?.followingCount}</span> Siguiendo</Link>
+                    <Link to={`/app/${userId}/followers`} className="hover:text-gray-200 hover:underline transition-all"><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</Link>
                 </div>
             </section>
             <section className="w-[354px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
@@ -219,7 +218,6 @@ console.log("userPostsData", userPostsData);
             }
 
             {sectionSelected === 'actionsAchieved' && isOwnProfile &&
-            //TODO
             (
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
@@ -257,7 +255,6 @@ console.log("userPostsData", userPostsData);
                     <p className="text-sm mb-2">Todas tus publicaciones se muestran acá.</p>
                     <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
 
-                {/* //TODO: AGREGAR UN FILTRO */}
                     <div>
                         {ownUserPostsData?.map((post) => {
                             return (
@@ -293,6 +290,14 @@ console.log("userPostsData", userPostsData);
                         <h2 className="text-[20px] font-semibold">Publicaciones guardadas</h2>
                         <p className="text-sm mb-2">Todas las publicaciones que guardaste se muestran acá</p>
 
+                        {postsLikedByUserIdData?.length === 0 && (
+                            <div className="text-center py-8">
+                                <p className="text-gray-600 font-medium mb-2">
+                                    No hay publicaciones
+                                </p>
+                            </div>
+                        )}
+
                         <div>
                             {postsLikedByUserIdData?.map((post) => {
                                 console.log("postlikedbyuser", post);
@@ -324,10 +329,9 @@ console.log("userPostsData", userPostsData);
             )}
             {!isOwnProfile &&
                 <section className="mt-[40px] px-6 flex flex-col gap-4">
-                {/* //TODO: AGREGAR UN FILTRO */}
                     <div>
                         <h2 className="text-[20px] font-semibold">Publicaciones de {userData?.name}</h2>
-                        {userPostsData?.length === 0 || userPostsData === undefined && (
+                        {userPostsData?.length === 0 && (
                             <div className="text-center py-8">
                                 <p className="text-gray-600 font-medium mb-2">
                                     No hay publicaciones
