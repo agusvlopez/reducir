@@ -4,7 +4,7 @@ import { ValidationError } from "../errors/ValidationError.js";
 import { PostService } from "../services/post.service.js";
 
 export class PostController {
-  //CHECKED?: ✅
+
   static async create(req, res) {
     const { userId, actionId, carbon_reduced, category, content } = req.body;
     const userInfo = JSON.parse(req.body.userInfo);
@@ -33,7 +33,7 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //CHECKED?: ✅
+
   static async findById(req, res) {
     const { postId } = req.params;
 
@@ -50,7 +50,7 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //CHECKED?: 
+
   static async findByUserId(req, res) {
     const { userId } = req.params;
     try {
@@ -66,7 +66,7 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //CHECKED?: ✅
+
   static async findAll(req, res) {
     try {
       const posts = await PostService.findAll();
@@ -75,12 +75,12 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //CHECKED?: ✅
+
   static async deleteById(req, res) {
-    const { postId } = req.params;
+    const { postId, userId } = req.params;
 
     try {
-      const result = await PostService.deleteById({ postId });
+      const result = await PostService.deleteById({ postId, userId });
       res.status(200).json(result);
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -92,7 +92,7 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //CHECKED?:  ✅
+
   static async incrementLikesCount(req, res) {
     const { postId } = req.params;
 
@@ -109,7 +109,7 @@ export class PostController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-  //CHECKED?: ✅
+
   static async decrementLikesCount(req, res) {
     const { postId } = req.params;
 

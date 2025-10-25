@@ -13,6 +13,14 @@ export const postsSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Posts"]
     }),
     
+    deletePost: builder.mutation({
+      query: ({ postId, userId }) => ({
+        url: `/posts/${postId}/user/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Posts"]
+    }),
+    
     getPosts: builder.query({
       query: () => "/posts",
       providesTags: ['Posts'],
@@ -83,7 +91,6 @@ export const postsSlice = apiSlice.injectEndpoints({
       ]
     }),
 
-    // COMMENT LIKES ← NUEVO
     toggleCommentLike: builder.mutation({
       query: ({ commentId, userId }) => ({
         url: `/post-comment-likes/${commentId}/like?userId=${userId}`,
@@ -121,7 +128,6 @@ export const postsSlice = apiSlice.injectEndpoints({
       ],
     }),
 
-    //obtener los posts likeadeos por userId
     getPostsLikedByUserId: builder.query({
       query: (userId) => `/post-likes/user/${userId}/liked`,
       providesTags: ["Posts"],
@@ -131,6 +137,7 @@ export const postsSlice = apiSlice.injectEndpoints({
 
 export const {
   useCreatePostMutation,
+  useDeletePostMutation,
   useGetPostsQuery,
   useGetPostQuery,
   useGetPostsByUserQuery,
@@ -141,5 +148,5 @@ export const {
   useGetCommentsByPostQuery,
   useToggleCommentLikeMutation,
   useGetCommentLikeStatusQuery, 
-  useGetPostsLikedByUserIdQuery 
+  useGetPostsLikedByUserIdQuery, 
 } = postsSlice;

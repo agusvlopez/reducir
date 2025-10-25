@@ -49,9 +49,9 @@ export class PostService {
     }
   }
 
-  static async deleteById({ postId }) {
+  static async deleteById({ postId, userId }) {
     try {
-      const result = await PostRepository.deleteById({ postId });
+      const result = await PostRepository.softDelete({ postId, userId });
       return result;
     } catch (error) {
       if (error instanceof NotFoundError) {

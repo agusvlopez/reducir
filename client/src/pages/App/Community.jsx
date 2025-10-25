@@ -5,7 +5,7 @@ import { Search } from "../../components/Inputs/Search";
 import { NewPostModal } from "../../components/Community/NewPostModal";
 import { Loader } from "../../components/Base/Loader";
 import { usePosts } from "../../hooks/usePosts";
-import { useGetPostsQuery } from "../../api/postsSlice";
+import { useDeletePostMutation, useGetPostsQuery } from "../../api/postsSlice";
 import { CATEGORIES } from "../../constants/categories";
 import { useGetSuggestedUsersQuery } from "../../api/apiSlice";
 import { useAuth } from "../../hooks/useAuth";
@@ -17,7 +17,7 @@ export function Community() {
     const {data: posts, isError, isLoading} = useGetPostsQuery();
     const { data: suggestedUsers } = useGetSuggestedUsersQuery(userId);
     //const [createPost] = useCreatePostMutation();
-
+    const [deletePost] = useDeletePostMutation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -60,7 +60,16 @@ export function Community() {
 
     const filteredPosts = getFilteredPosts();
     const isSearching = searchQuery !== debouncedQuery;
-console.log("filteredPosts", filteredPosts);
+
+    const handleDeletePost = async ({ postId, userId }) => {
+        try {
+            const response = await deletePost({ postId, userId });
+            console.log("response", response);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <>
             <section className="h-screen bg-[#005840] py-6">
@@ -154,6 +163,7 @@ console.log("filteredPosts", filteredPosts);
                                 actionId={post?.actionId}
                                 carbon={post?.carbon_reduced}
                                 postUserId={post?.userId?._id}
+                                onDelete={() => handleDeletePost({ postId: post._id, userId: userId})}
                             />
                         ))}
                     </div>

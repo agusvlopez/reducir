@@ -64,10 +64,9 @@ export class PostRepository {
     } catch (error) {}
   }
 
-  // CHECKED?: ✅
   static async findById({ postId }) {
     try {
-      const post = await Post.findById(postId)
+      const post = await Post.findOne({ _id: postId, isDeleted: false })
       .populate('userId', 'name username image')
       .lean();
       if(post === null) {       
@@ -85,10 +84,10 @@ export class PostRepository {
       return null;
     }
   }
-  // CHECKED?: ✅
+
   static async findByUserId({ userId }) {
     try {
-      const posts = await Post.find({ userId })
+      const posts = await Post.find({ userId, isDeleted: false })
       .populate('userId', 'name username image')
       .lean();
       if(posts.length === 0) {       
@@ -106,11 +105,11 @@ export class PostRepository {
       return null;
     }
   }
-  // CHECKED?:✅
+
   static async findAll() {
     try {
-      const posts = await Post.find()
-        .populate('userId', 'name username image') // Trae solo estos campos del usuario
+      const posts = await Post.find({ isDeleted: false })
+        .populate('userId', 'name username image')
         .sort({ createdAt: -1 })
         .limit(200)
         .lean();
@@ -120,26 +119,50 @@ export class PostRepository {
       return null;
     }
   }
-  // CHECKED?:✅
-  static async deleteById({ postId }) {
+
+  static async softDelete({ postId, userId }) {
     try {
-      const result = await Post.findByIdAndDelete(postId);
-      if(result === null) {       
-        throw new NotFoundError('No se encontró el post');
+      const updatedPost = await Post.findOneAndUpdate(
+        { 
+          _id: postId,
+          userId: userId,  // Solo actualiza si el userId coincide
+          isDeleted: false // Evita eliminar algo ya eliminado
+        },
+        { isDeleted: true },
+        { new: true, runValidators: true }
+      );
+      
+      if (!updatedPost) {
+        // No sabemos si no existe o no tiene permisos
+        const post = await Post.findById(postId);
+        
+        if (!post) {
+          throw new NotFoundError('No se encontró el post');
+        }
+        
+        if (post.userId.toString() !== userId.toString()) {
+          throw new ForbiddenError('No tienes permiso para eliminar este post');
+        }
+        
+        if (post.isDeleted) {
+          throw new ValidationError('Este post ya fue eliminado');
+        }
       }
       
-      return result;
+      return updatedPost;
     } catch (error) {
-      if(error.name === 'NotFoundError') {
+      if (error.name === 'NotFoundError' || 
+          error.name === 'ForbiddenError' || 
+          error.name === 'ValidationError') {
         throw error;
       }
-      if(error.name === 'CastError') {
+      if (error.name === 'CastError') {
         throw new ValidationError('ID inválido');
       }
-      return null;
+      throw error;
     }
   }
-  // CHECKED?: ✅
+
   static async incrementLikesCount({ postId }) {
     try {
       const updatedPost = await Post.findByIdAndUpdate(
@@ -162,7 +185,7 @@ export class PostRepository {
       return null;
     }
   }
-  // CHECKED?: ✅
+
   static async decrementLikesCount({ postId }) {
     try {
       const updatedPost = await Post.findOneAndUpdate(
@@ -201,5 +224,7 @@ export class PostRepository {
       { $inc: { commentsCount: -1 } },
       { new: true }
     );
-  }  
+  }
+  
+  
 } 

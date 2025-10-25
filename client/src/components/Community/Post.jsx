@@ -18,7 +18,8 @@ export function Post({
     commentsCount,
     actionId,
     carbon,
-    postUserId
+    postUserId,
+    onDelete
 }) {
     const { userId } = useAuth();
 
@@ -29,6 +30,7 @@ export function Post({
                     name={name}
                     username={username}
                     profileImage={profileImage}
+                    onDelete={onDelete}
                 />
                 <Link to={`/app/${userId}/post/${id}`}
                 className={`${className}`}>
