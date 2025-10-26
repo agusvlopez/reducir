@@ -9,7 +9,7 @@ export const followSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "Posts", "Users", "SuggestedUsers"],
     }),
     unfollowUser: builder.mutation({
       query: (data) => ({
@@ -17,13 +17,13 @@ export const followSlice = apiSlice.injectEndpoints({
         method: "DELETE",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "Posts"],
     }),
     isFollowing: builder.query({
       query: (data) => ({
         url: `/follow/is-following/${data.followerId}/${data.followingId}`,
       }),
-      providesTags: ["User"],
+      providesTags: ["User", "Posts"],
     }),    
     getFollowCounts: builder.query({
       query: (userId) => `/follow/counts/${userId}`,

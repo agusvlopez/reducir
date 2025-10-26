@@ -3,6 +3,7 @@ import { ConflictError } from "../errors/ConflictError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import Post from "../models/Post.js";
+import Follow from "../models/Follow.js";
 
 export class PostRepository {
   static async create({ userId, actionId, carbon_reduced, userInfo, category, content, image }) {   
@@ -120,20 +121,61 @@ export class PostRepository {
     }
   }
 
+  static async getFeed({ userId, page = 1, limit = 20 }) {
+    try {
+      const skip = (page - 1) * limit;
+      
+      // Obtener IDs de usuarios que sigue
+      const followingUsers = await Follow.find({ follower: userId })
+        .select('following')
+        .lean();
+      
+      const followingIds = followingUsers.map(follow => follow.following);
+      
+      // Incluir posts propios y de usuarios seguidos
+      const userIds = [userId, ...followingIds];
+      
+      const [posts, total] = await Promise.all([
+        Post.find({
+          userId: { $in: userIds },
+          isDeleted: false
+        })
+          .populate('userId', 'name username image')
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limit)
+          .lean(),
+        Post.countDocuments({
+          userId: { $in: userIds },
+          isDeleted: false
+        })
+      ]);
+      
+      return {
+        data: posts,
+        total
+      };
+    } catch (error) {
+      if (error.name === 'CastError') {
+        throw new ValidationError('ID inválido');
+      }
+      throw error;
+    }
+  }
+
   static async softDelete({ postId, userId }) {
     try {
       const updatedPost = await Post.findOneAndUpdate(
         { 
           _id: postId,
-          userId: userId,  // Solo actualiza si el userId coincide
-          isDeleted: false // Evita eliminar algo ya eliminado
+          userId: userId, 
+          isDeleted: false 
         },
         { isDeleted: true },
         { new: true, runValidators: true }
       );
       
       if (!updatedPost) {
-        // No sabemos si no existe o no tiene permisos
         const post = await Post.findById(postId);
         
         if (!post) {

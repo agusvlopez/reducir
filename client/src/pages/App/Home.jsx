@@ -24,6 +24,7 @@ export function Home() {
     const { data: userPostsData } = useGetPostsByUserQuery(userId, { skip: !userId });
     const { data: followCountsData } = useGetFollowCountsQuery(userId, { skip: !userId });
     const { data: postsLikedByUserIdData } = useGetPostsLikedByUserIdQuery(authUserId, { skip: !authUserId });
+console.log("ownUserPostsData", ownUserPostsData);
 
     const isOwnProfile = userId === authUserId;
 
@@ -193,6 +194,14 @@ export function Home() {
                 Agregar una acción
                 </Link>
 
+                {actionsSaved?.length === 0 &&
+                    <div className="text-center py-8">
+                        <p className="text-gray-600 font-medium mb-2">
+                            No hay acciones guardadas
+                        </p>
+                    </div>
+                }
+
                 <BaseCarousel>
                     {/* TODO: USE SWIPER */}
                     {/* {isLoading && <p>Cargando acciones favoritas...</p>} */}
@@ -219,11 +228,20 @@ export function Home() {
 
             {sectionSelected === 'actionsAchieved' && isOwnProfile &&
             (
-            <section className="mt-[40px] px-6 flex flex-col gap-4">
-                <div>
-                    <h2 className="text-[20px] font-semibold">Acciones logradas</h2>
-                    <p className="text-sm">Estas son las acciones que lograste hasta el momento. ¿Querés compartilo con tu comunidad?</p>
-                </div>
+                <section className="mt-[40px] px-6 flex flex-col gap-4">
+                    <div>
+                        <h2 className="text-[20px] font-semibold">Acciones logradas</h2>
+                        <p className="text-sm">Estas son las acciones que lograste hasta el momento. ¿Querés compartilo con tu comunidad?</p>
+                    </div>
+
+                    {actionsAchieved?.length === 0 &&
+                        <div className="text-center py-8">
+                            <p className="text-gray-600 font-medium mb-2">
+                                No hay acciones guardadas
+                            </p>
+                        </div>
+                    }
+
                     <BaseCarousel>
                         {actionsAchieved?.map((actionId) => {
                             const achievedAction = ACTIONS?.find(a => a._id === actionId);                        
@@ -254,7 +272,13 @@ export function Home() {
                     <h2 className="text-[20px] font-semibold">Mis publicaciones</h2>
                     <p className="text-sm mb-2">Todas tus publicaciones se muestran acá.</p>
                     <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
-
+                    {ownUserPostsData?.length === 0 || ownUserPostsData === undefined && (
+                        <div className="text-center py-8">
+                            <p className="text-gray-600 font-medium mb-2">
+                                No hay publicaciones
+                            </p>
+                        </div>
+                    )}
                     <div>
                         {ownUserPostsData?.map((post) => {
                             return (

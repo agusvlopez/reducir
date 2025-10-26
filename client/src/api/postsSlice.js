@@ -26,6 +26,11 @@ export const postsSlice = apiSlice.injectEndpoints({
       providesTags: ['Posts'],
     }),
     
+    getFeed: builder.query({
+      query: ({ userId, page, limit }) => `/posts/feed/${userId}?page=${page}&limit=${limit}`,
+      providesTags: ["Posts"],
+    }),
+
     getPost: builder.query({
       query: (postId) => `/posts/${postId}`,
       providesTags: (result, error, postId) => [
@@ -139,6 +144,7 @@ export const {
   useCreatePostMutation,
   useDeletePostMutation,
   useGetPostsQuery,
+  useGetFeedQuery,
   useGetPostQuery,
   useGetPostsByUserQuery,
   useExistsLikePostQuery,

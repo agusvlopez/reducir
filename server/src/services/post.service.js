@@ -48,6 +48,25 @@ export class PostService {
       throw error;
     }
   }
+  
+  static async getFeed({ userId, page = 1, limit = 20 }) {
+    const result = await PostRepository.getFeed({ 
+      userId, 
+      page, 
+      limit 
+    });
+    
+    return {
+      data: result.data,
+      pagination: {
+        page,
+        limit,
+        total: result.total,
+        totalPages: Math.ceil(result.total / limit),
+        hasMore: page * limit < result.total
+      }
+    };
+  }
 
   static async deleteById({ postId, userId }) {
     try {

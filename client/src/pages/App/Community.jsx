@@ -5,7 +5,7 @@ import { Search } from "../../components/Inputs/Search";
 import { NewPostModal } from "../../components/Community/NewPostModal";
 import { Loader } from "../../components/Base/Loader";
 import { usePosts } from "../../hooks/usePosts";
-import { useDeletePostMutation, useGetPostsQuery } from "../../api/postsSlice";
+import { useDeletePostMutation, useGetFeedQuery, useGetPostsQuery } from "../../api/postsSlice";
 import { CATEGORIES } from "../../constants/categories";
 import { useGetSuggestedUsersQuery } from "../../api/apiSlice";
 import { useAuth } from "../../hooks/useAuth";
@@ -14,7 +14,10 @@ import { Link } from "react-router-dom";
 export function Community() {
     const { userId } = useAuth();
     const { addPost } = usePosts();
-    const {data: posts, isError, isLoading} = useGetPostsQuery();
+    //const {data: posts, isError, isLoading} = useGetPostsQuery();
+    const { data: posts, isError, isLoading } = useGetFeedQuery({ userId, page: 1, limit: 10});
+    console.log("posts", posts);
+    
     const { data: suggestedUsers } = useGetSuggestedUsersQuery(userId);
     //const [createPost] = useCreatePostMutation();
     const [deletePost] = useDeletePostMutation();
@@ -47,10 +50,10 @@ export function Community() {
 
     // Filtrar posts basado en la búsqueda
     const getFilteredPosts = () => {
-        if (!debouncedQuery.trim()) return posts;
+        if (!debouncedQuery.trim()) return posts?.data;
 
         const query = debouncedQuery.toLowerCase();
-        return posts?.filter(post => 
+        return posts?.data?.filter(post => 
             post.content?.toLowerCase().includes(query) ||
             post.userInfo?.name?.toLowerCase().includes(query) ||
             post.userInfo?.username?.toLowerCase().includes(query) ||

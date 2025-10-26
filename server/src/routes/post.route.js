@@ -8,6 +8,7 @@ postsRouter.post('/', uploadImage, PostController.create);
 postsRouter.get('/:postId', PostController.findById);
 postsRouter.get('/user/:userId', PostController.findByUserId);
 postsRouter.get('/', PostController.findAll);
+postsRouter.get('/feed/:userId', PostController.getFeed);
 postsRouter.delete('/:postId/user/:userId', PostController.deleteById);
 postsRouter.patch('/:postId/likes', PostController.incrementLikesCount);
 postsRouter.patch('/:postId/likes/decrement', PostController.decrementLikesCount);

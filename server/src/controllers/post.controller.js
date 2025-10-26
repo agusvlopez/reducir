@@ -76,6 +76,45 @@ export class PostController {
     }
   }
 
+  static async getFeed(req, res) {
+    try {
+      const { userId } = req.params;
+      
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 20;
+      
+      // Validaciones
+      if (page < 1) {
+        return res.status(400).json({ 
+          message: 'El número de página debe ser mayor a 0' 
+        });
+      }
+      
+      if (limit < 1 || limit > 100) {
+        return res.status(400).json({ 
+          message: 'El límite debe estar entre 1 y 100' 
+        });
+      }
+      
+      const result = await PostService.getFeed({ 
+        userId, 
+        page, 
+        limit 
+      });
+      
+      res.status(200).json(result);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        return res.status(400).json({ message: error.message });
+      }
+      
+      console.error('Error en getFeed:', error);
+      res.status(500).json({ 
+        message: 'Error al obtener el feed de posts' 
+      });
+    }
+  }
+
   static async deleteById(req, res) {
     const { postId, userId } = req.params;
 

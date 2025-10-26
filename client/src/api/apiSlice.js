@@ -67,7 +67,7 @@ export const apiSlice = createApi({
     }),
     getSuggestedUsers: builder.query({
       query: (userId) => `/users/suggested-users/${userId}`,
-      providesTags: ["Users"]
+      providesTags: ["SuggestedUsers"]
     }),
   }),
 });
