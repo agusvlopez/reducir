@@ -1,4 +1,5 @@
 import { ChevronRight } from "../Icons/ChevronRight";
+import { Loader } from "./Loader";
 
 export default function BaseButton({
     variant = "green",
@@ -8,6 +9,7 @@ export default function BaseButton({
     className,
     isArray = true, //TODO: CHANGE NAME TO withArrow
     isDisabled = false,
+    isLoading = false,
     ...props
 }) {
     // Define the base styles for the button depending on the variant
@@ -26,13 +28,19 @@ export default function BaseButton({
 
     return (
         <button
-            disabled={isDisabled}
+            disabled={isDisabled || isLoading}
             type={buttonType}
             className={`cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md font-medium ${className} ${variantStyles[variant]} ${sizeStyles[size]}`}
             {...props}
         >
-            {children}
-            {isArray && <ChevronRight className="size-5 ml-2" />}
+            {isLoading ? (
+                <Loader size="sm" color={variant === "green" ? "white" : "green"} />
+            ) : (
+                <>
+                    {children}
+                    {isArray && <ChevronRight className="size-5 ml-2" />}
+                </>
+            )}
         </button>
     );
 }

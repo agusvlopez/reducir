@@ -3,10 +3,7 @@ import { useDisclosure } from "@heroui/react";
 import { AppHeaderSection } from "../../../components/Sections/AppHeader";
 import { BaseModal } from "../../../components/Base/BaseModal";
 import { Heading } from "../../../components/Base/Heading";
-import InfoImage from "../../../assets/icons/info.png";
 import { Link } from "react-router-dom";
-import CarbonReduceIcon from "../../../assets/icons/carbon-reduce.png";
-import BaseButton from "../../../components/Base/BaseButton";
 import { useGetUserQuery } from "../../../api/apiSlice";
 import { useAuth } from "../../../hooks/useAuth";
 import FlipCard from "../../../components/Cards/FlipCard.jsx";
@@ -14,12 +11,13 @@ import { GoalsProvider } from "../../../context/GoalsContext.jsx";
 import { useGoals } from "../../../hooks/useGoals.js";
 import { getGoalProgressInfo } from "../../../helpers/getGoalProgress.js";
 import { useEffect } from "react";
+import { Loader } from "../../../components/Base/Loader.jsx";
 
 
 function GoalsContent() {
     const { userId } = useAuth();
-    const { data: userData } = useGetUserQuery(userId);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { data: userData, isLoading: isUserLoading, isError: isUserError} = useGetUserQuery(userId);
+    const { isOpen, _onOpen, onOpenChange } = useDisclosure();
     const { customGoal, setSliderValue } = useGoals();
 
     const goalInfo = getGoalProgressInfo({
@@ -57,19 +55,16 @@ function GoalsContent() {
                         </Link>
                         <span className="flex gap-3 items-center">
                             <Heading tag="h2" size="h2" weight="semibold" align="left">Establecé una meta</Heading>
-                            <button
-                                onClick={onOpen}
-                            >
-                                <img src={InfoImage} alt="Información de las acciones" className="h-fit" />
-                            </button>
                         </span>
                     </span>
-                    <p className="">Establecé un objetivo para reducir emisiones. Establecé el que estas dispuesto a cumplir. ¡Podés cambiarlo cuando quieras!</p>
+                    <p className="">Establecé un objetivo para reducir emisiones, el que estes dispuesto a cumplir. ¡Podés cambiarlo cuando quieras!</p>
                 </div>
             </AppHeaderSection>
 
             {/* CARD */}
             <section className="max-w-[354px] mx-auto mt-[-70px] rounded-[30px] flex flex-col items-center gap-6">
+                {isUserLoading && <Loader />}
+                {isUserError && <p>Error al cargar los datos del usuario.</p>}
                 <FlipCard 
                     customGoal={customGoal}
                     goalSelectedPercentage={userData?.carbonGoal?.targetReductionPercentage}

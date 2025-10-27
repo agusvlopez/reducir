@@ -6,15 +6,15 @@ import { z } from 'zod';
  */
 export const createUserSchema = z.object({
   name: z.string({
-    required_error: 'Name is required',
-  }).min(1, { message: 'Name cannot be empty' }),
+    required_error: 'Nombre es requerido',
+  }).min(1, { message: 'Nombre no puede estar vacio' }),
   username: z.string({
-    required_error: 'Username is required',
-  }).min(1, { message: 'Username cannot be empty' }),
-  email: z.email({ message: 'Invalid email address' }),
+    required_error: 'Nombre de usuario es requerido',
+  }).min(1, { message: 'Nombre de usuario no puede estar vacio' }),
+  email: z.email({ message: 'Email inválido' }),
   password: z.string({
-    required_error: 'Password is required',
-  }).min(8, { message: 'Password must be at least 8 characters long' }),
+    required_error: 'La contraseña es requerida',
+  }).min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 });
 
 /**

@@ -42,18 +42,20 @@ export function Comment({ comment, allComments, level = 0 }) {
 // Componente separado para cada comentario individual
 function CommentItem({ answer }) {     
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateCommentLoading, setIsCreateCommentLoading] = useState(false);
+
   const { user } = useAuth();
   
   const handleAddComment = async () => {
     setIsModalOpen(true);
   }
-
-  const { data: likeStatus, isLoading: isLikeStatusLoading } = useGetCommentLikeStatusQuery({ commentId: answer._id, userId: answer.userId });
   
-  const [toggleLike, { isLoading }] = useToggleCommentLikeMutation({ commentId: answer._id, userId: answer.userId });
+  const { data: likeStatus, isLoading: isLikeStatusLoading } = useGetCommentLikeStatusQuery({ commentId: answer._id, userId: answer.userId?._id });
+  
+  const [toggleLike] = useToggleCommentLikeMutation({ commentId: answer._id, userId: answer.userId?._id });
 
   const handleLike = async () => {
-    await toggleLike({ commentId: answer._id, userId: answer.userId });
+    await toggleLike({ commentId: answer._id, userId: answer.userId?._id });
   };
 
   const { postId } = useParams();
@@ -61,18 +63,20 @@ function CommentItem({ answer }) {
   
   //todo: pasar la logica de comentar a un custom hook, tambien usado en postFooter.jsx
   const handleComment = async (content, form) => {
+    setIsCreateCommentLoading(true);
     try {
         await createComment({ 
             postId: postId, 
             content,
             parentCommentId: answer._id
         });
-        
+        setIsCreateCommentLoading(false);
         form.reset();
         toast.success("Comentario publicado");
         setIsModalOpen(false);
     } catch (error) {
         console.error(error);
+        setIsCreateCommentLoading(false);
         toast.error("Error al comentar");
     }
   }  
@@ -85,6 +89,7 @@ function CommentItem({ answer }) {
         isOpen={isModalOpen} 
         srcAvatar={user?.image}
         onClose={() => setIsModalOpen(false)}
+        isPostLoading={isCreateCommentLoading}
       />
     )}
     <div className="flex justify-between gap-4">
@@ -116,11 +121,10 @@ function CommentItem({ answer }) {
             </button>
             <button
               className="flex items-center gap-1 text-sm"
-              onClick={handleLike} disabled={isLoading}
+              onClick={handleLike}
             >
               <HeartIcon 
                 isFilled={likeStatus?.hasLiked} 
-                isLoading={isLikeStatusLoading || isLoading} 
               />
               <span>{isLikeStatusLoading ? '...' : (likeStatus?.likesCount || 0)}</span>
             </button>

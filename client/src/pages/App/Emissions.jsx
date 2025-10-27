@@ -9,11 +9,13 @@ import { useDisclosure } from "@heroui/react";
 import { useGetUserQuery } from "../../api/apiSlice";
 import { useAuth } from "../../hooks/useAuth";
 import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
+import { Loader } from "../../components/Base/Loader";
+
 
 export function Emissions() {
     const { userId } = useAuth();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
+    const { data: userData, isLoading: isUserLoading, isError: isUserError } = useGetUserQuery(userId, { skip: !userId });
 
     return (
         <>
@@ -41,6 +43,8 @@ export function Emissions() {
                 </div>
             </AppHeaderSection>
             <section className="max-w-[354px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
+                {isUserLoading && <Loader/>}
+                {isUserError && <p>Error al cargar los datos del usuario.</p>}
                 <GoalProgressCard 
                     targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
                     baselineValue={userData?.carbonGoal?.baselineValue}

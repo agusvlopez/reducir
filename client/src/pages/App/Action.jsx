@@ -8,21 +8,28 @@ import { CarbonIcon } from "../../components/Icons/Carbon";
 import { ImagePill } from "../../components/Base/ImagePill";
 import { ChevronLeft } from "../../components/Icons/ChevronLeft";
 import { useAuth } from "../../hooks/useAuth";
-import { useActionsSaved } from "../../hooks/useActionsSaved";
-import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus";
 import { Loader } from "../../components/Base/Loader";
-import { useAddAchievedActionMutation, useCheckAchievedActionQuery } from "../../api/actionsSlice";
+import { useAddAchievedActionMutation, useCheckAchievedActionQuery, useCheckSavedActionQuery, useToggleSavedActionMutation } from "../../api/actionsSlice";
 import { toast } from "sonner";
 
 export function Action() {
-
     const navigate = useNavigate();
-
     const { id } = useParams();
     const { userId } = useAuth();
     //ESTO TAMBIEN LO USO EN ACTIONCARD, TODO: VER SI SIMPLIFICAR
-    const { toggleAction } = useActionsSaved();
-    const { isActionSaved, isLoading } = useActionsSavedStatus(id);
+    const [toggleSavedAction] = useToggleSavedActionMutation();
+    
+    const handleToggle = async () => {
+        await toggleSavedAction({ 
+            userId, 
+            actionId: id 
+        });
+    }
+
+      const { data: isActionSaved = false, isActionSavedLoading } = useCheckSavedActionQuery(
+        { userId, actionId: id },
+        { skip: !userId || !id }
+      );
 
     const [ addAchievedAction ] = useAddAchievedActionMutation();
 
@@ -34,13 +41,6 @@ export function Action() {
     //buscar la acción por id en el archivo, por ahora
     //TODO: se llamará a la API para obtener la acción
     const action = ACTIONS.find(action => action._id === id);
-
-    const handleToggle = async () => {
-        await toggleAction({ 
-            userId, 
-            actionId: id 
-        });
-    }
 
     const handleAddToAchieved = async () => {
         console.log("agregando", action?.carbon, id, userId)
@@ -88,7 +88,7 @@ export function Action() {
 
                 <div className="flex flex-col items-center gap-6 text-center mt-2">
                     {!isActionAchieved && (
-                        isLoading ? 
+                        isActionSavedLoading ? 
                         <Loader size="sm" color="green" />
                         :
                         <BaseButton 

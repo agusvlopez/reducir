@@ -8,15 +8,20 @@ import { calculateCarbon } from "../../../helpers/calculateCarbon";
 import { useCreateCarbonMutation } from "../../../api/apiSlice";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function FormTest() {
   const navigate = useNavigate();
 
-  const [ createCarbon ] = useCreateCarbonMutation();
   const { userId } = useAuth();
+  const [ createCarbon ] = useCreateCarbonMutation();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendTest = async (event) => {
     event.preventDefault();
+
+    setIsLoading(true);
 
     const formData = new FormData(event.target);
     const kwh = formData.get("kwh");
@@ -78,6 +83,7 @@ export function FormTest() {
             buttonType="submit"
             isArray={false}
             className="self-center mt-4 px-8"
+            isLoading={isLoading}
           >
             Enviar
           </BaseButton>

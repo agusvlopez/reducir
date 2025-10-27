@@ -5,7 +5,7 @@ import { useExistsLikePostQuery } from "../api/postsSlice";
 
 
 export const useFavoritePosts = () => {
-  const [favoritePosts, setFavoritePosts] = useState([]);
+  const [favoritePosts, _setFavoritePosts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const context = useContext(FavoritePostsContext);

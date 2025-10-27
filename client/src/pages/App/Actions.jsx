@@ -24,24 +24,25 @@ const ITEMS_PER_LOAD = 8;
 
 export function Actions() {
     const {data: actions, isError, isLoading} = useGetActionsQuery();
-    
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    
     const [category, setCategory] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [visibleItems, setVisibleItems] = useState(ITEMS_PER_LOAD);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
+
     const loadMoreRef = useRef(null);
 
     const handlePillClick = (categoryValue) => {
         const value = categoryValue === "Todas" ? "" : categoryValue;
         setCategory(value);
-        setVisibleItems(ITEMS_PER_LOAD); // Reset items visibles al cambiar categoría
+        setVisibleItems(ITEMS_PER_LOAD); 
     };
 
     const debouncedSearch = useCallback(
         debounce((query) => {
             setSearchQuery(query);
-            setVisibleItems(ITEMS_PER_LOAD); // Reset items visibles al buscar
+            setVisibleItems(ITEMS_PER_LOAD);
         }, 1000),
         []
     );
@@ -182,9 +183,9 @@ export function Actions() {
                         {isError && <p className="text-white">Error al cargar las acciones.</p>}
                         {displayedActions && displayedActions.length === 0 && !isLoading && 
                             <p className="text-white">No se encontraron acciones.</p>}
-                        {displayedActions?.map((action, index) => (
+                        {displayedActions?.map((action) => (
                             <ActionCard
-                                key={`${action._id}-${index}`} // Mejor key para evitar problemas con lazy loading
+                                key={action._id}
                                 id={action?._id}
                                 title={action.title}
                                 category={action.category}

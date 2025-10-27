@@ -3,6 +3,7 @@ import cloudinary from "../config/cloudinary.js";
 import User from "../models/User.js";
 import { PostRepository } from "./post.repository.js";
 
+
 export class UserRepository {
   static async create({ name, username, email, hashedPassword, image }) {
     try {
@@ -99,7 +100,10 @@ export class UserRepository {
 
   static async exists({ email }) {
     try {
-      const userExists = await User.exists({ email });
+      const userExists = await User.exists({ 
+      email, 
+      isDeleted: false 
+    });
       return userExists !== null;
     } catch (error) {
       return false;
@@ -320,5 +324,21 @@ export class UserRepository {
         } 
       }
     ]);
+  }
+
+  static async deleteAccount({ userId }) {
+    try {
+      //hacer soft delete de user y de todos sus respectivos datos
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { isDeleted: true },
+        { new: true, runValidators: true }
+      );
+
+      return user;
+    
+    } catch (error) {
+      return null;
+    }
   }
 }

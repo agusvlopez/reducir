@@ -5,22 +5,21 @@ import { Search } from "../../components/Inputs/Search";
 import { NewPostModal } from "../../components/Community/NewPostModal";
 import { Loader } from "../../components/Base/Loader";
 import { usePosts } from "../../hooks/usePosts";
-import { useDeletePostMutation, useGetFeedQuery, useGetPostsQuery } from "../../api/postsSlice";
+import { useDeletePostMutation, useGetFeedQuery } from "../../api/postsSlice";
 import { CATEGORIES } from "../../constants/categories";
-import { useGetSuggestedUsersQuery } from "../../api/apiSlice";
+import { useGetSuggestedUsersQuery, useGetUserQuery } from "../../api/apiSlice";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
 export function Community() {
     const { userId } = useAuth();
     const { addPost } = usePosts();
-    //const {data: posts, isError, isLoading} = useGetPostsQuery();
-    const { data: posts, isError, isLoading } = useGetFeedQuery({ userId, page: 1, limit: 10});
-    console.log("posts", posts);
-    
-    const { data: suggestedUsers } = useGetSuggestedUsersQuery(userId);
-    //const [createPost] = useCreatePostMutation();
+    const { data: posts, isError, isLoading: isPostsLoading } = useGetFeedQuery({ userId, page: 1, limit: 10});
+    const { data: suggestedUsers, isLoading: isSuggestedUsersLoading} = useGetSuggestedUsersQuery(userId);
+    const { data: userData, isLoading: isUserLoading, isError: isUserError } = useGetUserQuery(userId);
+
     const [deletePost] = useDeletePostMutation();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -66,21 +65,23 @@ export function Community() {
 
     const handleDeletePost = async ({ postId, userId }) => {
         try {
-            const response = await deletePost({ postId, userId });
-            console.log("response", response);
-            
+            await deletePost({ postId, userId });
         } catch (error) {
             console.log(error);
         }
     }
+
     return (
         <>
             <section className="h-screen bg-[#005840] py-6">
-                <div className="flex items-center gap-6 mb-8 px-6">
+                <div className="flex items-center gap-4 mb-8 px-6">
+                    {isUserLoading && <Loader size="sm" color="white" />}
+                    {isUserError && <p className="text-red-500">Error al cargar el usuario.</p>}
+                    
                     <Avatar
-                        src="https://www.gravatar.com/avatar"
-                        alt="User Avatar"
-                        size="sm"
+                        src={userData?.image}
+                        alt={userData?.name}
+                        size="md"
                         isBordered={true}
                         className="mx-auto"
                     />
@@ -92,29 +93,30 @@ export function Community() {
                 </div>
                 
                 <div className="px-6 mb-2">
-                    <h2 className="text-white">Personas sugeridas</h2>
-                    <div className="flex gap-4 py-4">
+                    <h2 className="text-white text-sm">Personas sugeridas</h2>
+                    <div className="flex gap-4 py-4 border-b border-gray-100/40 mb-6">
+                        {isSuggestedUsersLoading && <Loader size="sm" color="white" />}
                         {suggestedUsers?.data?.map((user) => (
                             <Link to={`/app/home/${user._id}`} key={user._id}>
                                 <Avatar
                                     src={user?.image}
                                     alt={user?.name}
-                                    size="lg" />
+                                    size="md" />
                             </Link>
                         ))}
                     </div>
-                </div>
-                {/* CREAR UN NUEVO POST */}
-                <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20 h-screen overflow-y-auto">
+
                     <button
                         onClick={openFormNewPost}
-                        className="flex items-center gap-[10px] font-semibold mb-8 text-dark-green cursor-pointer hover:text-dark-green/90 transition-colors">
+                        className="flex items-center gap-[10px] text-white font-semibold mt-2 mb-6 cursor-pointer hover:text-gray-200 hover:underline transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                         Compartir un nuevo logro
                     </button>
-                    
+                </div>
+                {/* CREAR UN NUEVO POST */}
+                <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20 h-screen overflow-y-auto">                    
                     <NewPostModal
                         isOpen={isModalOpen}
                         onClose={() => setIsModalOpen(false)}
@@ -123,7 +125,7 @@ export function Community() {
                     />
                     
                     <div className="flex flex-col gap-6">
-                        {isLoading && <p className="text-gray-500">Cargando posts...</p>}
+                        {isPostsLoading && <p className="text-gray-500">Cargando posts...</p>}
                         {isError && <p className="text-red-500">Error al cargar los posts.</p>}
                         
                         {/* Mensaje de "Buscando..." */}
@@ -134,7 +136,7 @@ export function Community() {
                         )}
                         
                         {/* Mostrar mensaje si no hay resultados */}
-                        {!isLoading && !isError && !isSearching && filteredPosts?.length === 0 && (
+                        {!isPostsLoading && !isError && !isSearching && filteredPosts?.length === 0 && (
                             <div className="text-center py-8">
                                 <p className="text-gray-600 font-medium mb-2">
                                     {debouncedQuery 

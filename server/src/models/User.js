@@ -26,14 +26,6 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: 0
   },
-  followers: {
-    type: [String],
-    default: []
-  },
-  following: {
-    type: [String],
-    default: []
-  },
   actions_saved: {
     type: [String],
     default: []
@@ -51,6 +43,10 @@ const UserSchema = new mongoose.Schema({
     completedAt: Date,
     status: { type: String, enum: ['inactive', 'active', 'completed', 'abandoned'], default: 'inactive' }
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  }
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);

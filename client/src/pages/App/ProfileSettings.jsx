@@ -5,25 +5,34 @@ import BaseInput from "../../components/Inputs/BaseInput";
 import { useState } from "react";
 import BaseButton from "../../components/Base/BaseButton";
 import { useAuth } from "../../hooks/useAuth";
-import { useGetUserQuery, useUpdateUserMutation } from "../../api/apiSlice";
+import { useDeleteAccountMutation, useGetUserQuery, useUpdateUserMutation } from "../../api/apiSlice";
 import { toast } from "sonner";
 
 export function ProfileSettings() {
   const { handleLogout, userId } = useAuth();
   const [updateUser] = useUpdateUserMutation();
-  const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
+  const { data: userData, isLoading: isUserDataLoading } = useGetUserQuery(userId, { skip: !userId });
+  const [deleteAccount, { isLoading: isDeleteAccountLoading }] = useDeleteAccountMutation();
 
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
   const [editImageModal, setEditImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-console.log("userId",userId);
+
+  const [isEmailNameLoading, setIsEmailNameLoading] = useState(false);
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+  const [isUpdateImageLoading, setIsUpdateImageLoading] = useState(false);
 
   const toggleDeleteAccountModal = () => {
     setDeleteAccountModal(!deleteAccountModal);
   }
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
+    // Lógica para eliminar la cuenta
+    await deleteAccount({ userId });
+    toast.success('Cuenta eliminada con éxito');
+    handleLogout();
+
     toggleDeleteAccountModal();
   }
 
@@ -65,6 +74,7 @@ console.log("userId",userId);
 
   const handleEditImage = async (e) => {
     e.preventDefault();
+    setIsUpdateImageLoading(true);
     
     if (!selectedImage) {
       alert('Por favor selecciona una imagen');
@@ -75,8 +85,9 @@ console.log("userId",userId);
       const formData = new FormData();
       formData.append('image', selectedImage);
 
-      const response = await updateUser({ userId, body: formData });
-      console.log(response);
+      await updateUser({ userId, body: formData });
+      setIsUpdateImageLoading(false);
+
       toast.success('Imagen actualizada con éxito');
 
       // Limpiar estados y cerrar modal
@@ -85,12 +96,15 @@ console.log("userId",userId);
       toggleEditImageModal();
     } catch (error) {
       console.error('Error al actualizar la imagen:', error);
+      setIsUpdateImageLoading(false);
       toast.error('Hubo un error al actualizar la imagen');
     }
   }
 
   const handleEditNameEmail = async (e) => {
     e.preventDefault();
+    setIsEmailNameLoading(true);
+    
     const formData = new FormData(e.target);
     const name = formData.get('name');
     const email = formData.get('email');
@@ -101,28 +115,32 @@ console.log("userId",userId);
     // Si quisiéramos una funcionalidad explícita de "eliminar imagen", entonces selectedImage podría ser null para ese propósito.
 
     try {
-      const response = await updateUser({ userId, body: updateBody });
-      console.log(response);
+      await updateUser({ userId, body: updateBody });
+      setIsEmailNameLoading(false);
       toast.success('Información actualizada con éxito');
     } catch (error) {
       console.error('Error al actualizar la información:', error);
+      setIsEmailNameLoading(false);
       toast.error('Hubo un error al actualizar la información');
     }
   }
 
   const handleEditPassword = async (e) => {
     e.preventDefault();
+    setIsPasswordLoading(true);
+    
     const formData = new FormData(e.target);
     const newPassword = formData.get('newPassword');
 
     const updateBody = { password: newPassword };
 
     try {
-      const response = await updateUser({ userId, body: updateBody });
-      console.log(response);
+      await updateUser({ userId, body: updateBody });
+      setIsPasswordLoading(false);
       toast.success('Contraseña actualizada con éxito');
     } catch (error) {
       console.error('Error al actualizar la contraseña:', error);
+      setIsPasswordLoading(false);
       toast.error('Hubo un error al actualizar la contraseña');
     }
   }
@@ -130,8 +148,9 @@ console.log("userId",userId);
   return (
     <>
       {/* Modal de eliminación de cuenta */}
+      {/* TODO: NO ESTA HECHA LA FUNCIONALIDAD */}
       {deleteAccountModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-[30px] shadow-lg max-w-[80%] flex flex-col gap-2">
             <Heading tag="h3" size="h4" weight="semibold">¿Estás seguro de que quieres eliminar tu cuenta?</Heading>
             <p className="mb-4">Esta acción no se puede deshacer.</p>
@@ -139,12 +158,15 @@ console.log("userId",userId);
               <BaseButton
                 variant="danger"
                 onClick={handleDeleteAccount}
+                isLoading={isDeleteAccountLoading}
+                isArray={false}
               >
                 Eliminar cuenta
               </BaseButton>
               <BaseButton
                 variant="outline"
-                onClick={toggleDeleteAccountModal}>
+                onClick={toggleDeleteAccountModal}
+                isArray={false}>       
                 Cancelar
               </BaseButton>
             </div>
@@ -154,7 +176,7 @@ console.log("userId",userId);
 
       {/* Modal de edición de imagen */}
       {editImageModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-[30px] shadow-lg max-w-[80%] flex flex-col gap-4">
             <Heading tag="h3" size="h4" weight="semibold">Editar imagen de perfil</Heading>
             <p>Subir nueva imagen de perfil.</p>
@@ -197,12 +219,15 @@ console.log("userId",userId);
                 <BaseButton
                   type="submit"
                   disabled={!selectedImage}
+                  isLoading={isUpdateImageLoading}
+                  isArray={false}
                 >
                   Guardar cambios
                 </BaseButton>
                 <BaseButton
                   variant="outline"
                   type="button"
+                  isArray={false}
                   onClick={toggleEditImageModal}>
                   Cancelar
                 </BaseButton>
@@ -217,6 +242,8 @@ console.log("userId",userId);
         <Heading tag="h1" size="h2" weight="semibold" align="left" color="white">Ajustes del perfil</Heading>
       </div>
 
+      {/* Email and email update */}
+      {isUserDataLoading && <p>Cargando información del usuario...</p>}
       <div className="bg-[#F5F5F5] rounded-t-[30px] p-6 pb-20 flex flex-col gap-8">
         <div className="relative w-fit mx-auto mt-4 flex flex-col items-center gap-8">
           <Avatar 
@@ -249,6 +276,7 @@ console.log("userId",userId);
             <div className="flex self-end justify-end">
               <BaseButton
                 type="submit"
+                isLoading={isEmailNameLoading}
               >
                 Guardar cambios
               </BaseButton>
@@ -257,6 +285,8 @@ console.log("userId",userId);
         </div>
         {/* line */}
         <span className="h-[1px] w-full bg-[#6D6D6D] mx-auto"></span>
+
+        {/* password update */}
         <div className="flex flex-col gap-4">
           <Heading tag="h2" size="h3" weight="semibold" align="left" color="green">Cambiar contraseña</Heading>
           <form onSubmit={handleEditPassword} className="flex flex-col gap-6" action="">
@@ -270,14 +300,18 @@ console.log("userId",userId);
             <div className="flex self-end justify-end">
               <BaseButton
                 type="submit"
+                isLoading={isPasswordLoading}
               >
                 Cambiar contraseña
               </BaseButton>
             </div>
           </form>
         </div>
+
         {/* line */}
         <span className="h-[1px] w-full bg-[#6D6D6D] mx-auto"></span>
+
+      {/* logout and delete account */}
         <div className="flex flex-col gap-4 mb-4">
           <BaseButton
             onClick={handleLogout}

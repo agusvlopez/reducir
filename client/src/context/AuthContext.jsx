@@ -27,14 +27,13 @@ export const AuthProvider = ({ children }) => {
    */
   const setUser = (userData) => {
     if (userData) {
-      const { password, ...safeUser } = userData;
+      const { _password, ...safeUser } = userData;
       _setUser(safeUser);
     } else {
       _setUser(null);
     }
-  };
+  }
 
-    // ✅ Extraer fetchAccessToken como función independiente
   const fetchAccessToken = async () => {
     try {
       const response = await axios.post(`${baseURL}/tokens`, {}, {
@@ -43,17 +42,17 @@ export const AuthProvider = ({ children }) => {
       console.log("response fetchAccessToken", response);
 
       setAccessToken(response?.data?.accessToken);
-      setUserId(response?.data?.userId);
+      setUserId(response?.data?.user?._id);
       setUser(response?.data?.user);
       
-      return response?.data; // Retornar los datos
+      return response?.data;
     } catch (error) {        
       setAccessToken(null);
       setUserId(null);
       setUser(null);
-      throw error; // Re-lanzar el error si falla
+      throw error; 
     }
-  };
+  }
 
   const handleRegister = async (data) => {
     const { name, username, email, password } = data;
@@ -148,7 +147,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
   
-  // ✅ Llamar fetchAccessToken al cargar la app
+
   useEffect(() => {    
     const initAuth = async () => {
       try {

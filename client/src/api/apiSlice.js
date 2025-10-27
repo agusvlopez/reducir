@@ -69,6 +69,13 @@ export const apiSlice = createApi({
       query: (userId) => `/users/suggested-users/${userId}`,
       providesTags: ["SuggestedUsers"]
     }),
+    deleteAccount: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/users/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["User", "Users"]
+    }),
   }),
 });
 
@@ -82,5 +89,6 @@ export const {
   useLogoutUserMutation,
   useCreateCarbonMutation,
   useSetCarbonGoalMutation,
-  useGetSuggestedUsersQuery
+  useGetSuggestedUsersQuery,
+  useDeleteAccountMutation
 } = apiSlice;

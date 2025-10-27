@@ -83,9 +83,9 @@ export const postsSlice = apiSlice.injectEndpoints({
         body: newComment,
       }),
       invalidatesTags: (result, error, { postId }) => [
-        'Posts', // Invalida todos los posts (para commentsCount)
-        { type: 'Posts', id: postId }, // Post específico
-        { type: 'PostComments', id: postId } // Comentarios del post
+        'Posts', 
+        { type: 'Posts', id: postId }, 
+        { type: 'PostComments', id: postId } 
       ]
     }),
 

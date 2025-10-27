@@ -18,7 +18,6 @@ export const usePostComments = () => {
     content,
     parentCommentId = null
   }) => {
-    // Logic to create a comment
     await createPostComment({
       postId,
       userId,
@@ -26,7 +25,7 @@ export const usePostComments = () => {
       content,
       parentCommentId
     }).unwrap();
-    // Optionally return something or handle post-creation logic
+
     return;
   };
 

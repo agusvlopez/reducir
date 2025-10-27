@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useAuth } from "../../hooks/useAuth";
 import { usePostComments } from "../../hooks/usePostComments";
 import { Loader } from "../../components/Base/Loader";
+import { useState } from "react";
 
 export function ComposerPost() {
     const { postId } = useParams();
@@ -18,22 +19,25 @@ export function ComposerPost() {
     const { createComment } = usePostComments();
     const {data: post, isError, isLoading} = useGetPostQuery(postId);
 
+    const [isAnswerLoading, setIsAnswerLoading] = useState(false);
 
     if (isLoading) return <Loader size="md" color="green" />;
     if (isError) return <p>Error al cargar el post.</p>;
 
     const handleComment = async (content, form) => {
+        setIsAnswerLoading(true);
         try {
             await createComment({ 
                 postId: postId, 
                 content 
             });
-            
+            setIsAnswerLoading(false);
             form.reset();
             toast.success("Comentario publicado");
         } catch (error) {
             console.error(error);
             toast.error("Error al comentar");
+            setIsAnswerLoading(false);
         }
     }
 
@@ -66,7 +70,7 @@ export function ComposerPost() {
 
             <Answer 
                 onSubmit={handleComment}
-                isLoading={isLoading}
+                isLoading={isAnswerLoading}
                 srcAvatar={user?.image}
             />
         </section>

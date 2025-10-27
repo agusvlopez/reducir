@@ -8,6 +8,7 @@ import { ValidationError } from "../errors/ValidationError.js";
 import { ConflictError } from "../errors/ConflictError.js";
 import { TokenService } from './token.service.js';
 import { FollowRepository } from '../repositories/follow.repository.js';
+import User from '../models/User.js';
 
 export class UserService {
   static async create({ name, username, email, password }){
@@ -15,7 +16,9 @@ export class UserService {
     const validationResult = validateUserCreate({ name, username, email, password });
     if (validationResult.error) throw new ValidationError(validationResult.error.message);
 
+    //TODO: manejar las validaciones de email unico de otra forma
     const userExists = await UserRepository.exists({ email });
+
     if (userExists) throw new ConflictError('El email ya está en uso');
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -56,6 +59,7 @@ export class UserService {
   }
 
   static async update({ userId, name, username, password, email, image }){
+
     if (password) {
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
       password = hashedPassword;
@@ -70,7 +74,7 @@ export class UserService {
     if(validationResult.error) throw new ValidationError(validationResult.error.message);
 
     const user = await UserRepository.findByEmail({ email });
-    if(!user) throw new ValidationError('Credenciales inválidas');
+    if(!user || user.isDeleted) throw new ValidationError('Credenciales inválidas');
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if(!isPasswordValid) throw new ValidationError('Credenciales inválidas');
@@ -115,7 +119,7 @@ export class UserService {
 
   static async findById({ id }) {
     const user = await UserRepository.findById({ id });
-    if (!user) throw new NotFoundError('Usuario no encontrado');
+    if (!user || user.isDeleted) throw new NotFoundError('Usuario no encontrado');
     return user;
   }
 
@@ -189,15 +193,20 @@ export class UserService {
 
   static async getSuggestedUsers({ userId, limit = 5 }) {
     const followingIds = await FollowRepository.getFollowingIds(userId);
+    const usersDeleted = await User.find({ isDeleted: true });
+    const usersDeletedIds = usersDeleted.map(user => user._id.toString());
 
-    // Buscar usuarios aleatorios excluyendo:
-    // - El usuario actual
-    // - Los que ya sigo
     const suggestions = await UserRepository.getRandomUsers({
-      excludeIds: [userId, ...followingIds],
+      excludeIds: [userId, ...followingIds, ...usersDeletedIds],
       limit
     });
     
     return suggestions;
+  }
+
+  static async deleteAccount({ userId }) {
+    const user = await UserRepository.deleteAccount({ userId });
+    if (!user) throw new NotFoundError('Usuario no encontrado');
+    return user;
   }
 }

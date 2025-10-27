@@ -8,8 +8,8 @@ export function Answer ({
     placeholder = "Comentá tu respuesta",
     name = "comment",
     srcAvatar,
-    onSubmit, // Nueva prop para manejar el submit desde afuera
-    isLoading = false, // Para mostrar estado de carga
+    onSubmit,
+    isLoading = false, 
 }) {
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
@@ -37,8 +37,8 @@ export function Answer ({
                   name={name}
                   placeholder={placeholder}
                 />
-                <BaseButton buttonType="submit" disabled={isLoading}>
-                  { isLoading ? "Enviando..." : labelButton }
+                <BaseButton buttonType="submit" isLoading={isLoading}>
+                  { labelButton }
                 </BaseButton>
           </form>
       </div>

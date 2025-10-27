@@ -8,6 +8,7 @@ import { usePostComments } from "../../hooks/usePostComments";
 import { toast } from "sonner";
 import { useAuth } from "../../hooks/useAuth";
 import { Loader } from "../../components/Base/Loader";
+import { useState } from "react";
 
 export function CommunityPost() {
     const { postId } = useParams();
@@ -15,34 +16,37 @@ export function CommunityPost() {
     const { user } = useAuth();
     
     const { createComment } = usePostComments();
-    const {data: post, isError, isLoading} = useGetPostQuery(postId);
-    const {data: comments} = useGetCommentsByPostQuery(postId);
-console.log("post", post);
+    const { data: post, isLoading: isPostLoading, isError: isPostError } = useGetPostQuery(postId);
+    const { data: comments, isLoading: isCommentsLoading, isError: isCommentsError } = useGetCommentsByPostQuery(postId);
 
-    const handleComment = async (content, form) => {
+    const [createAnswerLoading, setCreateAnswerLoading] = useState(false);
+
+    const handleAnswer = async (content, form) => {
+        setCreateAnswerLoading(true);
         try {
             await createComment({ 
                 postId: postId, 
                 content 
             });
-            
+            setCreateAnswerLoading(false);
             form.reset();
             toast.success("Comentario publicado");
         } catch (error) {
             console.error(error);
             toast.error("Error al comentar");
+            setCreateAnswerLoading(false);
         }
     }
 
     const rootComments = comments?.filter(c => !c.isReply);
 
-    // Función helper para obtener las respuestas de un comentario
+    //TODO: Función helper para obtener las respuestas de un comentario
     const getRepliesForComment = (commentId) => {
         return comments?.filter(c => c.isReply && c.parentCommentId === commentId);
     };
 
-    if (isLoading) return <Loader size="lg" color="green" />;
-    if (isError) return <p>Error al cargar el post.</p>;
+    if (isPostLoading) return <Loader size="lg" color="green" />;
+    if (isPostError) return <p>Error al cargar el post.</p>;
 
 
     return (
@@ -71,13 +75,16 @@ console.log("post", post);
             {/* FORMULARIO DE RESPUESTA AL POST */}
             <div className="border-b border-[#6D6D6D]">
                 <Answer 
-                    onSubmit={handleComment}
-                    isLoading={isLoading}
+                    onSubmit={handleAnswer}
+                    isLoading={createAnswerLoading}
                     srcAvatar={user?.image}
                 />
             </div>
             <div className="flex flex-col gap-6">
                 {/* COMENTARIOS RAÍZ con sus respuestas */}
+                {isCommentsLoading && <Loader />}
+                {isCommentsError && <p>Error al cargar los comentarios.</p>}
+
                 {rootComments?.map(comment => (
                     <div key={comment._id}>
                     {/* Comentario principal */}

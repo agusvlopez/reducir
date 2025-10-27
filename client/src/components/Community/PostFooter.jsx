@@ -15,6 +15,7 @@ export function PostFooter({
 }) {
     const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCreateCommentLoading, setIsCreateCommentLoading] = useState(false);
 
     const { handleToggleFavoritePost } = useFavoritePosts();
     const { isLiked, isLoading } = useFavoritePostStatus(id);
@@ -30,18 +31,20 @@ export function PostFooter({
 
     // Modal para agregar comentario
     const handleComment = async (content, form) => {
+        setIsCreateCommentLoading(true);
         try {
             await createComment({ 
                 postId: id, 
                 content,
             });
-            
+            setIsCreateCommentLoading(false);
             form.reset();
             toast.success("Comentario publicado");
             setIsModalOpen(false);
         } catch (error) {
             console.error(error);
             toast.error("Error al comentar");
+            setIsCreateCommentLoading(false);
         }
     }    
     return (
@@ -53,6 +56,7 @@ export function PostFooter({
                 onClose={() => setIsModalOpen(false)}
                 handleComment={handleComment}
                 srcAvatar={user?.image}
+                isPostLoading={isCreateCommentLoading}
             />
         )}
         <div className="text-[#383838] flex items-center gap-4 justify-between">

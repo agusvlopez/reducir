@@ -2,9 +2,7 @@ import { Link } from "react-router-dom";
 import { HeartIcon } from "../Icons/Heart";
 import { ImagePill } from "../Base/ImagePill.jsx";
 import { useAuth } from "../../hooks/useAuth.js";
-import { useActionsSaved } from "../../hooks/useActionsSaved.js";
-import { useActionsSavedStatus } from "../../hooks/useActionsSavedStatus.js";
-import { useCheckAchievedActionQuery } from "../../api/actionsSlice.js";
+import { useCheckAchievedActionQuery, useCheckSavedActionQuery, useToggleSavedActionMutation } from "../../api/actionsSlice.js";
 import AchievementIcon from "../../assets/icons/Achievement.webp";
 
 export function ActionCard({
@@ -18,12 +16,16 @@ export function ActionCard({
     className = ""
 }) {
     const { userId } = useAuth();
-    //ESTO TAMBIEN LO USO EN ACTION, TODO: VER SI SIMPLIFICAR
-    const { toggleAction } = useActionsSaved();
-    const { isActionSaved, isLoading } = useActionsSavedStatus(id);
     
+    const { data: isActionSaved = false, isActionSavedLoading } = useCheckSavedActionQuery(
+      { userId, actionId: id },
+      { skip: !userId || !id }
+    );
+
+    const [toggleSavedAction] = useToggleSavedActionMutation();
+
     const handleToggle = async () => {
-        await toggleAction({ 
+        await toggleSavedAction({ 
             userId, 
             actionId: id 
         });
@@ -72,7 +74,7 @@ export function ActionCard({
                     <img className="w-9.5 h-9.5" src={AchievementIcon} alt="Acción lograda"/>
                     :
                     <button className="self-start mt-2 mr-1">
-                        <HeartIcon isFilled={isActionSaved} handleClick={handleToggle} isLoading={isLoading} />
+                        <HeartIcon isFilled={isActionSaved} handleClick={handleToggle} isLoading={isActionSavedLoading} />
                     </button>   
                 }
             </div>

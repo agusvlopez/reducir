@@ -10,6 +10,7 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedActionId, setSelectedActionId] = useState(actionSelectedId || "");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useAuth();
   const { data: userData, isLoading: isUserLoading } = useGetUserQuery(user?._id, { skip: !user?._id });
@@ -17,9 +18,8 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
   
   const achievedActions = actionsAchievedInUser?.map((actionId) => {
     return ACTIONS?.find(a => a._id === actionId);
-  }).filter(Boolean); // Filtramos por si alguna acción no se encuentra
+  }).filter(Boolean);
 
-  // Buscamos la acción seleccionada para obtener sus datos
   const selectedAction = achievedActions?.find(action => action._id === selectedActionId);
 
   useEffect(() => {
@@ -34,7 +34,6 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
   
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log(file);
     
     if (file) {
       // Validar tamaño (5MB máximo)
@@ -59,9 +58,17 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
     setImagePreview(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(e, selectedImage, selectedActionId, selectedAction?.carbon, selectedAction?.category); 
+    setIsLoading(true);
+    try {
+      await onSubmit(e, selectedImage, selectedActionId, selectedAction?.carbon, selectedAction?.category);
+    } catch (error) {
+      console.error('Error al publicar:', error);
+    } finally {
+      setIsLoading(false);
+    }
+    handleClose();
   };
 
   const handleClose = () => {
@@ -92,7 +99,7 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
             <h2 className="text-lg font-semibold text-gray-dark">Nueva Publicación</h2>
             <button
               onClick={handleClose}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              className="p-1 hover:bg-gray-100 rounded transition-colors cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -187,13 +194,14 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded transition-colors cursor-pointer"
               >
                 Cancelar
               </button>
               <BaseButton
                 type="submit"
                 color="green"
+                isLoading={isLoading}
               >
                 Publicar
               </BaseButton>

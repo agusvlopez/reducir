@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { Toaster } from 'sonner';
 import { store } from './utils/store.js';
-import { ActionsSavedProvider } from './context/ActionsSavedContext.jsx';
 import { FavoritePostsProvider } from './context/FavoritePostsContext.jsx';
 
 createRoot(document.getElementById('root')).render(
@@ -15,12 +14,10 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <HeroUIProvider>
           <AuthProvider>
-            <ActionsSavedProvider>
               <FavoritePostsProvider>
                 <App />
               </FavoritePostsProvider>
               <Toaster richColors position="top-right" />
-            </ActionsSavedProvider>
           </AuthProvider>
         </HeroUIProvider>
       </BrowserRouter>

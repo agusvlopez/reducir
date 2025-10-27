@@ -1,6 +1,6 @@
 import { Answer } from "./Answer";
 
-export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
+export function PostModal({ isOpen, onClose, handleComment, srcAvatar, isPostLoading }) {
   if (!isOpen) return null;
 
   return (
@@ -38,7 +38,7 @@ export function PostModal({ isOpen, onClose, handleComment, srcAvatar }) {
             {/* TODO: VER SI ANSWER FUNCIONA (CHEQUEAR A QUE URI HACE LA PETICION), SI NO, CREAR COMPONENTE NUEVO */}
             <Answer 
               onSubmit={handleComment}
-              isLoading={false}
+              isLoading={isPostLoading}
               srcAvatar={srcAvatar}
             />
           </div>

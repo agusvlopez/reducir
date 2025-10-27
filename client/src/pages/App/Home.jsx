@@ -5,30 +5,29 @@ import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
-import { useActionsSaved } from "../../hooks/useActionsSaved";
 import { useGetUserQuery } from "../../api/apiSlice";
 import { useGetPostsByUserQuery, useGetPostsLikedByUserIdQuery } from "../../api/postsSlice";
-import { PostCard } from "../../components/Cards/PostCard";
 import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
 import { Post } from "../../components/Community/Post";
 import { AchievementCard } from "../../components/Cards/AchievementCard";
 import { useAuth } from "../../hooks/useAuth";
 import { useFollowUserMutation, useGetFollowCountsQuery, useIsFollowingQuery, useUnfollowUserMutation } from "../../api/followSlice";
+import { useGetSavedActionsQuery } from "../../api/actionsSlice";
+import {Loader} from "../../components/Base/Loader";
 
 export function Home() { 
     const { userId } = useParams();
     const { userId: authUserId } = useAuth();
-    const { data: userData, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId });
+    const { data: userData, isLoading: isUserLoading, isError: isUserError, error: userError} = useGetUserQuery(userId, { skip: !userId });
 
-    const { data: ownUserPostsData } = useGetPostsByUserQuery(authUserId, { skip: !authUserId });
-    const { data: userPostsData } = useGetPostsByUserQuery(userId, { skip: !userId });
-    const { data: followCountsData } = useGetFollowCountsQuery(userId, { skip: !userId });
-    const { data: postsLikedByUserIdData } = useGetPostsLikedByUserIdQuery(authUserId, { skip: !authUserId });
-console.log("ownUserPostsData", ownUserPostsData);
+    const { data: ownUserPostsData, isLoading: ownUserPostsLoading, isError: ownUserPostsError } = useGetPostsByUserQuery(authUserId, { skip: !authUserId });
+    const { data: userPostsData, isLoading: userPostsLoading, isError: userPostsError} = useGetPostsByUserQuery(userId, { skip: !userId });
+    const { data: followCountsData, isLoading: followCountsLoading, isError: followCountsError} = useGetFollowCountsQuery(userId, { skip: !userId });
+    const { data: postsLikedByUserIdData, isLoading: postsLikedByUserIdLoading, isError: postsLikedByUserIdError } = useGetPostsLikedByUserIdQuery(authUserId, { skip: !authUserId });
 
     const isOwnProfile = userId === authUserId;
 
-    const { data: isFollowingData } = useIsFollowingQuery(
+    const { data: isFollowing, isLoading: isFollowingLoading, isError: isFollowingError} = useIsFollowingQuery(
         { followerId: authUserId, followingId: userId },
         { skip: !userId || isOwnProfile }
     );
@@ -46,13 +45,14 @@ console.log("ownUserPostsData", ownUserPostsData);
     // const { data: actions, error: isError, isLoading } = useGetActionsQuery();
     // console.log("actions", actions);
 
-    const { actionsSaved } = useActionsSaved();
+    const { data: actionsSaved = [], isLoading: actionsSavedLoading, isError: actionsSavedError } = useGetSavedActionsQuery(
+        userId,
+        { skip: !userId }
+    );
 
     const handleSections = (value) => {
         setSectionSelected(value);
     }
-    
-    const [isFollowing, setIsFollowing] = useState(isFollowingData);
 
     const handleFollowToggle = async () => {
         try {
@@ -61,24 +61,45 @@ console.log("ownUserPostsData", ownUserPostsData);
                     followerId: authUserId,
                     followingId: userId
                 });                
-                setIsFollowing(false);
             } else {
                 await followUser({
                     followerId: authUserId,
                     followingId: userId
                 });
-                setIsFollowing(true);
             }
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
+    if (isUserError) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen p-6">
+                <div className="text-center">
+                    <h2 className="text-2xl font-semibold text-dark-green mb-4">
+                        Usuario no encontrado
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                        {userError?.status === 404 
+                            ? 'Este usuario no existe o ha sido eliminado.'
+                            : 'Hubo un problema al cargar el perfil.'}
+                    </p>
+                    <Link 
+                        to={`/app/home/${authUserId}`} 
+                        className="bg-dark-green text-white px-6 py-2 rounded-full hover:bg-[#004030] transition-colors"
+                    >
+                        Volver al inicio
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-22 rounded-b-[30px]">
                 <div className="flex items-start gap-4">
-                    
+                    {isUserLoading && <Loader />}
                     <Avatar 
                         size="xl"
                         src={userData?.image}
@@ -108,37 +129,45 @@ console.log("ownUserPostsData", ownUserPostsData);
                                 </div>                                                      
                             </div>
                             <div className="flex-1 flex justify-end">
-                                <button 
-                                    className={`rounded-full transition-colors  ${
-                                    isFollowing 
-                                        ? 'bg-[#005840] text-white hover:bg-[#004030]' 
-                                        : 'bg-gray-100 text-[#005840] hover:bg-gray-200'
-                                    }`}
-                                    onClick={handleFollowToggle}
-                                    disabled={isUserLoading}
-                                >
-                                {isFollowing ? (
-                                    <button className="font-semibold bg-white text-dark-green rounded-[30px] text-xs px-2 py-1 hover:bg-gray-200 transition-all cursor-pointer">Siguiendo</button>
-                                ) : (
-                                        <button className="font-semibold bg-white rounded-[30px] text-xs px-2 py-1 hover:bg-gray-200 transition-all cursor-pointer">Seguir</button>
-                                    )}
-                                </button>  
+                                {isFollowingError && <span className="text-white">Error al cargar si sigues o no.</span>}
+                                {isFollowingLoading ? 
+                                    <Loader size="sm" color="white"/>
+                                    :
+                                    <button 
+                                        className={`rounded-full transition-colors  ${
+                                        isFollowing 
+                                            ? 'bg-[#005840] text-white hover:bg-[#004030]' 
+                                            : 'bg-gray-100 text-[#005840] hover:bg-gray-200'
+                                        }`}
+                                        onClick={handleFollowToggle}
+                                        disabled={isUserLoading}
+                                    >
+                                    {isFollowing ? (
+                                        <button className="font-semibold bg-white text-dark-green rounded-[30px] text-xs px-2 py-1 hover:bg-gray-200 transition-all cursor-pointer">Siguiendo</button>
+                                    ) : (
+                                            <button className="font-semibold bg-white rounded-[30px] text-xs px-2 py-1 hover:bg-gray-200 transition-all cursor-pointer">Seguir</button>
+                                        )}
+                                    </button>  
+                                }
                             </div>                          
                         </>
                     }  
                                   
                 </div>
+
+                {/* following & followers */}
                 <div className="mt-4 flex items-center justify-center gap-4">
-                    {/* following y followers */}
+                    {followCountsLoading && <Loader size="sm" color="white" />}
+                    {followCountsError && <span className="text-white">Error al cargar los datos.</span>}
+                    
                     <Link to={`/app/${userId}/following`} className="hover:text-gray-200 hover:underline transition-all"><span className="font-semibold">{followCountsData?.followingCount}</span> Siguiendo</Link>
                     <Link to={`/app/${userId}/followers`} className="hover:text-gray-200 hover:underline transition-all"><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</Link>
                 </div>
             </section>
             <section className="w-[354px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
-                {userData?.carbonGoal?.status === 'inactive' ? 
 
+                {userData?.carbonGoal?.status === 'inactive' ? 
                     <div className="p-2">
-                        {/* TODO: ESTILAR */}
                         {userData?.carbon === 0 ? 
                             <>
                                 <h3 className="text-lg font-semibold mb-2 text-dark-green leading-6">¿Ya hiciste el test para medir tu huella de carbono anual?</h3>
@@ -180,7 +209,7 @@ console.log("ownUserPostsData", ownUserPostsData);
                 </section>
             }
 
-            {sectionSelected === 'actionsSaved' && isOwnProfile &&
+            {sectionSelected === 'actionsSaved' && isOwnProfile &&            
             <section className="mt-[40px] px-6 flex flex-col gap-4">
                 <div>
                     <h2 className="text-[20px] font-semibold">Mis acciones en proceso</h2>
@@ -204,8 +233,12 @@ console.log("ownUserPostsData", ownUserPostsData);
 
                 <BaseCarousel>
                     {/* TODO: USE SWIPER */}
-                    {/* {isLoading && <p>Cargando acciones favoritas...</p>} */}
-                    {/* {isError && <p>Error al cargar las acciones.</p>} */}
+                    {actionsSavedLoading && (
+                        <Loader />
+                    )}
+                    {actionsSavedError && (
+                        <p className="text-red-500">Error al cargar las acciones</p>
+                    )}
                     {actionsSaved?.map((actionId) => {
                         const savedAction = ACTIONS?.find(a => a._id === actionId);
 
@@ -272,6 +305,9 @@ console.log("ownUserPostsData", ownUserPostsData);
                     <h2 className="text-[20px] font-semibold">Mis publicaciones</h2>
                     <p className="text-sm mb-2">Todas tus publicaciones se muestran acá.</p>
                     <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
+
+                    {ownUserPostsLoading && <Loader />}
+                    {ownUserPostsError && <p className="text-red-500">Error al cargar las publicaciones</p>}
                     {ownUserPostsData?.length === 0 || ownUserPostsData === undefined && (
                         <div className="text-center py-8">
                             <p className="text-gray-600 font-medium mb-2">
@@ -279,6 +315,7 @@ console.log("ownUserPostsData", ownUserPostsData);
                             </p>
                         </div>
                     )}
+
                     <div>
                         {ownUserPostsData?.map((post) => {
                             return (
@@ -314,6 +351,8 @@ console.log("ownUserPostsData", ownUserPostsData);
                         <h2 className="text-[20px] font-semibold">Publicaciones guardadas</h2>
                         <p className="text-sm mb-2">Todas las publicaciones que guardaste se muestran acá</p>
 
+                        {postsLikedByUserIdLoading && <Loader />}
+                        {postsLikedByUserIdError && <p>Error al cargar las publicaciones guardadas.</p>}
                         {postsLikedByUserIdData?.length === 0 && (
                             <div className="text-center py-8">
                                 <p className="text-gray-600 font-medium mb-2">
@@ -351,10 +390,14 @@ console.log("ownUserPostsData", ownUserPostsData);
                     </div>
                 </section>
             )}
+
             {!isOwnProfile &&
                 <section className="mt-[40px] px-6 flex flex-col gap-4">
                     <div>
                         <h2 className="text-[20px] font-semibold">Publicaciones de {userData?.name}</h2>
+                        
+                        {userPostsLoading && <Loader />}
+                        {userPostsError && <p>Error al cargar las publicaciones.</p>}
                         {userPostsData?.length === 0 && (
                             <div className="text-center py-8">
                                 <p className="text-gray-600 font-medium mb-2">

@@ -21,7 +21,7 @@ export class UserController {
           httpOnly: true,
           sameSite: "None",
           secure: true,
-          maxAge: 7 * 24 * 60 * 60 * 1000,
+          maxAge: 7 * 24 * 60 * 60 * 1000
         })
         .status(201).json({ userId, accessToken }); 
     } catch (error) {
@@ -43,7 +43,6 @@ export class UserController {
     if (req.file) {
       imageBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     }
-console.log("req", req);
 
     try {
       const updatedUser = await UserService.update({ userId, name, username, password, email, image: imageBase64 });
@@ -239,8 +238,9 @@ console.log("req", req);
 
   static async getSuggestedUsers(req, res) {
     try {
+      console.log("getSuggestedUsers controller");
+      
       const { userId } = req.params;
-      console.log("userId", userId);
       
       const { limit = 5 } = req.query;
 
@@ -260,4 +260,18 @@ console.log("req", req);
       });
     }
   }  
+
+  static async deleteAccount(req, res) {
+    const { userId } = req.params;
+
+    try {
+      const user = await UserService.deleteAccount({ userId });
+      res.status(200).json(user);
+    } catch (error) {
+      if(error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ message: 'Error inesperado' });
+    }
+  }
 }

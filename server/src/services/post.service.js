@@ -1,6 +1,7 @@
 import { PostRepository } from "../repositories/post.repository.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
+import { UserRepository } from "../repositories/user.repository.js";
 
 export class PostService {
 
@@ -30,7 +31,18 @@ export class PostService {
 
   static async findByUserId({ userId }) {
     try {
+      const user = await UserRepository.findById({ userId });
+      
+      if (!user) {
+        throw new NotFoundError('Usuario no encontrado');
+      }
+      
+      if (user.isDeleted) {
+        throw new NotFoundError('Usuario no disponible');
+      }
+
       const posts = await PostRepository.findByUserId({ userId });
+
       return posts;
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ValidationError) {
