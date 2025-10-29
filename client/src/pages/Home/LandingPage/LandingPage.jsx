@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import BaseButton from '../../../components/Base/BaseButton';
 import CommunitySection from '../CommunitySection/CommunitySection';
 import './LandingPage.css';
 import AppMockup from "/app-mockup.png";
 import Logo from "../../../assets/lg-logo-horizontal.webp";
+import { useAuth } from '../../../hooks/useAuth';
 
 const cardsItems = [
   { 
@@ -28,6 +29,7 @@ const cardsItems = [
 ];
 
 function LandingPage () {
+  const { userId: authUserId } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -39,8 +41,20 @@ function LandingPage () {
           <img src={Logo} alt="" />
         </Link>
         {/* Nav Container */}
-        <div className='absolute top-10 right-4 md:right-8'>
+        <div className='absolute top-10 right-4 md:right-8 flex items-center gap-4'>
           {/* Desktop Nav */}
+          {authUserId ?
+            <Link 
+              to={`/app/home/${authUserId}`}
+              className='cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md border border-dark-green bg-dark-green text-white text-lg py-3 px-6 hover:bg-[#005841ee] transition-all'
+            >Ir a la App</Link>   
+            :
+            <Link 
+              to={`/login`}
+              className='cursor-pointer w-fit rounded-[30px] flex items-center justify-center shadow-md border border-dark-green bg-dark-green text-white text-lg py-3 px-6 hover:bg-[#005841ee] transition-all'
+            >Ir a la App</Link>              
+          }  
+
           <div className='hidden md:flex w-auto h-16 bg-white/70 rounded-[60px] shadow items-center justify-around px-6'>
             <nav className='flex items-center h-16 justify-around gap-2'>
               <a href='#como-funciona' className='text-lg md:text-xl font-medium px-2 hover:text-dark-green transition-colors'>Cómo funciona</a>

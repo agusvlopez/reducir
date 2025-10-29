@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import findOrCreate from 'mongoose-findorcreate';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -15,7 +16,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false  // Cambiar a false porque usuarios de Google no tienen password
   },
   image: {
     type: String,
@@ -43,13 +44,19 @@ const UserSchema = new mongoose.Schema({
     completedAt: Date,
     status: { type: String, enum: ['inactive', 'active', 'completed', 'abandoned'], default: 'inactive' }
   },
+  googleId: {
+    type: String,
+    unique: true,  // Agregar unique
+    sparse: true   // Permite que sea opcional pero único cuando existe
+  },
   isDeleted: {
     type: Boolean,
     default: false
   }
 }, { timestamps: true });
 
+UserSchema.plugin(findOrCreate);
+
 const User = mongoose.model('User', UserSchema);
 
 export default User;
-

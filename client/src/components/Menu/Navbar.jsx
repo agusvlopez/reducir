@@ -14,7 +14,7 @@ export function Navbar() {
     return (
         <div className="fixed z-20 top-0 left-0 right-0 bg-white shadow-md">
             <nav className="flex justify-between items-center p-4 py-6">
-                <Link to={`/app/home/${userId}`} className="text-gray-700 hover:text-blue-500">
+                <Link to={`/app/home/${userId}`} className="text-gray-700 hover:text-dark-green transition-colors duration-200">
                     <svg width="103" height="23" viewBox="0 0 103 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="path-1-inside-1_2878_44" fill="white">
                     <path d="M45.62 0C45.96 0 46.24 0.12 46.46 0.359999C46.7 0.58 46.82 0.86 46.82 1.2V20.97C46.82 21.31 46.7 21.6 46.46 21.84C46.24 22.08 45.96 22.2 45.62 22.2C45.26 22.2 44.97 22.08 44.75 21.84C44.53 21.6 44.42 21.31 44.42 20.97V18.12L44.99 17.91C44.99 18.39 44.84 18.9 44.54 19.44C44.24 19.96 43.83 20.45 43.31 20.91C42.79 21.37 42.17 21.75 41.45 22.05C40.75 22.35 39.99 22.5 39.17 22.5C37.83 22.5 36.61 22.15 35.51 21.45C34.43 20.75 33.57 19.79 32.93 18.57C32.31 17.35 32 15.96 32 14.4C32 12.82 32.31 11.42 32.93 10.2C33.57 8.98 34.43 8.03 35.51 7.35C36.59 6.65 37.79 6.3 39.11 6.3C39.95 6.3 40.74 6.44 41.48 6.72C42.22 7 42.86 7.38 43.4 7.86C43.96 8.34 44.4 8.87 44.72 9.45C45.04 10.03 45.2 10.61 45.2 11.19L44.42 11.01V1.2C44.42 0.86 44.53 0.58 44.75 0.359999C44.97 0.12 45.26 0 45.62 0ZM39.44 20.28C40.44 20.28 41.32 20.03 42.08 19.53C42.86 19.01 43.46 18.31 43.88 17.43C44.32 16.53 44.54 15.52 44.54 14.4C44.54 13.26 44.32 12.25 43.88 11.37C43.46 10.49 42.86 9.8 42.08 9.3C41.32 8.78 40.44 8.52 39.44 8.52C38.46 8.52 37.58 8.78 36.8 9.3C36.04 9.8 35.44 10.49 35 11.37C34.56 12.25 34.34 13.26 34.34 14.4C34.34 15.5 34.56 16.5 35 17.4C35.44 18.28 36.04 18.98 36.8 19.5C37.58 20.02 38.46 20.28 39.44 20.28Z"/>
@@ -46,15 +46,11 @@ export function Navbar() {
                 </button>
             </nav>
             {isCloseIconVisible && (
-                <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4">
-                    <ul className="flex flex-col space-y-2">
-                        <li>
-                            <Link to="/app/profile/settings"
-                            onClick={toggleMenu}
-                            className="text-gray-700 hover:text-dark-green">Ajustes del perfil</Link>
-                        </li>
-                    </ul>
-                </div>
+                <Link to="/app/profile/settings"
+                    onClick={toggleMenu}
+                    className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 text-gray hover:text-dark-green w-full">
+                    Ajustes del perfil
+                </Link>
             )}
         </div>
     );

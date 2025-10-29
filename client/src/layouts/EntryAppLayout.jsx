@@ -14,7 +14,7 @@ export function EntryAppLayout({ children, footer }) {
               <button onClick={handleGoBack}>
                   <ChevronLeft 
                       stroke={2}
-                      className="size-6 text-dark-green"
+                      className="size-6 text-dark-green cursor-pointer hover:opacity-70 transition-opacity duration-200"
                   />
               </button> 
               <section className="mt-6 px-12">
