@@ -12,15 +12,22 @@ export default function FlipCard({
   // Si no hay meta, solo mostrar card simple sin efecto de giro
   if (!hasGoal) {
     return (
-      <GoalSlider />
+      <div
+        className="w-[354px] bg-[#F5F5F5] rounded-[30px] shadow-2xl p-6 flex flex-col justify-between text-dark-green"
+      >
+        <div>
+          <GoalSlider 
+          />
+        </div>
+      </div>
     );
   }
 
   // Si hay meta, mostrar card con efecto de giro
   return (
-    <div className="perspective-1000 ">
+    <div className="perspective-1000">
       <div
-        className={`relative w-[354px] h-[410px] transition-transform duration-700 transform-style-3d ${
+        className={`relative w-[354px] h-[410px] md:w-[400px] md:h-[450px] transition-transform duration-700 transform-style-3d ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
         style={{
@@ -30,7 +37,7 @@ export default function FlipCard({
       >
         {/* Frente de la card - Meta actual */}
         <div
-          className="absolute w-full h-full backface-hidden bg-[#F5F5F5] rounded-[30px] shadow-2xl p-6 flex flex-col justify-between"
+          className="absolute w-full h-full backface-hidden bg-[#F5F5F5] rounded-[30px] shadow-2xl p-6 md:p-8 flex flex-col justify-between"
           style={{ backfaceVisibility: 'hidden' }}
         >
             <div>
@@ -82,9 +89,8 @@ export default function FlipCard({
               </div>
             </div>
           <BaseButton
-            onClick={() => setIsFlipped(!isFlipped)}
-            isArray={false}
-            className="w-full"
+            onClick={() => setIsFlipped(!isFlipped)} 
+            className='w-full'           
           >
             Cambiar de objetivo
           </BaseButton>
@@ -109,7 +115,7 @@ export default function FlipCard({
             onClick={() => setIsFlipped(!isFlipped)}
             isArray={false}
             className="w-full"
-            variant='outline'
+            variant='outlined'
           >
             Ver mi meta actual
           </BaseButton>

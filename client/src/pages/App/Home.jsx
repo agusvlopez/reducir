@@ -14,6 +14,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { useFollowUserMutation, useGetFollowCountsQuery, useIsFollowingQuery, useUnfollowUserMutation } from "../../api/followSlice";
 import { useGetSavedActionsQuery } from "../../api/actionsSlice";
 import {Loader} from "../../components/Base/Loader";
+import ButtonLink from "../../components/Base/ButtonLink";
+import GoalStatusCard from "../../components/Cards/GoalStatusCard";
 
 export function Home() { 
     const { userId } = useParams();
@@ -94,24 +96,33 @@ export function Home() {
             </div>
         );
     }
+    
+    if (isUserLoading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen p-6">
+                <Loader size="lg" color="dark-green" />
+            </div>
+        );
+    }
 
     return (
         <>
             <section className="flex flex-col bg-[#005840] text-white p-4 px-6 pb-22 rounded-b-[30px]">
                 <div className="flex items-start gap-4">
-                    {isUserLoading && <Loader />}
-                    <Avatar 
-                        size="xl"
-                        src={userData?.image}
-                        alt={userData?.name}
-                        className="mb-4"   
-                    />
+                    <div className="flex-1 md:flex-0">
+                        <Avatar 
+                            size="xl"
+                            src={userData?.image}
+                            alt={userData?.name}
+                            className="mb-4"   
+                        />
+                    </div>
                     {isOwnProfile ? 
-                        <div>
-                            <p>¡Hola <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
+                        <div className="flex flex-col md:gap-1">
+                            <p className="font-medium md:text-lg">Estás a un paso de cambiar el mundo, <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
                             <p>Tu huella de carbono este mes:</p>
-                            <div>
-                                <span></span>
+                            <div className="flex items-center gap-2">
+                                <span>(icono)</span>
                                 <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbon}</span> kg de CO2</p>
                             </div>
                         </div>
@@ -164,40 +175,13 @@ export function Home() {
                     <Link to={`/app/${userId}/followers`} className="hover:text-gray-200 hover:underline transition-all"><span className="font-semibold">{followCountsData?.followersCount}</span> Seguidores</Link>
                 </div>
             </section>
-            <section className="w-[354px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between items-center">
 
-                {userData?.carbonGoal?.status === 'inactive' ? 
-                    <div className="p-2">
-                        {userData?.carbon === 0 ? 
-                            <>
-                                <h3 className="text-lg font-semibold mb-2 text-dark-green leading-6">¿Ya hiciste el test para medir tu huella de carbono anual?</h3>
-                                <p className="mb-4 font-medium">Con este dato, va a ser mucho más divertido usar <strong>reducir</strong>, ya que a medida que vas cumpliendo con tus acciones, tu huella se va reduciendo y podrás verlo.</p>
-                                <Link
-                                    className="border border-dark-green bg-dark-green text-white cursor-pointer rounded-[30px] flex items-center justify-center shadow-md font-medium text-sm py-2 px-4 h-[42px] w-full"                                 
-                                    to="/test/intro">Realizar test</Link>
-                            </>   
-                        :
-                            <>
-                                <h3 className="text-lg font-semibold mb-4 text-dark-green leading-6">Establecé una <strong>meta anual</strong> para <strong>generar un cambio enorme</strong> en el <strong>planeta</strong>.</h3>
-                                <div>
-                                    <Link
-                                        className="border border-dark-green bg-dark-green text-white cursor-pointer rounded-[30px] flex items-center justify-center shadow-md font-medium text-sm py-2 px-4 h-[42px] w-full" 
-                                        to={"/app/emissions/goals"}>Establecer meta</Link>
-                                </div>
-                            </>
-                        }
-                    </div>                    
-                    :
-                    <GoalProgressCard 
-                        targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
-                        baselineValue={userData?.carbonGoal?.baselineValue}
-                        targetValue={userData?.carbonGoal?.targetValue}
-                        currentCarbon={userData?.carbon}
-                        startDate={userData?.carbonGoal?.startDate}
-                        year={userData?.carbonGoal?.year}
-                        isOwnProgress={isOwnProfile}
+            {/* CARD GOAL */}
+            <section>
+                    <GoalStatusCard 
+                        userData={userData}
+                        isOwnProfile={isOwnProfile}
                     />
-                }
             </section>
 
             {isOwnProfile &&

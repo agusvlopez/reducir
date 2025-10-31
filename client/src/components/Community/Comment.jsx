@@ -18,7 +18,7 @@ export function Comment({ comment, allComments, level = 0 }) {
   const shouldIndent = level < maxIndentLevel;
   
   return (
-    <div className={`${level === 0 ? 'border-b border-gray-soft pb-6' : ''}`}>
+    <div>
       <CommentItem 
         answer={comment}
       />

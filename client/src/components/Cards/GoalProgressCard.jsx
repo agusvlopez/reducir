@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { DonutProgress } from "../DonutProgress";
 import { CarbonIcon } from "../Icons/Carbon";
+import ButtonLink from "../Base/ButtonLink";
 
 export function GoalProgressCard({
   targetReductionPercentage = 0,
@@ -48,9 +49,9 @@ export function GoalProgressCard({
 
   return (
     <>
-      <div className="text-xs text-[#383838] flex flex-col gap-1">
+      <div className="text-xs text-[#383838] flex flex-col gap-1 md:p-2">
         <h3>Objetivo</h3>
-        <span className="bg-[#ED6C1D] p-1 px-2 rounded-[30px] text-xs text-white w-fit mb-2">Reducir la huella un {targetReductionPercentage}%</span>
+        <span className="bg-[#ED6C1D] p-1 px-2 rounded-[30px] text-xs md:text-sm md:px-4 text-white w-fit mb-2">Reducir la huella un {targetReductionPercentage}%</span>
 
       {goalAchieved ? (
           <>
@@ -91,22 +92,13 @@ export function GoalProgressCard({
               <span>Reducir {remaining} kg</span>
           </div>
         {isOwnProgress &&  
-          <Link to={"/app/actions"}
-              className="bg-[#005840] text-white py-2 rounded-[30px] flex items-center justify-center mt-2">
-              <span>Continuar progreso</span>
-              
-              <svg className="inline-block ml-2 w-[15px] h-[15px]" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clipPath="url(#clip0_2878_85)">
-                <circle cx="7.5" cy="7.5" r="7.5" fill="#F1EDEC"/>
-                <path d="M6 5L9 7.5L6 10" stroke="#005840" strokeLinecap="round" strokeLinejoin="round"/>
-                </g>
-                <defs>
-                <clipPath id="clip0_2878_85">
-                <rect width="15" height="15" rx="7.5" fill="white"/>
-                </clipPath>
-                </defs>
-              </svg>
-          </Link>
+          <ButtonLink 
+            withArrow
+            size="sm"
+            to={"/app/actions"}
+            className="mt-4">
+              Continuar progreso
+          </ButtonLink>
         }
         </>
       } 

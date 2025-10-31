@@ -1,5 +1,6 @@
 import { useGoals } from '../../../hooks/useGoals';
 import BaseButton from '../../Base/BaseButton';
+import { Heading } from '../../Base/Heading';
 import './GoalSlider.css';
 
 
@@ -10,7 +11,7 @@ export default function GoalSlider({
   const { sliderValue, setSliderValue, handleSetGoal } = useGoals();
 
   return (
-      <div className="">
+      <div className="bg-[#F5F5F5]">
         {/* Icono con porcentaje */}
         {isIcon &&
           <div className="relative mb-8">
@@ -33,9 +34,16 @@ export default function GoalSlider({
         }
         
         {/* Título */}
-        <h3 className="text-xl font-bold text-[#005840] text-center mb-4">
+        <Heading
+          tag='h3'
+          size='large'
+          variant='title'
+          align='center'
+          weight='semibold'
+          className="mb-4 text-dark-green"
+        >
           {title}
-        </h3>
+        </Heading>
         {!isIcon &&
           <div className="mb-2 flex items-center justify-center font-medium text-sm text-gray">
             Reducir {sliderValue}% de carbono anual
@@ -74,12 +82,11 @@ export default function GoalSlider({
             {sliderValue === 50 && "¡Excelente compromiso! Vas por buen camino."}
           </p>
         </div>
-
-        {/* Botón */}
+        
         <BaseButton
           onClick={() => handleSetGoal()}
-          isArray={false}
           className="w-full"
+          disabled={sliderValue === 0}
         >
           Establecer objetivo
         </BaseButton>

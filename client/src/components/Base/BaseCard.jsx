@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
-import BaseButton from "./BaseButton";
-import { Heading } from "./Heading";
+import ButtonLink from "./ButtonLink";
 
 export function BaseCard({
     title,
@@ -16,7 +14,7 @@ export function BaseCard({
 }) {
     const sizeClasses = {
         sm: "max-w-[300px] h-[150px]",
-        md: "max-w-[354px] h-[182px]",
+        md: "max-w-[354px] h-[182px] md:max-w-[500px] md:h-[200px]",
         lg: "max-w-[400px] h-[220px]",
     };
 
@@ -25,7 +23,7 @@ export function BaseCard({
         green: "bg-[#005840] text-white",
     };
 
-    const variantColor = color === "white" ? "green" : "outline";
+    const variantColor = color === "white" ? "filled" : "outlined";
 
     return (
         <div
@@ -38,13 +36,11 @@ export function BaseCard({
                 <span className="text-xs uppercase">{title}</span>
                 <div className="flex flex-col gap-4">
                     <p className="font-semibold">{subtitle}</p>
-                    <Link to={link}>
-                        <BaseButton
-                            variant={variantColor}
-                            className="text-sm font-semibold">
-                                {labelButton}
-                        </BaseButton>
-                    </Link>
+                    <ButtonLink 
+                    variant={variantColor} 
+                    to={link}>
+                        {labelButton}
+                    </ButtonLink>
                 </div>
             </div>
         </div>

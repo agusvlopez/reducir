@@ -24,7 +24,7 @@ export function Post({
     const { userId } = useAuth();
 
     return (
-        <section className="flex flex-col gap-4 border-b border-[#6D6D6D] pb-6">
+        <section className="flex flex-col gap-4 border-b border-gray-400 pb-6 mb-6">
                 <PostHeader
                     userId={postUserId}
                     name={name}

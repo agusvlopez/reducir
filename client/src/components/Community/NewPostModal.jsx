@@ -111,7 +111,8 @@ export function NewPostModal({ isOpen, onClose, onSubmit, actionSelectedId }) {
           <form onSubmit={handleSubmit} className="px-6 py-6">
             <div className="flex items-center gap-4 mb-4">
               <Avatar
-                src="https://i.pravatar.cc/300"
+                src={userData?.image}
+                alt={userData ? `${userData.firstName} ${userData.lastName}` : "Usuario"}
                 size="lg"
                 isBordered={true}
               />

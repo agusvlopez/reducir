@@ -191,12 +191,17 @@ export class UserRepository {
   //TODO: pasar logica a service, aca solo manejar la conexion con la bbdd
   static async addAchievedAction({ userId, actionId, carbon }) {
     try {
-      // Agregar logro a actions_achieved y reducir el carbon
+      const user = await User.findById(userId);
+      if (!user) throw new Error('Usuario no encontrado');
+
+      // Calcular nuevo valor sin que sea negativo
+      const newCarbon = Math.max(0, user.carbon - carbon);
+
       const updatedUser = await User.findByIdAndUpdate(
         userId,
         { 
           $addToSet: { actions_achieved: actionId }, 
-          $inc: { carbon: -carbon } 
+          $set: { carbon: newCarbon } 
         },
         { new: true, runValidators: true }
       );
