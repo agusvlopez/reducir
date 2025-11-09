@@ -4,17 +4,17 @@ export const actionsSlice = apiSlice.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
     getActions: builder.query({
-      query: () => "/actions",
+      query: () => "https://actions-api-0fyh.onrender.com/actions",
       providesTags: ["Actions"]
     }),
-    createAction: builder.mutation({
-      query: (newAction) => ({
-        url: "/actions",
-        method: "POST",
-        body: newAction,
-      }),
-      invalidatesTags: ["Actions"]
-    }),
+    // createAction: builder.mutation({
+    //   query: (newAction) => ({
+    //     url: "https://actions-api-0fyh.onrender.com/actions",
+    //     method: "POST",
+    //     body: newAction,
+    //   }),
+    //   invalidatesTags: ["Actions"]
+    // }),
     toggleSavedAction: builder.mutation({
       query: (ids) => ({
         url: "http://localhost:3000/users/toggle-favorite-action",
@@ -79,7 +79,7 @@ export const actionsSlice = apiSlice.injectEndpoints({
 
 export const { 
   useGetActionsQuery, 
-  useCreateActionMutation, 
+  // useCreateActionMutation, 
   useToggleSavedActionMutation, 
   useCheckSavedActionQuery,
   useGetSavedActionsQuery,

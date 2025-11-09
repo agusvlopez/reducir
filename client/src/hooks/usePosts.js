@@ -37,9 +37,10 @@ export const usePosts = () => {
                 toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");
                 return false;
             }
-
+            console.log("response in usePOsts", response);
+            
             toast.success("Post creado con éxito!");
-            return true;
+            return response.data;
         } catch (error) {
             console.error(error);
             toast.error("Error al crear el post. Por favor, inténtalo de nuevo.");

@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { NewPostModal } from "../Community/NewPostModal";
-import { usePosts } from "../../hooks/usePosts";
-import { CATEGORIES } from "../../constants/categories";
+import { Link } from "react-router-dom";
+
 
 export function AchievementCard({
     actionId,
@@ -12,43 +10,16 @@ export function AchievementCard({
     className = "",
     onNavigate
 }) {
-  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
-  const [isSharedOpen, setIsSharedOpen] = useState(false);
 
-  const { addPost } = usePosts();
-
-    const handleShare = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      setIsSharedOpen(true);
+  const handleCardClick = () => {
+    if (onNavigate && !isHovered) {
+      onNavigate(actionId);
     }
-
-    const handleAddPost = async (...args) => {
-      const success = await addPost(...args);
-      if (success) {
-        navigate("/app/community");
-      }
-    }
-
-    const handleCardClick = () => {
-      if (onNavigate && !isHovered) {
-        onNavigate(actionId);
-      }
-    }
+  }
 
     return (
       <>
-      {isSharedOpen && (
-        <NewPostModal 
-          isOpen={isSharedOpen}
-          onClose={() => setIsSharedOpen(false)}
-          onSubmit={handleAddPost}
-          categories={CATEGORIES}
-          actionSelectedId={actionId}
-        />
-      )}
       <div 
             onClick={handleCardClick}
             className={`w-[118px] h-[180px] lg:w-[230px] lg:h-[300px] rounded-[10px] flex flex-col items-center justify-center bg-[#005840] shadow-md flex-shrink-0 relative overflow-hidden cursor-pointer ${className}`}
@@ -76,7 +47,7 @@ export function AchievementCard({
             >
                 {/* Icono de compartir */}
                 <Link 
-                    onClick={handleShare}
+                    to={`/app/community/post/new?actionId=${actionId}`}
                     className="flex items-center justify-center p-2 hover:scale-110 transition-transform text-[#005840] cursor-pointer"
                     aria-label="Compartir"
                 >

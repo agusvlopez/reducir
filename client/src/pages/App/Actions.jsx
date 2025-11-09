@@ -4,7 +4,7 @@ import { Heading } from "../../components/Base/Heading";
 import { Pill } from "../../components/Base/Pill";
 import { ActionCard } from "../../components/Cards/ActionCard";
 import { Search } from "../../components/Inputs/Search";
-import ACTIONS from "../../assets/data/greenSteps.actions.json";
+//import ACTIONS from "../../assets/data/greenSteps.actions.json";
 import {
     useDisclosure,
 } from "@heroui/react";
@@ -25,6 +25,7 @@ const ITEMS_PER_LOAD = 8;
 export function Actions() {
     const {data: actions, isError, isLoading} = useGetActionsQuery();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    console.log("actions",actions);
     
     const [category, setCategory] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
@@ -49,12 +50,12 @@ export function Actions() {
 
     // Filtrar acciones
     const filteredActions = useMemo(() => {
-        return ACTIONS?.filter(
+        return actions?.filter(
             (action) =>
                 (!category || action.category.toLowerCase() === category.toLowerCase()) &&
                 (!searchQuery || action.title.toLowerCase().includes(searchQuery.toLowerCase()))
         ) || [];
-    }, [category, searchQuery]);
+    }, [category, searchQuery, actions]);
 
     // Datos para mostrar con lazy loading
     const displayedActions = useMemo(() => {
@@ -216,14 +217,14 @@ return (
                         </div>
                     )}
                     
-                    {/* {isError && (
+                    {isError && (
                         <div className="col-span-full bg-red-500/20 backdrop-blur-sm text-white p-6 rounded-xl text-center">
                             <svg className="w-12 h-12 mx-auto mb-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <p className="font-medium">Error al cargar las acciones.</p>
                         </div>
-                    )} */}
+                    )}
                      
                     {displayedActions && displayedActions.length === 0 && !isLoading && (
                         <div className="col-span-full bg-white/10 backdrop-blur-sm text-white p-12 rounded-xl text-center">

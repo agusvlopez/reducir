@@ -37,15 +37,14 @@ export function Navbar() {
                 
                 {/* BOTÓN MENU MOBILE */}
                 <div className="md:hidden">
-                    <button onClick={toggleMenu} className="transition duration-300 ease-in-out">
+                    <button onClick={toggleMenu} className="transition duration-300 ease-in-out text-dark-green">
                         {isCloseIconVisible ? (
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.5876 21.7258L27.6246 26.468C28.14 26.772 28.8011 26.6454 29.1675 26.1724C29.6081 25.6038 29.4463 24.7772 28.8239 24.4167L21.8844 20.3967L28.8761 16.3506C29.3112 16.0988 29.4986 15.568 29.3179 15.0989C29.0945 14.5188 28.4093 14.2708 27.8664 14.5737L19.6981 19.1302L11.8032 14.5567C11.2726 14.2494 10.5933 14.4308 10.2866 14.9617C9.98215 15.4888 10.1592 16.1627 10.6834 16.472L17.3801 20.4233L10.1998 24.4287C9.56844 24.7809 9.39866 25.6125 9.84146 26.184C10.2036 26.6514 10.8554 26.7791 11.3671 26.483L19.5876 21.7258Z" fill="#005840"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                             </svg>
                         ) : (
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M28.3627 17.2746H10.6373C9.73304 17.2746 9 16.5415 9 15.6373C9 14.733 9.73303 14 10.6373 14H28.3627C29.267 14 30 14.733 30 15.6373C30 16.5415 29.267 17.2746 28.3627 17.2746Z" fill="#005840"/>
-                            <path d="M28.3627 27H10.6373C9.73304 27 9 26.267 9 25.3627C9 24.4585 9.73303 23.7254 10.6373 23.7254H28.3627C29.267 23.7254 30 24.4585 30 25.3627C30 26.267 29.267 27 28.3627 27Z" fill="#005840"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
                             </svg>
                         )}
                     </button>

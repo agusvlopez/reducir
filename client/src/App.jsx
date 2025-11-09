@@ -7,6 +7,7 @@ import { Loader } from "./components/Base/Loader.jsx";
 import LandingPage from "./pages/Home/LandingPage/LandingPage.jsx";
 import { Followers } from "./pages/App/Followers.jsx";
 import { Following } from "./pages/App/Following.jsx";
+import { NewPost } from "./pages/App/NewPost.jsx";
 
 const Home = lazy(() => import("./pages/App/Home").then(m => ({ default: m.Home })));
 const Actions = lazy(() => import("./pages/App/Actions").then(m => ({ default: m.Actions })));
@@ -60,6 +61,7 @@ function App() {
             <Route path="/app/emissions" element={<Emissions />} />
             <Route path="/app/emissions/goals" element={<Goals />} />
             <Route path="/app/community" element={<Community />} />
+            <Route path="/app/community/post/new" element={<NewPost />} />
             <Route path="/app/:userId/post/:postId" element={<CommunityPost />} />
             <Route path="/app/compose/post/:postId" element={<ComposerPost />} />
             <Route path="/app/profile/settings" element={<ProfileSettings />} />

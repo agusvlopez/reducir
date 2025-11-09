@@ -171,13 +171,13 @@ return (
                                     className={`flex-1 ${isActionAchieved ? 'opacity-70 cursor-not-allowed' : ''}`}
                                 >
                                     {!isActionAchieved && <PlusIcon className="inline-block mr-2" />}
-                                    {isActionAchieved ? '¡Acción lograda!' : 'Marcar como completado'}
+                                    <span className="text-base font-semibold">{isActionAchieved ? '¡Acción lograda! Compartí tu logro con la comunidad 🌱' : 'Marcar como completado'}</span>
                                 </BaseButton>
                                 
                                 {isActionAchieved && (
                                     <Link 
                                         className="flex-shrink-0 w-12 h-12 bg-[#005840] hover:bg-[#004433] rounded-[30px] flex items-center justify-center text-white transition-colors group"
-                                        to={`/app/community`}
+                                        to={`/app/community/post/new?actionId=${id}`}
                                         title="Compartir en comunidad"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 group-hover:scale-110 transition-transform">
@@ -186,12 +186,12 @@ return (
                                     </Link>
                                 )}
                             </div>
-                            
+{/*                             
                             {isActionAchieved && (
-                                <p className="text-xs text-gray-500 mt-3 text-center">
+                                <p className="text-gray-500 mt-3 text-center">
                                     ¡Compartí tu logro con la comunidad! 🌱
                                 </p>
-                            )}
+                            )} */}
                         </div>
 
                         {/* Tips adicionales (opcional) */}
