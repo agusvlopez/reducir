@@ -1,6 +1,5 @@
 import { BaseCard } from "../../components/Base/BaseCard";
 import { Heading } from "../../components/Base/Heading";
-import { Pill } from "../../components/Base/Pill";
 import { AppHeaderSection } from "../../components/Sections/AppHeader";
 import LedImage from "../../assets/led.png";
 import PlantImage from "../../assets/plant.png";
@@ -8,9 +7,6 @@ import { BaseModal } from "../../components/Base/BaseModal";
 import { useDisclosure } from "@heroui/react";
 import { useGetUserQuery } from "../../api/apiSlice";
 import { useAuth } from "../../hooks/useAuth";
-import { GoalProgressCard } from "../../components/Cards/GoalProgressCard";
-import { Loader } from "../../components/Base/Loader";
-import ButtonLink from "../../components/Base/ButtonLink";
 import GoalStatusCard from "../../components/Cards/GoalStatusCard";
 
 
@@ -111,7 +107,7 @@ export function Emissions() {
                                     </svg>
                                 </div>
                                 <h3 className="font-semibold text-gray-900 mb-1">
-                                    Reduce tu consumo
+                                    Accioná
                                 </h3>
                                 <p className="text-sm text-gray-600">
                                     Cada pequeña acción cuenta para reducir tu huella de carbono

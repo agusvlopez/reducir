@@ -216,15 +216,15 @@ return (
                         </div>
                     )}
                     
-                    {isError && (
+                    {/* {isError && (
                         <div className="col-span-full bg-red-500/20 backdrop-blur-sm text-white p-6 rounded-xl text-center">
                             <svg className="w-12 h-12 mx-auto mb-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <p className="font-medium">Error al cargar las acciones.</p>
                         </div>
-                    )}
-                    
+                    )} */}
+                     
                     {displayedActions && displayedActions.length === 0 && !isLoading && (
                         <div className="col-span-full bg-white/10 backdrop-blur-sm text-white p-12 rounded-xl text-center">
                             <svg className="w-16 h-16 mx-auto mb-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">

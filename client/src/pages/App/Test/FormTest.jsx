@@ -42,7 +42,7 @@ export function FormTest() {
         <div className="max-w-3xl mx-auto w-full">
           
           {/* Card contenedor */}
-          <div className="bg-white rounded-[30px] shadow-lg p-6 sm:p-8 lg:p-12">
+          <div className="p-1 sm:p-8 lg:p-12">
             
             {/* Header */}
             <div className="text-center mb-8 lg:mb-10">
@@ -50,7 +50,8 @@ export function FormTest() {
                 tag="h1" 
                 weight="semibold" 
                 color="green"
-                className="flex items-center justify-center gap-2 text-2xl lg:text-3xl"
+                className="flex items-center justify-center gap-2"
+                size="medium"
               >
                 Test Huella de Carbono
                 <button 
@@ -103,7 +104,7 @@ export function FormTest() {
                 className="flex flex-col gap-6 lg:gap-8"
               >
                 {/* Pregunta 1 - Vivienda */}
-                <div className="bg-gray-50 rounded-xl p-5 lg:p-6 border border-gray-200 transition-all hover:border-[#005840]/30">
+                <div className="bg-gray-50 rounded-[30px] p-5 lg:p-6 border border-gray-200 transition-all hover:border-[#005840]/30">
                   <div className="flex items-start gap-3 mb-4">
                     <div className="w-10 h-10 bg-[#005840]/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#005840]">
@@ -124,7 +125,7 @@ export function FormTest() {
                 </div>
 
                 {/* Pregunta 2 - Transporte */}
-                <div className="bg-gray-50 rounded-xl p-5 lg:p-6 border border-gray-200 transition-all hover:border-[#005840]/30">
+                <div className="bg-gray-50 rounded-[30px] p-5 lg:p-6 border border-gray-200 transition-all hover:border-[#005840]/30">
                   <div className="flex items-start gap-3 mb-4">
                     <div className="w-10 h-10 bg-[#005840]/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#005840]">
@@ -145,7 +146,7 @@ export function FormTest() {
                 </div>
 
                 {/* Pregunta 3 - Dieta */}
-                <div className="bg-gray-50 rounded-xl p-5 lg:p-6 border border-gray-200 transition-all hover:border-[#005840]/30">
+                <div className="bg-gray-50 rounded-[30px] p-5 lg:p-6 border border-gray-200 transition-all hover:border-[#005840]/30">
                   <div className="flex items-start gap-3 mb-4">
                     <div className="w-10 h-10 bg-[#005840]/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#005840]">

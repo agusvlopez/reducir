@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BaseButton from "../../../components/Base/BaseButton";
 import { Heading } from "../../../components/Base/Heading";
 import { EntryAppLayout } from "../../../layouts/EntryAppLayout";
+import Logo from "../../../assets/logo-md.png";
 
 export function IntroTest() {
   const navigate = useNavigate();
@@ -16,16 +17,14 @@ export function IntroTest() {
         <div className="max-w-3xl mx-auto w-full">
           
           {/* Card contenedor */}
-          <div className="bg-white rounded-[30px] shadow-lg p-8 lg:p-12">
+          <div className="rounded-[30px] py-8 lg:p-12">
             
             {/* Contenido centrado */}
             <div className="text-dark-green font-medium flex flex-col gap-6 items-center text-center">
               
               {/* Icono decorativo */}
-              <div className="w-16 h-16 lg:w-20 lg:h-20 bg-[#005840]/10 rounded-full flex items-center justify-center mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 lg:w-10 lg:h-10 text-[#005840]">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-                </svg>
+              <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center mb-2">
+                <img src={Logo} alt="Reducir Logo" />
               </div>
 
               {/* Título */}
@@ -36,21 +35,21 @@ export function IntroTest() {
               {/* Descripción principal */}
               <p className="text-gray-700 text-base lg:text-lg leading-relaxed max-w-2xl">
                 <strong className="text-[#005840]">Reducir</strong> fue diseñada para ayudarte a{" "}
-                <strong className="text-[#005840]">cambiar hábitos</strong> a más beneficiosos con el medio ambiente y también{" "}
+                <strong className="text-[#005840]">cambiar tus hábitos</strong>, a ser más amigable con el medio ambiente y también a{" "}
                 <strong className="text-[#005840]">reducir la huella de carbono</strong>, que es una forma de medir tu{" "}
                 <strong className="text-[#005840]">impacto ambiental</strong>.
               </p>
 
               {/* Separador visual */}
-              <div className="w-16 h-1 bg-[#005840]/20 rounded-full my-2"></div>
+              <div className="w-16 h-0.5 bg-gray rounded-full my-1"></div>
 
               {/* Descripción secundaria */}
               <p className="text-gray-700 text-base lg:text-lg leading-relaxed max-w-xl">
-                Primero vamos a <strong className="text-[#005840]">medir tu huella de carbono</strong> con 3 simples preguntas acerca del transporte y energía.
+                Primero vamos a <strong className="text-dark-green">medir tu huella de carbono</strong> con 3 simples preguntas acerca del transporte y energía.
               </p>
 
               {/* Características destacadas */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl mt-4">
+              <div className="grid grid-cols-3 gap-4 w-full max-w-2xl mt-4">
                 <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-xl">
                   <div className="w-10 h-10 bg-[#005840]/10 rounded-full flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-[#005840]">
@@ -83,7 +82,7 @@ export function IntroTest() {
               <BaseButton
                 onClick={handleTestStart}
                 withArrow
-                className="mt-8 transform transition-transform hover:scale-105"
+                className="mt-2 transform transition-transform hover:scale-105"
                 variant="outlined"
                 size="lg"
               >

@@ -8,10 +8,10 @@ export default function GoalStatusCard({ userData, isOwnProfile = true }) {
   const hasCarbon = userData?.carbon > 0;
 
   return (
-    <div className="w-[354px] md:w-[400px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 flex justify-between md:justify-center items-center">
+    <div className="w-[354px] md:w-[400px] h-fit mx-auto mt-[-70px] bg-[#F5F5F5] rounded-[30px] shadow-lg p-4 ">
       {isInactive && isOwnProfile ? (
         hasCarbon ? (
-          <>
+          <div className="flex flex-col items-center text-center">
             <Heading
               tag="h3"
               variant="headline"
@@ -32,7 +32,7 @@ export default function GoalStatusCard({ userData, isOwnProfile = true }) {
             <ButtonLink to="/app/emissions/goals" className="mx-auto">
               Establecer meta
             </ButtonLink>
-          </>
+          </div>
         ) : (
           <>
             <Heading
@@ -58,15 +58,15 @@ export default function GoalStatusCard({ userData, isOwnProfile = true }) {
           </>
         )
       ) : (
-        <GoalProgressCard
-          targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
-          baselineValue={userData?.carbonGoal?.baselineValue}
-          targetValue={userData?.carbonGoal?.targetValue}
-          currentCarbon={userData?.carbon}
-          startDate={userData?.carbonGoal?.startDate}
-          year={userData?.carbonGoal?.year}
-          isOwnProgress={isOwnProfile}
-        />
+          <GoalProgressCard
+            targetReductionPercentage={userData?.carbonGoal?.targetReductionPercentage}
+            baselineValue={userData?.carbonGoal?.baselineValue}
+            targetValue={userData?.carbonGoal?.targetValue}
+            currentCarbon={userData?.carbon}
+            startDate={userData?.carbonGoal?.startDate}
+            year={userData?.carbonGoal?.year}
+            isOwnProgress={isOwnProfile}
+          />
       )}
     </div>
   );

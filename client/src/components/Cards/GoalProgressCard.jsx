@@ -48,7 +48,7 @@ export function GoalProgressCard({
   const daysRemaining = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
   return (
-    <>
+    <div className="flex items-center justify-around gap-2">
       <div className="text-xs text-[#383838] flex flex-col gap-1 md:p-2">
         <h3>Objetivo</h3>
         <span className="bg-[#ED6C1D] p-1 px-2 rounded-[30px] text-xs md:text-sm md:px-4 text-white w-fit mb-2">Reducir la huella un {targetReductionPercentage}%</span>
@@ -107,6 +107,6 @@ export function GoalProgressCard({
         {/* PROGRESS DONUT */}
         <DonutProgress value={progressPercentage} />
     </div> 
-    </>
+    </div>
   )
 }

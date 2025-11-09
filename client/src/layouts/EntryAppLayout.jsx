@@ -10,10 +10,10 @@ export function EntryAppLayout({ children, footer }) {
 
 return (
   <div className="flex flex-col min-h-screen bg-dark-green">
-    <main className="flex-grow container mx-auto py-6 md:py-8 flex flex-col">
+    <main className="flex-grow container mx-auto pt-6 md:pt-8 flex flex-col ">
       
       {/* Header con botón de volver */}
-      <div className="px-6 md:px-8 lg:px-12 py-4 md:py-6">
+      <div className="px-6 md:px-8 lg:px-12 py-4 md:py-6 ">
         <div className="max-w-7xl mx-auto">
           <button 
             onClick={handleGoBack} 
@@ -32,7 +32,7 @@ return (
       </div>
 
       {/* Contenido principal */}
-      <section className="flex-1 px-6 md:px-8 lg:px-12 pb-8 md:pb-12">
+      <section className="flex-1 px-8 md:px-8 lg:px-12 pt-10 md:pt-12 bg-white mt-4 rounded-t-[30px]">
         <div className="max-w-7xl mx-auto">
           {children}
         </div>
@@ -40,7 +40,7 @@ return (
     </main>
 
     {/* Footer */}
-    <footer className="min-h-[10vh] flex flex-col items-center justify-center text-off-white py-6 px-4">
+    <footer className="min-h-[10vh] flex flex-col items-center justify-center bg-white py-6 px-4">
       <div className="max-w-7xl mx-auto text-center">
         {footer}
       </div>
