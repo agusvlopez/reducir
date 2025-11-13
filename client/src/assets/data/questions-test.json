@@ -1,0 +1,175 @@
+[
+  {
+    "id": 1,
+    "category": "transporte",
+    "question": "¿Usás auto para ir al trabajo o actividades diarias?",
+    "options": [
+      { "text": "Todos los días", "value": 1100 },
+      { "text": "2-3 veces por semana", "value": 600 },
+      { "text": "Ocasionalmente", "value": 200 },
+      { "text": "Nunca", "value": 0 }
+    ]
+  },
+  {
+    "id": 2,
+    "category": "transporte",
+    "question": "¿Compartís el auto (carpool)?",
+    "options": [
+      { "text": "Nunca", "value": 200 },
+      { "text": "A veces", "value": 100 },
+      { "text": "Siempre", "value": 0 }
+    ]
+  },
+  {
+    "id": 3,
+    "category": "transporte",
+    "question": "¿Usás transporte público habitualmente?",
+    "options": [
+      { "text": "Sí, colectivo o tren", "value": 400 },
+      { "text": "Solo a veces", "value": 150 },
+      { "text": "Nunca", "value": 0 }
+    ]
+  },
+  {
+    "id": 4,
+    "category": "transporte",
+    "question": "¿Realizás vuelos al año?",
+    "options": [
+      { "text": "Más de 5 vuelos", "value": 2000 },
+      { "text": "2-4 vuelos", "value": 1000 },
+      { "text": "1 vuelo", "value": 500 },
+      { "text": "Ninguno", "value": 0 }
+    ]
+  },
+  {
+    "id": 5,
+    "category": "energía",
+    "question": "¿Tu consumo mensual de electricidad aproximado?",
+    "options": [
+      { "text": "Menos de 150 kWh", "value": 400 },
+      { "text": "150–300 kWh", "value": 800 },
+      { "text": "300–500 kWh", "value": 1300 },
+      { "text": "Más de 500 kWh", "value": 2000 }
+    ]
+  },
+  {
+    "id": 6,
+    "category": "energía",
+    "question": "¿Usás calefacción o aire acondicionado con frecuencia?",
+    "options": [
+      { "text": "Todo el año", "value": 1000 },
+      { "text": "Solo invierno/verano", "value": 600 },
+      { "text": "Poco", "value": 200 },
+      { "text": "No", "value": 0 }
+    ]
+  },
+  {
+    "id": 7,
+    "category": "energía",
+    "question": "¿Tenés electrodomésticos eficientes (A o superior)?",
+    "options": [
+      { "text": "Sí", "value": 0 },
+      { "text": "Algunos", "value": 100 },
+      { "text": "No", "value": 250 }
+    ]
+  },
+  {
+    "id": 8,
+    "category": "alimentación",
+    "question": "¿Con qué frecuencia consumís carne roja?",
+    "options": [
+      { "text": "Todos los días", "value": 2000 },
+      { "text": "3-4 veces por semana", "value": 1000 },
+      { "text": "1-2 veces por semana", "value": 400 },
+      { "text": "Nunca", "value": 0 }
+    ]
+  },
+  {
+    "id": 9,
+    "category": "alimentación",
+    "question": "¿Comprás alimentos locales o importados?",
+    "options": [
+      { "text": "Mayormente importados", "value": 200 },
+      { "text": "Mitad y mitad", "value": 100 },
+      { "text": "Locales", "value": 50 }
+    ]
+  },
+  {
+    "id": 10,
+    "category": "alimentación",
+    "question": "¿Desperdiciás comida habitualmente?",
+    "options": [
+      { "text": "Frecuentemente", "value": 200 },
+      { "text": "A veces", "value": 100 },
+      { "text": "Raramente", "value": 50 },
+      { "text": "Nunca", "value": 0 }
+    ]
+  },
+  {
+    "id": 11,
+    "category": "residuos",
+    "question": "¿Separás tus residuos reciclables?",
+    "options": [
+      { "text": "Siempre", "value": 0 },
+      { "text": "A veces", "value": 100 },
+      { "text": "Nunca", "value": 200 }
+    ]
+  },
+  {
+    "id": 12,
+    "category": "residuos",
+    "question": "¿Compostás residuos orgánicos?",
+    "options": [
+      { "text": "Sí", "value": 0 },
+      { "text": "No", "value": 150 }
+    ]
+  },
+  {
+    "id": 13,
+    "category": "consumo",
+    "question": "¿Cuánto comprás ropa nueva?",
+    "options": [
+      { "text": "Todos los meses", "value": 500 },
+      { "text": "Cada 3-4 meses", "value": 300 },
+      { "text": "Rara vez", "value": 100 }
+    ]
+  },
+  {
+    "id": 14,
+    "category": "consumo",
+    "question": "¿Usás productos de limpieza recargables o ecológicos?",
+    "options": [
+      { "text": "Sí", "value": 0 },
+      { "text": "A veces", "value": 50 },
+      { "text": "No", "value": 100 }
+    ]
+  },
+  {
+    "id": 15,
+    "category": "consumo",
+    "question": "¿Comprás tecnología nueva cada año?",
+    "options": [
+      { "text": "Sí", "value": 400 },
+      { "text": "Cada 2-3 años", "value": 200 },
+      { "text": "Rara vez", "value": 50 }
+    ]
+  },
+  {
+    "id": 16,
+    "category": "energía",
+    "question": "¿Usás energía renovable (por contrato o paneles solares)?",
+    "options": [
+      { "text": "Sí", "value": 0 },
+      { "text": "No", "value": 300 }
+    ]
+  },
+  {
+    "id": 17,
+    "category": "comunidad",
+    "question": "¿Participás en acciones ambientales o comunitarias?",
+    "options": [
+      { "text": "Sí", "value": -100 },
+      { "text": "No", "value": 0 }
+    ]
+  }
+]

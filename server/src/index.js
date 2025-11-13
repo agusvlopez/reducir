@@ -19,6 +19,7 @@ import postCommentsRouter from './routes/postComment.route.js';
 import postCommentLikesRouter from './routes/postCommentLike.route.js';
 import followRouter from './routes/follow.route.js';
 import authRouter from './routes/auth.route.js';
+import { startMonthlyUpdateJob } from './cronJobs/monthlyUpdate.js';
 
 const corsOptions = {
   origin: true, //todo: change it
@@ -43,6 +44,9 @@ app.use(passport.session());
 
 // Configurar Passport
 configurePassport();
+
+// Iniciar cron job
+startMonthlyUpdateJob();
 
 // Routes
 app.use('/users', usersRouter);

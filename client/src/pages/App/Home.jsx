@@ -120,7 +120,7 @@ export function Home() {
                     {isOwnProfile ? 
                         <div className="flex flex-col md:gap-1">
                             <p className="font-medium md:text-lg">Estás a un paso de cambiar el mundo, <span className="font-semibold">{isUserLoading ? '...' : userData?.name}</span>!</p>
-                            <p>Tu huella de carbono este mes:</p>
+                    
                             <div className="flex items-center gap-2">
                                 <span>
                                     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,8 +131,11 @@ export function Home() {
                                     <path d="M18.832 17.56C18.896 17.56 18.9493 17.5813 18.992 17.624C19.0347 17.6667 19.056 17.72 19.056 17.784C19.056 17.8453 19.0347 17.8973 18.992 17.94C18.9493 17.98 18.896 18 18.832 18H17.472C17.4027 18 17.348 17.9787 17.308 17.936C17.268 17.8933 17.248 17.8387 17.248 17.772C17.248 17.7053 17.272 17.6467 17.32 17.596L18.192 16.664C18.2907 16.5573 18.368 16.448 18.424 16.336C18.4827 16.224 18.512 16.1267 18.512 16.044C18.512 15.9107 18.4733 15.804 18.396 15.724C18.3187 15.6413 18.216 15.6 18.088 15.6C18.0373 15.6 17.9853 15.612 17.932 15.636C17.8787 15.66 17.8267 15.6933 17.776 15.736C17.728 15.7787 17.6827 15.828 17.64 15.884C17.608 15.9267 17.576 15.9533 17.544 15.964C17.512 15.9747 17.4827 15.98 17.456 15.98C17.3973 15.98 17.3427 15.9587 17.292 15.916C17.244 15.8707 17.22 15.8187 17.22 15.76C17.22 15.7147 17.2347 15.6707 17.264 15.628C17.296 15.5853 17.3347 15.5413 17.38 15.496C17.4467 15.4293 17.5213 15.3707 17.604 15.32C17.6867 15.2693 17.772 15.2307 17.86 15.204C17.948 15.1747 18.0333 15.16 18.116 15.16C18.2947 15.16 18.4493 15.196 18.58 15.268C18.7133 15.3373 18.816 15.4373 18.888 15.568C18.96 15.696 18.996 15.848 18.996 16.024C18.996 16.1707 18.952 16.3347 18.864 16.516C18.7787 16.6947 18.6627 16.8627 18.516 17.02L17.976 17.596L17.932 17.56H18.832Z" fill="#005840"/>
                                     </svg>
                                 </span>
-                                <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbon}</span> kg de CO2</p>
+                                <p>Tu huella de carbono anual:</p>
+                                <p className="font-semibold"><span className="font-bold">{isUserLoading ? '-' : userData?.carbonFootprintYearly}</span> kg de CO2</p>
                             </div>
+                            <p>Tu huella por mes: {userData?.carbonFootprintMonthly} kg de CO2</p>
+
                         </div>
                         :
                         <>
@@ -299,7 +302,7 @@ export function Home() {
                     <Link to={"/app/posts"} className="text-dark-green font-semibold">Ir a comunidad</Link>
 
                     {ownUserPostsLoading && <Loader />}
-                    {ownUserPostsError && <p className="text-red-500">Error al cargar las publicaciones</p>}
+                    {ownUserPostsError && <p className="text-red-500">Error al cargar las publicaciones: {ownUserPostsData}</p>}
                     {ownUserPostsData?.length === 0 || ownUserPostsData === undefined && (
                         <div className="text-center py-8">
                             <p className="text-gray-600 font-medium mb-2">

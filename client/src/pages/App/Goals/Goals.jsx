@@ -25,7 +25,7 @@ function GoalsContent() {
         baselineValue: userData?.carbonGoal?.baselineValue,
         targetReductionPercentage: userData?.carbonGoal?.targetReductionPercentage,
         targetValue: userData?.carbonGoal?.targetValue,
-        currentCarbon: userData?.carbon,
+        currentCarbon: userData?.carbonFootprintYearly,
         startDate: userData?.carbonGoal?.startDate,
         year: userData?.carbonGoal?.year
     });

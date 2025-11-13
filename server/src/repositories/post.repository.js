@@ -94,6 +94,7 @@ export class PostRepository {
       if(posts.length === 0) {       
         throw new NotFoundError('No se encontraron posts para este usuario');
       }
+      console.log("posts", posts);
       
       return posts;
     } catch (error) {

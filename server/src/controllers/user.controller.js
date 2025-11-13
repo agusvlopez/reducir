@@ -106,10 +106,10 @@ export class UserController {
   }
 
   static async createCarbon(req, res) {
-    const { userId, carbon } = req.body;
+    const { userId, carbonFootprintYearly, carbonFootprintMonthly } = req.body;
     
     try {
-      const updatedUser = await UserService.createCarbon({ userId, carbon });
+      const updatedUser = await UserService.createCarbon({ userId, carbonFootprintYearly, carbonFootprintMonthly });
       res.status(200).json({
         success: true,
         user: updatedUser
@@ -171,19 +171,42 @@ export class UserController {
     }
   }
 
+  //NUEVO:
   static async addAchievedAction(req, res) {
-    const { userId, actionId, carbon } = req.body;
-
-    try {
-      const updatedUser = await UserService.addAchievedAction({ userId, actionId, carbon });
-      res.status(200).json(updatedUser);
+    try {      
+      const { userId, actionId, carbon } = req.body;
+      
+      const result = await UserService.addAchievedAction(userId, actionId, carbon);
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Acción lograda agregada correctamente',
+        data: {
+          user: {
+            carbonFootprintMonthly: result.user.carbonFootprintMonthly,
+            carbonFootprintYearly: result.user.carbonFootprintYearly,
+            monthlyFootprints: result.user.monthlyFootprints,
+            actions_achieved: result.user.actions_achieved,
+            actions_saved: result.user.actions_saved
+          },
+          carbonReduced: result.carbonReduced,
+          newCarbonFootprint: result.newCarbonFootprint,
+          goalAchievement: result.goalAchievement
+        }
+      });
+      
     } catch (error) {
-      if(error.name === 'ValidationError') {
-        return res.status(400).json({ error: error.message });
-      }
-      return res.status(500).json({ message: 'Error inesperado' });
+      console.error('Error al agregar acción lograda:', error);
+      
+      const statusCode = error.message === 'Usuario no encontrado' ? 404 : 400;
+      
+      return res.status(statusCode).json({
+        success: false,
+        message: error.message || 'Error al agregar la acción lograda'
+      });
     }
   }
+  //
 
   static async checkAchievedAction(req, res) {
     const { userId, actionId } = req.params;
@@ -237,9 +260,7 @@ export class UserController {
   }
 
   static async getSuggestedUsers(req, res) {
-    try {
-      console.log("getSuggestedUsers controller");
-      
+    try {      
       const { userId } = req.params;
       
       const { limit = 5 } = req.query;
@@ -274,4 +295,139 @@ export class UserController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
+
+  
+
+
+
+
+  //update carbon
+  static async saveMonthlyFootprint(req, res) {
+    try {
+      const { userId } = req.params;
+      const { carbonFootprintYearly } = req.body;
+
+      if (!carbonFootprintYearly || carbonFootprintYearly < 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'El valor de carbonFootprintYearly es inválido'
+        });
+      }
+
+      const data = await carbonService.saveMonthlyFootprint(userId, carbonFootprintYearly);
+
+      res.status(200).json({
+        success: true,
+        data
+      });
+
+    } catch (error) {
+      console.error('Error al guardar huella mensual:', error);
+      
+      if (error.message === 'Usuario no encontrado') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+
+      res.status(500).json({
+        success: false,
+        message: 'Error al guardar la huella de carbono'
+      });
+    }
+  }
+
+  static async getAllMonthlyFootprints(req, res) {
+    try {
+      const { userId } = req.params;
+
+      const data = await carbonService.getAllMonthlyFootprints(userId);
+
+      res.status(200).json({
+        success: true,
+        data
+      });
+
+    } catch (error) {
+      console.error('Error al obtener historial:', error);
+
+      if (error.message === 'Usuario no encontrado') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+
+      res.status(500).json({
+        success: false,
+        message: 'Error al obtener el historial'
+      });
+    }
+  }
+
+  static async getFootprintsByDateRange(req, res) {
+    try {
+      const { userId } = req.params;
+      const { startMonth, endMonth } = req.query;
+
+      const data = await carbonService.getFootprintsByDateRange(userId, startMonth, endMonth);
+
+      res.status(200).json({
+        success: true,
+        data
+      });
+
+    } catch (error) {
+      console.error('Error al obtener rango:', error);
+
+      if (error.message === 'Usuario no encontrado') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+
+      res.status(500).json({
+        success: false,
+        message: 'Error al obtener datos'
+      });
+    }
+  }
+
+  static async compareCurrentVsPrevious(req, res) {
+    try {
+      const { userId } = req.params;
+
+      const data = await carbonService.compareCurrentVsPrevious(userId);
+
+      if (!data) {
+        return res.status(404).json({
+          success: false,
+          message: 'No hay datos suficientes para comparar'
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data
+      });
+
+    } catch (error) {
+      console.error('Error al comparar meses:', error);
+
+      if (error.message === 'Usuario no encontrado') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+
+      res.status(500).json({
+        success: false,
+        message: 'Error al comparar'
+      });
+    }
+  }
+  //
 }

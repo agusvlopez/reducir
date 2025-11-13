@@ -8,7 +8,12 @@
     "image": { 
       "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
     },
-    "imageAlt": "Persona reciclando botellas plásticas"
+    "imageAlt": "Persona reciclando botellas plásticas",
+    "frequencies": [
+      { "type": "daily", "timesPerWeek": 7, "carbon": 14 },
+      { "type": "weekly", "timesPerWeek": 1, "carbon": 2 },
+      { "type": "monthly", "timesPerWeek": 4, "carbon": 8 }
+    ]
   },
   {
     "_id": "68c2063372a141eb4a77c0e5",
@@ -19,7 +24,12 @@
     "image": { 
       "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
     },
-    "imageAlt": "Autobús ecológico en la ciudad"
+    "imageAlt": "Autobús ecológico en la ciudad",
+    "frequencies": [
+      { "type": "daily", "timesPerWeek": 7, "carbon": 35 },
+      { "type": "weekly", "timesPerWeek": 3, "carbon": 15 },
+      { "type": "monthly", "timesPerWeek": 4, "carbon": 20 }
+    ]
   },
   {
     "_id": "3",
@@ -30,7 +40,12 @@
     "image": { 
       "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
     },
-    "imageAlt": "Plato de comida vegetariana"
+    "imageAlt": "Plato de comida vegetariana",
+    "frequencies": [
+      { "type": "daily", "timesPerWeek": 7, "carbon": 28 },
+      { "type": "weekly", "timesPerWeek": 2, "carbon": 8 },
+      { "type": "monthly", "timesPerWeek": 4, "carbon": 16 }
+    ]
   },
   {
     "_id": "4",
@@ -41,7 +56,12 @@
     "image": { 
       "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
     },
-    "imageAlt": "Mano apagando interruptor de luz"
+    "imageAlt": "Mano apagando interruptor de luz",
+    "frequencies": [
+      { "type": "daily", "timesPerWeek": 7, "carbon": 7 },
+      { "type": "weekly", "timesPerWeek": 3, "carbon": 3 },
+      { "type": "monthly", "timesPerWeek": 4, "carbon": 4 }
+    ]
   },
   {
     "_id": "5",
@@ -52,7 +72,12 @@
     "image": { 
       "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
     },
-    "imageAlt": "Bolsa reutilizable en supermercado"
+    "imageAlt": "Bolsa reutilizable en supermercado",
+    "frequencies": [
+      { "type": "daily", "timesPerWeek": 7, "carbon": 7 },
+      { "type": "weekly", "timesPerWeek": 1, "carbon": 1 },
+      { "type": "monthly", "timesPerWeek": 4, "carbon": 4 }
+    ]
   },
   {
     "_id": "6",
@@ -63,72 +88,11 @@
     "image": { 
       "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
     },
-    "imageAlt": "Persona plantando un árbol"
-  },
-  {
-    "_id": "1",
-    "title": "Reciclar botellas plásticas",
-    "category": "Reciclaje",
-    "carbon": 2,
-    "description": "Deposita botellas plásticas en el contenedor de reciclaje para reducir residuos y emisiones.",
-    "image": { 
-      "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
-    },
-    "imageAlt": "Persona reciclando botellas plásticas"
-  },
-  {
-    "_id": "2",
-    "title": "Usar transporte público",
-    "category": "Agua",
-    "carbon": 5,
-    "description": "Desplázate en autobús o metro en vez de usar auto particular para disminuir tu huella de carbono.",
-    "image": { 
-      "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
-    },
-    "imageAlt": "Autobús ecológico en la ciudad"
-  },
-  {
-    "_id": "3",
-    "title": "Reducir consumo de carne",
-    "category": "Alimentación",
-    "carbon": 4,
-    "description": "Opta por comidas vegetarianas al menos un día a la semana para reducir emisiones asociadas a la ganadería.",
-    "image": { 
-      "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
-    },
-    "imageAlt": "Plato de comida vegetariana"
-  },
-  {
-    "_id": "4",
-    "title": "Apagar luces innecesarias",
-    "category": "Energía",
-    "carbon": 1,
-    "description": "Apaga las luces cuando no las necesites para ahorrar energía y reducir emisiones.",
-    "image": { 
-      "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
-    },
-    "imageAlt": "Mano apagando interruptor de luz"
-  },
-  {
-    "_id": "5",
-    "title": "Reutilizar bolsas",
-    "category": "Reciclaje",
-    "carbon": 1,
-    "description": "Lleva bolsas reutilizables al hacer compras para evitar el uso de plásticos de un solo uso.",
-    "image": { 
-      "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
-    },
-    "imageAlt": "Bolsa reutilizable en supermercado"
-  },
-  {
-    "_id": "6",
-    "title": "Plantar un árbol",
-    "category": "Agua",
-    "carbon": 10,
-    "description": "Planta un árbol en tu comunidad para ayudar a capturar CO2 y mejorar el entorno.",
-    "image": { 
-      "url": "https://res.cloudinary.com/ditkcgisx/image/upload/v1757544236/andar-en-bicicleta_ssrmpj.webp"
-    },
-    "imageAlt": "Persona plantando un árbol"
+    "imageAlt": "Persona plantando un árbol",
+    "frequencies": [
+      { "type": "daily", "timesPerWeek": 0, "carbon": 0 },
+      { "type": "weekly", "timesPerWeek": 0, "carbon": 0 },
+      { "type": "monthly", "timesPerWeek": 1, "carbon": 10 }
+    ]
   }
 ]

@@ -49,14 +49,38 @@ export const apiSlice = createApi({
         credentials: 'include' 
       }),
     }),
+
+    //carbon
     createCarbon: builder.mutation({
       query: (data) => ({
         url: "/users/carbon",
         method: "PATCH",
         body: data
       }),
-      invalidatesTags: ["Users", "User"]
+      invalidatesTags: ["Users", "User", "Carbon"]
     }),
+   
+    // Obtener todos los meses registrados
+    getAllMonthlyFootprints: builder.query({
+      query: (userId) => `/${userId}/carbon/all`,
+      providesTags: ['Carbon'],
+    }),
+    
+    // Obtener por rango de fechas
+    getFootprintsByDateRange: builder.query({
+      query: ({ userId, startMonth, endMonth }) => ({
+        url: `/${userId}/carbon/range`,
+        params: { startMonth, endMonth },
+      }),
+      providesTags: ['Carbon'],
+    }),
+    
+    // Comparar mes actual vs anterior
+    compareCurrentVsPrevious: builder.query({
+      query: (userId) => `/${userId}/carbon/compare`,
+      providesTags: ['Carbon'],
+    }),
+
     setCarbonGoal: builder.mutation({
       query: (data) => ({
         url: "/users/set-carbon-goal",

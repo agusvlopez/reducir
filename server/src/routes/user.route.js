@@ -21,4 +21,20 @@ usersRouter.patch('/:userId', uploadImage, UserController.update);
 usersRouter.get('/suggested-users/:userId', UserController.getSuggestedUsers);
 usersRouter.delete('/:userId', UserController.deleteAccount);
 
+
+
+
+//update carbon footprint monthly
+// Guardar huella (guarda mes actual Y anterior)
+usersRouter.post('/:userId/carbon', UserController.saveMonthlyFootprint);
+
+// Obtener todos los meses
+usersRouter.get('/:userId/carbon/all', UserController.getAllMonthlyFootprints);
+
+// Obtener por rango de fechas
+usersRouter.get('/:userId/carbon/range', UserController.getFootprintsByDateRange);
+
+// Comparar mes actual vs anterior
+usersRouter.get('/:userId/carbon/compare', UserController.compareCurrentVsPrevious);
+//
 export default usersRouter;

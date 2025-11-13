@@ -110,16 +110,67 @@ export class UserRepository {
     }
   }
 
-  static async createCarbon({ userId, carbon }) {
+  static async createCarbon({ userId, carbonFootprintYearly, carbonFootprintMonthly }) {
     try {
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { $set: { carbon } },
-        { new: true, runValidators: true }
+      const currentMonth = new Date().toISOString().slice(0, 7); // "2025-11"
+
+      const user = await User.findById(userId);     
+      if (!user) return null;
+      
+      // Calcular la reducción respecto al mes anterior
+      let reduction = 0;
+      if (user.monthlyFootprints && user.monthlyFootprints.length > 0) {
+        // Obtener el último mes registrado
+        const lastMonth = user.monthlyFootprints[user.monthlyFootprints.length - 1];
+        reduction = lastMonth.value - carbonFootprintMonthly;
+      }
+      
+      // Verificar si ya existe una entrada para el mes actual
+      const existingMonthIndex = user.monthlyFootprints.findIndex(
+        entry => entry.month === currentMonth
       );
+      
+      let updatedUser;
+      
+      if (existingMonthIndex !== -1) {
+        // Si ya existe, actualizamos esa entrada
+        updatedUser = await User.findByIdAndUpdate(
+          userId,
+          {
+            $set: {
+              carbonFootprintYearly,
+              carbonFootprintMonthly,
+              [`monthlyFootprints.${existingMonthIndex}.value`]: carbonFootprintMonthly,
+              [`monthlyFootprints.${existingMonthIndex}.reduction`]: reduction
+            }
+          },
+          { new: true, runValidators: true }
+        );
+      } else {
+        // Si no existe, agregamos una nueva entrada
+        updatedUser = await User.findByIdAndUpdate(
+          userId,
+          {
+            $set: {
+              carbonFootprintYearly,
+              carbonFootprintMonthly
+            },
+            $push: {
+              monthlyFootprints: {
+                month: currentMonth,
+                value: carbonFootprintMonthly,
+                reduction
+              }
+            }
+          },
+          { new: true, runValidators: true }
+        );
+      }
+      
       return updatedUser;
 
     } catch (error) {
+      console.error('Error en createCarbon:', error);
       return null;
     }
   }
@@ -188,84 +239,68 @@ export class UserRepository {
     }
   }
 
+  //NUEVO
   //TODO: pasar logica a service, aca solo manejar la conexion con la bbdd
-  static async addAchievedAction({ userId, actionId, carbon }) {
+  static async addAchievedAction({ userId, actionId, newCarbonMonthly }) {
     try {
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      
       const user = await User.findById(userId);
-      if (!user) throw new Error('Usuario no encontrado');
-
-      // Calcular nuevo valor sin que sea negativo
-      const newCarbon = Math.max(0, user.carbon - carbon);
-
+      if (!user) return null;
+      
+      // Buscar el índice del mes actual en monthlyFootprints
+      const currentMonthIndex = user.monthlyFootprints.findIndex(
+        entry => entry.month === currentMonth
+      );
+      
+      let updateQuery = {
+        $addToSet: { actions_achieved: actionId },
+        $set: { carbonFootprintMonthly: newCarbonMonthly }
+      };
+      
+      // Si existe el mes actual, actualizar su value
+      if (currentMonthIndex !== -1) {
+        updateQuery.$set[`monthlyFootprints.${currentMonthIndex}.value`] = newCarbonMonthly;
+      }
+      
       const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { 
-          $addToSet: { actions_achieved: actionId }, 
-          $set: { carbon: newCarbon } 
-        },
+        updateQuery,
         { new: true, runValidators: true }
       );
-
-      // Si la accion esta en actions_saved eliminarla
-      if (updatedUser.actions_saved.includes(actionId)) {
-        updatedUser.actions_saved = updatedUser.actions_saved.filter(id => id !== actionId);
-        await updatedUser.save();
-      }
-
-      // NUEVO: Verificar si cumplió el objetivo
-      let goalAchievement = null;
       
-      if (updatedUser.carbonGoal && updatedUser.carbonGoal.status === 'active') {
-        const goal = updatedUser.carbonGoal;
-        const currentCarbon = updatedUser.carbon;
-        
-        // Verificar si alcanzó o superó la meta
-        if (currentCarbon <= goal.targetValue) {
-          // Marcar la meta como completada
-          await User.updateOne(
-            { _id: userId },
-            { 
-              $set: { 
-                'carbonGoal.status': 'completed',
-                'carbonGoal.completedAt': new Date()
-              } 
-            }
-          );
-          
-          goalAchievement = {
-            achieved: true,
-            message: '¡Felicitaciones! Has alcanzado tu meta de reducción de carbono',
-            goal: {
-              targetReduction: goal.targetReductionPercentage,
-              targetValue: goal.targetValue,
-              achievedValue: currentCarbon,
-              exceededBy: goal.targetValue - currentCarbon
-            }
-          };
-        } else {
-          // Calcular progreso actual
-          const totalReduction = goal.baselineValue - goal.targetValue;
-          const currentReduction = goal.baselineValue - currentCarbon;
-          const progress = Math.round((currentReduction / totalReduction) * 100);
-          
-          goalAchievement = {
-            achieved: false,
-            progress: progress,
-            remaining: currentCarbon - goal.targetValue,
-            message: `Vas por buen camino. Te faltan ${Math.max(0, currentCarbon - goal.targetValue).toFixed(1)} kg de reducción para tu meta`
-          };
-        }
-      }
-
-      return {
-        user: updatedUser,
-        goalAchievement
-      };
+      return updatedUser;
     } catch (error) {
-      console.error('Error en addAchievedAction:', error);
-      return null;
+      throw error;
     }
   }
+
+  static async removeFromSavedActions({ userId, actionId }) {
+    try {
+      return await User.findByIdAndUpdate(
+        userId,
+        { $pull: { actions_saved: actionId } },
+        { new: true, runValidators: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateGoalStatus({ userId, status, completedAt = null }) {
+    try {
+      const updateData = { 'carbonGoal.status': status };
+      if (completedAt) {
+        updateData['carbonGoal.completedAt'] = completedAt;
+      }
+      
+      return await User.updateOne({ _id: userId }, { $set: updateData });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //
 
   static async checkAchievedAction({ userId, actionId }) {
     try {
@@ -346,4 +381,34 @@ export class UserRepository {
       return null;
     }
   }
+
+
+
+  //carbon
+
+  static async updateMonthlyFootprint(userId, monthlyFootprints, carbonFootprintYearly, carbonFootprintMonthly) {
+    return await User.findByIdAndUpdate(
+      userId,
+      {
+        monthlyFootprints,
+        carbonFootprintYearly,
+        carbonFootprintMonthly
+      },
+      { new: true }
+    );
+  }
+
+  static async getMonthlyFootprints(userId) {
+    const user = await User.findById(userId).select('monthlyFootprints carbonFootprintMonthly carbonFootprintYearly');
+    return user;
+  }
+
+  static async getFootprintsByMonth(userId, month) {
+    const user = await User.findById(userId);
+    if (!user) return null;
+    
+    const footprint = user.monthlyFootprints.find(entry => entry.month === month);
+    return footprint;
+  }
+  //
 }
