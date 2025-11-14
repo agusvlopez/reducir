@@ -28,15 +28,15 @@ En desarrollo. Actualmente trabajando en el backend con Node.js + Express y el f
 
 
 ## ✨ Funcionalidades previstas
-- [ ] Vista optimizada para móvil
-- [ ] Vista optimizada para escritorio
+- [x] Vista optimizada para móvil
+- [x] Vista optimizada para escritorio
 - [x] Registro e inicio de sesión
-- [ ] Configuración del perfil
-- [ ] Test para la medición de la huella de carbono generada anualmente
+- [x] Configuración del perfil
+- [x] Test para la medición de la huella de carbono generada anualmente
 - [ ] Carga de hábitos/acciones sostenibles
 - [ ] Seguimiento de avances en hábitos/acciones sostenibles
 - [ ] Creación y seguimiento de objetivos alcanzados
-- [ ] Comunidad sostenible y/o blogposts
+- [x] Comunidad sostenible
 - [ ] Notificaciones o recordatorios (a definir)
 - [ ] Funcionalidad PWA (instalable)
 - [ ] Administración/Back Office
