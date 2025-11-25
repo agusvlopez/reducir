@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 import findOrCreate from 'mongoose-findorcreate';
 
+
+const HabitSchema = new mongoose.Schema({
+  id: { type: String, required: true },
+  frequency: { type: String, enum: ['EveryDay', 'SixAWeek', 'FiveAWeek', 'FourAWeek', 'ThreeAWeek', 'TwoAWeek', 'OnceAWeek', 'OnceAFortnight', 'OnceAMonth'], required: true },
+  progress: { type: Number, default: 0 },
+  co2ReductionPerAction: { type: Number, default: 0 },
+  co2ReductionTotal: { type: Number, default: 0 }
+}, { _id: false });
+
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -22,17 +32,27 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null
   },
-  carbon: {
+  carbonFootprintYearly: {
     type: Number,
     required: true,
     default: 0
   },
+  carbonFootprintMonthly: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  monthlyFootprints: [{
+    month: { type: String, required: true }, // formato: "2025-11"
+    value: { type: Number, required: true }, // huella en kg CO₂
+    reduction: { type: Number, default: 0 }  // opcional: ahorro respecto al mes anterior
+  }],
   actions_saved: {
     type: [String],
     default: []
   },
   actions_achieved: {
-    type: [String],
+    type: [HabitSchema],
     default: []
   },
   carbonGoal: {
@@ -46,8 +66,8 @@ const UserSchema = new mongoose.Schema({
   },
   googleId: {
     type: String,
-    unique: true,  // Agregar unique
-    sparse: true   // Permite que sea opcional pero único cuando existe
+    unique: true, 
+    sparse: true  // Permite que sea opcional pero único cuando existe
   },
   isDeleted: {
     type: Boolean,

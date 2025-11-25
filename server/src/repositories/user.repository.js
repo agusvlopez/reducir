@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary.js";
 import User from "../models/User.js";
-import { PostRepository } from "./post.repository.js";
 
 
 export class UserRepository {
@@ -241,7 +240,143 @@ export class UserRepository {
 
   //NUEVO
   //TODO: pasar logica a service, aca solo manejar la conexion con la bbdd
-  static async addAchievedAction({ userId, actionId, newCarbonMonthly }) {
+
+  //este estoy usando:
+  static async upsertActionProgress({ userId, actionId, frequency, progress = 0, carbon = 0, newCarbonMonthly }) {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+      
+      const actionIndex = user.actions_achieved.findIndex(
+        action => action.id === actionId || action.id?.toString() === actionId?.toString()
+      );
+
+      let updatedUser;
+      
+      if (actionIndex === -1) {
+        // Action not present, add it.
+        // The carbon reduction is newCarbonMonthly.
+        updatedUser = await User.findByIdAndUpdate(
+          userId,
+          { 
+            $addToSet: { 
+              actions_achieved: {
+                id: actionId,
+                frequency: frequency,
+                progress: progress,
+                co2ReductionPerAction: carbon,
+                co2ReductionTotal: newCarbonMonthly || 0
+              }
+            },
+            $inc: { carbonFootprintMonthly: -(newCarbonMonthly || 0) }
+          },
+          { new: true, runValidators: true }
+        );
+      } else {
+        // Action is present, update it.
+        const oldReduction = user.actions_achieved[actionIndex].co2ReductionTotal || 0;
+        const delta = (newCarbonMonthly || 0) - oldReduction;
+
+        updatedUser = await User.findByIdAndUpdate(
+          userId,
+          {
+            $set: {
+              [`actions_achieved.${actionIndex}.frequency`]: frequency,
+              [`actions_achieved.${actionIndex}.progress`]: progress,
+              [`actions_achieved.${actionIndex}.co2ReductionTotal`]: newCarbonMonthly || 0,
+            },
+            $inc: { carbonFootprintMonthly: -delta }
+          },
+          { new: true, runValidators: true }
+        );
+      }
+      
+      return updatedUser;
+      
+    } catch (error) {
+      console.error('Error en upsertActionProgress:', error);
+      throw error;
+    }
+  }
+
+  // ❗❗
+  //todo: check if delete
+  // ❗❗
+  static async addActionToAchieved({ userId, actionAchieved }) {
+    try {
+      const updatedUser = User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { actions_achieved: actionAchieved } },
+        { new: true, runValidators: true }
+      );
+      
+      return updatedUser;
+    } catch (error) {
+      console.error('Error', error)
+    }
+  }
+
+  static async updateActionProgress({ userId, actionId, progress }) {
+    try {
+      // 1. Primero buscar solo el usuario
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+      
+      // 2. Buscar el índice de la acción en el array
+      const actionIndex = user.actions_achieved.findIndex(
+        action => action.id === actionId || action.id?.toString() === actionId?.toString()
+      );
+      
+      if (actionIndex === -1) {
+        throw new Error('Acción no encontrada en actions_achieved');
+      }
+      
+      // 3. Actualizar solo el progress de esa acción específica
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          $set: {
+            [`actions_achieved.${actionIndex}.progress`]: progress
+          }
+        },
+        { new: true, runValidators: true }
+      );
+      
+      return updatedUser;
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async checkActionProgress({ userId, actionId }) {
+    try {
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+            
+      // Asegurar que actionId sea string
+      const searchId = String(actionId);
+      
+      const action = user.actions_achieved.find(a => a.id === searchId);
+  
+      return action;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // ❗❗
+  //todo: check if delete
+  // ❗❗
+  static async addAchievedAction({ userId, actionId, carbon, newCarbonMonthly, frequency }) {
     try {
       const currentMonth = new Date().toISOString().slice(0, 7);
       
@@ -253,8 +388,14 @@ export class UserRepository {
         entry => entry.month === currentMonth
       );
       
+      const actionAchieved = {
+        id: actionId,
+        frequency: frequency,
+        co2ReductionPerAction: carbon
+      }
+
       let updateQuery = {
-        $addToSet: { actions_achieved: actionId },
+        $addToSet: { actions_achieved: actionAchieved },
         $set: { carbonFootprintMonthly: newCarbonMonthly }
       };
       
@@ -300,16 +441,18 @@ export class UserRepository {
     }
   }
 
-  //
-
   static async checkAchievedAction({ userId, actionId }) {
     try {
       const result = await User.findById(userId, 'actions_achieved').lean();
       const achievedActions = result?.actions_achieved;
 
-      if (!achievedActions) return false;
-      return achievedActions.includes(actionId);
+      if (!achievedActions || achievedActions.length === 0) return false;
+      
+      // Buscar si existe un objeto con el id que coincida
+      return achievedActions?.some(action => action.id === actionId || action.id?.toString() === actionId?.toString());
+      
     } catch (error) {
+      console.error('Error en checkAchievedAction:', error);
       return false;
     }
   }
@@ -327,6 +470,8 @@ export class UserRepository {
     try {
       const result = await User.findById(userId, 'actions_achieved').lean();
       //ahora buscar 
+      console.log("result getAchievedActions",result );
+      
       return result?.actions_achieved || [];
      
     } catch (error) {
@@ -381,34 +526,4 @@ export class UserRepository {
       return null;
     }
   }
-
-
-
-  //carbon
-
-  static async updateMonthlyFootprint(userId, monthlyFootprints, carbonFootprintYearly, carbonFootprintMonthly) {
-    return await User.findByIdAndUpdate(
-      userId,
-      {
-        monthlyFootprints,
-        carbonFootprintYearly,
-        carbonFootprintMonthly
-      },
-      { new: true }
-    );
-  }
-
-  static async getMonthlyFootprints(userId) {
-    const user = await User.findById(userId).select('monthlyFootprints carbonFootprintMonthly carbonFootprintYearly');
-    return user;
-  }
-
-  static async getFootprintsByMonth(userId, month) {
-    const user = await User.findById(userId);
-    if (!user) return null;
-    
-    const footprint = user.monthlyFootprints.find(entry => entry.month === month);
-    return footprint;
-  }
-  //
 }

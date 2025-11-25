@@ -172,11 +172,92 @@ export class UserController {
   }
 
   //NUEVO:
+  //este estoy usando:
+  static async upsertActionProgress(req, res) {
+    try {
+      const { userId, actionId, frequency, progress = 0, carbon = 0, newCarbonMonthly } = req.body;
+      
+      const result = await UserService.upsertActionProgress({ userId, actionId, frequency, progress, carbon, newCarbonMonthly });  
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Progreso actualizado o creado correctamente',
+        data: result
+      });
+    }
+    catch (error) {
+      console.error('Error al actualizar progreso:', error);
+      return res.status(500).json({ message: 'Error al actualizar progreso' });
+    }
+  }
+
+  static async checkActionProgress(req, res) {
+    try {
+      const { userId, actionId } = req.params;
+      
+      const result = await UserService.checkActionProgress({ userId, actionId });
+      
+      if (result) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: 'Progress not found for this action.' });
+      }
+    } catch (error) {
+      console.error('Error al verificar progreso:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+
+  static async addActionToAchieved(req, res) {
+    try {
+      const { userId, actionId, carbon, frequency } = req.body;
+      
+      const result = await UserService.addActionToAchieved({ userId, actionId, carbon, frequency });
+      
+      return result.status(200).json({
+        success: true,
+        message: 'Acción lograda agregada correctamente',
+        data: result
+      });
+      
+    } catch (error) {
+      console.error('Error al agregar acción lograda:', error);
+    }
+  }
+  
+  static async updateActionProgress(req, res) {
+    try {
+      const { userId, actionId } = req.params;
+      const { progress } = req.body;
+      console.log(" userId, actionId ",  userId, actionId );
+      console.log("progress", progress);
+      
+      const result = await UserService.updateActionProgress(userId, actionId, progress);
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Progreso actualizado correctamente',
+        data: result
+      });
+      
+    } catch (error) {
+      console.error('Error al actualizar progreso:', error);
+      
+      const statusCode = error.message.includes('no encontrada') ? 404 : 400;
+      
+      return res.status(statusCode).json({
+        success: false,
+        message: error.message || 'Error al actualizar el progreso'
+      });
+    }
+  }
+
   static async addAchievedAction(req, res) {
     try {      
-      const { userId, actionId, carbon } = req.body;
+      const { userId, actionId, carbon, frequency } = req.body;
       
-      const result = await UserService.addAchievedAction(userId, actionId, carbon);
+      const result = await UserService.addAchievedAction(userId, actionId, carbon, frequency);
       
       return res.status(200).json({
         success: true,
@@ -295,139 +376,4 @@ export class UserController {
       return res.status(500).json({ message: 'Error inesperado' });
     }
   }
-
-  
-
-
-
-
-  //update carbon
-  static async saveMonthlyFootprint(req, res) {
-    try {
-      const { userId } = req.params;
-      const { carbonFootprintYearly } = req.body;
-
-      if (!carbonFootprintYearly || carbonFootprintYearly < 0) {
-        return res.status(400).json({
-          success: false,
-          message: 'El valor de carbonFootprintYearly es inválido'
-        });
-      }
-
-      const data = await carbonService.saveMonthlyFootprint(userId, carbonFootprintYearly);
-
-      res.status(200).json({
-        success: true,
-        data
-      });
-
-    } catch (error) {
-      console.error('Error al guardar huella mensual:', error);
-      
-      if (error.message === 'Usuario no encontrado') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-
-      res.status(500).json({
-        success: false,
-        message: 'Error al guardar la huella de carbono'
-      });
-    }
-  }
-
-  static async getAllMonthlyFootprints(req, res) {
-    try {
-      const { userId } = req.params;
-
-      const data = await carbonService.getAllMonthlyFootprints(userId);
-
-      res.status(200).json({
-        success: true,
-        data
-      });
-
-    } catch (error) {
-      console.error('Error al obtener historial:', error);
-
-      if (error.message === 'Usuario no encontrado') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-
-      res.status(500).json({
-        success: false,
-        message: 'Error al obtener el historial'
-      });
-    }
-  }
-
-  static async getFootprintsByDateRange(req, res) {
-    try {
-      const { userId } = req.params;
-      const { startMonth, endMonth } = req.query;
-
-      const data = await carbonService.getFootprintsByDateRange(userId, startMonth, endMonth);
-
-      res.status(200).json({
-        success: true,
-        data
-      });
-
-    } catch (error) {
-      console.error('Error al obtener rango:', error);
-
-      if (error.message === 'Usuario no encontrado') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-
-      res.status(500).json({
-        success: false,
-        message: 'Error al obtener datos'
-      });
-    }
-  }
-
-  static async compareCurrentVsPrevious(req, res) {
-    try {
-      const { userId } = req.params;
-
-      const data = await carbonService.compareCurrentVsPrevious(userId);
-
-      if (!data) {
-        return res.status(404).json({
-          success: false,
-          message: 'No hay datos suficientes para comparar'
-        });
-      }
-
-      res.status(200).json({
-        success: true,
-        data
-      });
-
-    } catch (error) {
-      console.error('Error al comparar meses:', error);
-
-      if (error.message === 'Usuario no encontrado') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-
-      res.status(500).json({
-        success: false,
-        message: 'Error al comparar'
-      });
-    }
-  }
-  //
 }

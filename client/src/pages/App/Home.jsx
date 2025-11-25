@@ -1,8 +1,8 @@
 import { Avatar } from "../../components/Base/Avatar";
 import { Pill } from "../../components/Base/Pill";
 import { CarouselCard } from "../../components/Cards/CarouselCard";
-import ACTIONS from "../../assets/data/greenSteps.actions.json";
-import { useMemo, useState } from "react";
+import ACTIONS from "../../assets/data/actions.json";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BaseCarousel } from "../../components/Base/BaseCarousel";
 import { useGetUserQuery } from "../../api/apiSlice";
@@ -16,10 +16,13 @@ import { useGetSavedActionsQuery } from "../../api/actionsSlice";
 import {Loader} from "../../components/Base/Loader";
 import ButtonLink from "../../components/Base/ButtonLink";
 import GoalStatusCard from "../../components/Cards/GoalStatusCard";
+import { useUserData } from "../../hooks/useUserData";
 
 export function Home() { 
     const { userId } = useParams();
     const { userId: authUserId } = useAuth();
+    const { actionsAchieved } = useUserData();
+
     const { data: userData, isLoading: isUserLoading, isError: isUserError, error: userError} = useGetUserQuery(userId, { skip: !userId });
 
     const { data: ownUserPostsData, isLoading: ownUserPostsLoading, isError: ownUserPostsError } = useGetPostsByUserQuery(authUserId, { skip: !authUserId });
@@ -38,8 +41,6 @@ export function Home() {
     const [ unfollowUser ] = useUnfollowUserMutation();
 
     const [sectionSelected, setSectionSelected] = useState("actionsSaved");
-
-    const actionsAchieved = useMemo(() => userData?.actions_achieved || [], [userData]);
 
     // Usamos useGetActionsQuery para obtener todas las acciones
     //TODO: pasar a un hook ? 
@@ -271,8 +272,8 @@ export function Home() {
                     }
 
                     <BaseCarousel>
-                        {actionsAchieved?.map((actionId) => {
-                            const achievedAction = ACTIONS?.find(a => a._id === actionId);                        
+                        {actionsAchieved?.map((action) => {
+                            const achievedAction = ACTIONS?.find(a => a._id === action.id);                        
                             
                             if (!achievedAction) return null;
 

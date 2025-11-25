@@ -10,9 +10,15 @@
     },
     "imageAlt": "Persona reciclando botellas plásticas",
     "frequencies": [
-      { "type": "daily", "timesPerWeek": 7, "carbon": 14 },
-      { "type": "weekly", "timesPerWeek": 1, "carbon": 2 },
-      { "type": "monthly", "timesPerWeek": 4, "carbon": 8 }
+      { "type": "EveryDay", "timesPerMonth": 30, "carbon": 60 },
+      { "type": "SixAWeek", "timesPerMonth": 24, "carbon": 48 },
+      { "type": "FiveAWeek", "timesPerMonth": 20, "carbon": 40 },
+      { "type": "FourAWeek", "timesPerMonth": 16, "carbon": 32 },
+      { "type": "ThreeAWeek", "timesPerMonth": 12, "carbon": 24 },
+      { "type": "TwiceAWeek", "timesPerMonth": 8, "carbon": 16 },
+      { "type": "OnceAWeek", "timesPerMonth": 4, "carbon": 8 },
+      { "type": "OnceAFortnight", "timesPerMonth": 2, "carbon": 4 },
+      { "type": "OnceAMonth", "timesPerMonth": 1, "carbon": 2 }
     ]
   },
   {
@@ -26,9 +32,15 @@
     },
     "imageAlt": "Autobús ecológico en la ciudad",
     "frequencies": [
-      { "type": "daily", "timesPerWeek": 7, "carbon": 35 },
-      { "type": "weekly", "timesPerWeek": 3, "carbon": 15 },
-      { "type": "monthly", "timesPerWeek": 4, "carbon": 20 }
+      { "type": "EveryDay", "timesPerMonth": 30, "carbon": 150 },
+      { "type": "SixAWeek", "timesPerMonth": 24, "carbon": 120 },
+      { "type": "FiveAWeek", "timesPerMonth": 20, "carbon": 100 },
+      { "type": "FourAWeek", "timesPerMonth": 16, "carbon": 80 },
+      { "type": "ThreeAWeek", "timesPerMonth": 12, "carbon": 60 },
+      { "type": "TwiceAWeek", "timesPerMonth": 8, "carbon": 40 },
+      { "type": "OnceAWeek", "timesPerMonth": 4, "carbon": 20 },
+      { "type": "OnceAFortnight", "timesPerMonth": 2, "carbon": 10 },
+      { "type": "OnceAMonth", "timesPerMonth": 1, "carbon": 5 }
     ]
   },
   {
@@ -42,9 +54,15 @@
     },
     "imageAlt": "Plato de comida vegetariana",
     "frequencies": [
-      { "type": "daily", "timesPerWeek": 7, "carbon": 28 },
-      { "type": "weekly", "timesPerWeek": 2, "carbon": 8 },
-      { "type": "monthly", "timesPerWeek": 4, "carbon": 16 }
+      { "type": "EveryDay", "timesPerMonth": 30, "carbon": 120 },
+      { "type": "SixAWeek", "timesPerMonth": 24, "carbon": 96 },
+      { "type": "FiveAWeek", "timesPerMonth": 20, "carbon": 80 },
+      { "type": "FourAWeek", "timesPerMonth": 16, "carbon": 64 },
+      { "type": "ThreeAWeek", "timesPerMonth": 12, "carbon": 48 },
+      { "type": "TwiceAWeek", "timesPerMonth": 8, "carbon": 32 },
+      { "type": "OnceAWeek", "timesPerMonth": 4, "carbon": 16 },
+      { "type": "OnceAFortnight", "timesPerMonth": 2, "carbon": 8 },
+      { "type": "OnceAMonth", "timesPerMonth": 1, "carbon": 4 }
     ]
   },
   {
@@ -74,9 +92,15 @@
     },
     "imageAlt": "Bolsa reutilizable en supermercado",
     "frequencies": [
-      { "type": "daily", "timesPerWeek": 7, "carbon": 7 },
-      { "type": "weekly", "timesPerWeek": 1, "carbon": 1 },
-      { "type": "monthly", "timesPerWeek": 4, "carbon": 4 }
+      { "type": "EveryDay", "timesPerMonth": 30, "carbon": 30 },
+      { "type": "SixAWeek", "timesPerMonth": 24, "carbon": 24 },
+      { "type": "FiveAWeek", "timesPerMonth": 20, "carbon": 20 },
+      { "type": "FourAWeek", "timesPerMonth": 16, "carbon": 16 },
+      { "type": "ThreeAWeek", "timesPerMonth": 12, "carbon": 12 },
+      { "type": "TwiceAWeek", "timesPerMonth": 8, "carbon": 8 },
+      { "type": "OnceAWeek", "timesPerMonth": 4, "carbon": 4 },
+      { "type": "OnceAFortnight", "timesPerMonth": 2, "carbon": 2 },
+      { "type": "OnceAMonth", "timesPerMonth": 1, "carbon": 1 }
     ]
   },
   {
@@ -90,9 +114,15 @@
     },
     "imageAlt": "Persona plantando un árbol",
     "frequencies": [
-      { "type": "daily", "timesPerWeek": 0, "carbon": 0 },
-      { "type": "weekly", "timesPerWeek": 0, "carbon": 0 },
-      { "type": "monthly", "timesPerWeek": 1, "carbon": 10 }
+      { "type": "EveryDay", "timesPerMonth": 30, "carbon": 300 },
+      { "type": "SixAWeek", "timesPerMonth": 24, "carbon": 240 },
+      { "type": "FiveAWeek", "timesPerMonth": 20, "carbon": 200 },
+      { "type": "FourAWeek", "timesPerMonth": 16, "carbon": 160 },
+      { "type": "ThreeAWeek", "timesPerMonth": 12, "carbon": 120 },
+      { "type": "TwiceAWeek", "timesPerMonth": 8, "carbon": 80 },
+      { "type": "OnceAWeek", "timesPerMonth": 4, "carbon": 40 },
+      { "type": "OnceAFortnight", "timesPerMonth": 2, "carbon": 20 },
+      { "type": "OnceAMonth", "timesPerMonth": 1, "carbon": 10 }
     ]
   }
 ]

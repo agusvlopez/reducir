@@ -7,6 +7,7 @@ import { validateUserCreate, validateUserLogin } from "../validations/user.schem
 import { ValidationError } from "../errors/ValidationError.js";
 import { ConflictError } from "../errors/ConflictError.js";
 import { TokenService } from './token.service.js';
+import { frequencyToChecks } from '../constants/frequencyActions.js';
 import { FollowRepository } from '../repositories/follow.repository.js';
 import User from '../models/User.js';
 
@@ -134,14 +135,95 @@ export class UserService {
   }
 
   //NUEVO:
-  static async addAchievedAction(userId, actionId, carbonReduction) {
+  static async upsertActionProgress({ userId, actionId, frequency, progress = 0, carbon = 0 }) {
+    if (!frequencyToChecks[frequency]) {
+      throw new ValidationError('Frecuencia inválida.');
+    }
+
+    if (progress < 0) {
+      progress = 0;
+    }
+    
+    const newCarbonMonthly = (carbon / 100) * progress;
+
+    const updatedUser = await UserRepository.upsertActionProgress({ 
+        userId, 
+        actionId, 
+        frequency, 
+        progress, 
+        carbon, 
+        newCarbonMonthly 
+    });
+
+    return updatedUser;
+  }
+
+  static async checkActionProgress({ userId, actionId }) {
+    try {
+      const actionProgress = await UserRepository.checkActionProgress({ userId, actionId });
+      return actionProgress;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+    static async addActionToAchieved({ userId, actionId, carbon, frequency}) {
+      //push action to achieved_actions
+      const actionAchieved = {
+        id: actionId,
+        frequency: frequency,
+        co2ReductionPerAction: carbon
+      }
+      
+      const updatedUser = await UserRepository.addActionToAchieved({ userId, actionAchieved });
+      return updatedUser;
+    }
+
+    static async updateActionProgress(userId, actionId, progress) {
+      try {
+        // Validaciones
+        if (!userId || !actionId) {
+          throw new Error('userId y actionId son requeridos');
+        }
+        
+        if (typeof progress !== 'number' || progress < 0 || progress > 100) {
+          throw new Error('El progreso debe ser un número entre 0 y 100');
+        }
+        
+        const updatedUser = await UserRepository.updateActionProgress({
+          userId,
+          actionId,
+          progress
+        });
+        
+        if (!updatedUser) {
+          throw new Error('Error al actualizar el progreso');
+        }
+        
+        // Buscar la acción actualizada para devolver sus detalles
+        const updatedAction = updatedUser.actions_achieved.find(
+          action => action.id === actionId || action.id?.toString() === actionId?.toString()
+        );
+        
+        return {
+          success: true,
+          action: updatedAction,
+          progress
+        };
+        
+      } catch (error) {
+        throw error;
+      }
+    }
+
+  static async addAchievedAction(userId, actionId, carbon, frequency) {
     try {
       // Validaciones
       if (!userId || !actionId) {
         throw new Error('userId y actionId son requeridos');
       }
       
-      if (carbonReduction === undefined || carbonReduction < 0) {
+      if (carbon === undefined || carbon < 0) {
         throw new Error('La reducción de carbono debe ser un número válido positivo');
       }
       
@@ -150,15 +232,26 @@ export class UserService {
       if (!user) {
         throw new Error('Usuario no encontrado');
       }
+
+      // Verificar si ya logró esta acción
+      const isAlreadyAchieved = user.actions_achieved.some(
+        action => action.id?.toString() === actionId.toString()
+      );
+      
+      if (isAlreadyAchieved) {
+        throw new Error('Ya completaste esta acción anteriormente');
+      }
       
       // Calcular nuevo valor sin que sea negativo
-      const newCarbonMonthly = Math.max(0, user.carbonFootprintMonthly - carbonReduction);
+      const newCarbonMonthly = Math.max(0, user.carbonFootprintMonthly - carbon);
       
       // Agregar acción lograda y actualizar carbono
       let updatedUser = await UserRepository.addAchievedAction({
         userId,
         actionId,
-        newCarbonMonthly
+        carbon,
+        newCarbonMonthly,
+        frequency
       });
       
       if (!updatedUser) {
@@ -176,7 +269,7 @@ export class UserService {
       return {
         user: updatedUser,
         goalAchievement,
-        carbonReduced: carbonReduction,
+        carbonReduced: carbon,
         newCarbonFootprint: newCarbonMonthly
       };
       
@@ -305,211 +398,4 @@ export class UserService {
     return user;
   }
 
-
-
-
-
-  //update carbon 
-  static calculateMonthlyFootprint(carbonFootprintYearly) {
-    return carbonFootprintYearly / 12;
-  }
-
-  static getCurrentMonth() {
-    return new Date().toISOString().slice(0, 7);
-  }
-
-  static getPreviousMonth() {
-    const now = new Date();
-    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    return lastMonth.toISOString().slice(0, 7);
-  }
-
-  static calculateReduction(currentValue, previousValue) {
-    if (!previousValue) return 0;
-    return previousValue - currentValue;
-  }
-
-  static addOrUpdateMonth(monthlyFootprints, month, value) {
-    const existingIndex = monthlyFootprints.findIndex(
-      entry => entry.month === month
-    );
-    
-    if (existingIndex !== -1) {
-      // Actualizar registro existente
-      monthlyFootprints[existingIndex].value = value;
-      return { status: 'updated', footprints: monthlyFootprints };
-    }
-    
-    // Calcular reducción respecto al mes inmediatamente anterior
-    let reduction = 0;
-    
-    const sortedFootprints = [...monthlyFootprints].sort((a, b) => 
-      b.month.localeCompare(a.month)
-    );
-    
-    const previousRecord = sortedFootprints.find(entry => entry.month < month);
-    
-    if (previousRecord) {
-      reduction = this.calculateReduction(value, previousRecord.value);
-    }
-    
-    // Agregar nuevo registro
-    monthlyFootprints.push({
-      month: month,
-      value: value,
-      reduction: reduction
-    });
-    
-    return { status: 'created', footprints: monthlyFootprints };
-  }
-
-  sortFootprintsByDate(footprints, ascending = true) {
-    return [...footprints].sort((a, b) => {
-      return ascending 
-        ? a.month.localeCompare(b.month)
-        : b.month.localeCompare(a.month);
-    });
-  }
-
-  static async saveMonthlyFootprint(userId, carbonFootprintYearly) {
-    const user = await carbonRepository.findUserById(userId);
-    
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-
-    const carbonFootprintMonthly = this.calculateMonthlyFootprint(carbonFootprintYearly);
-    const currentMonth = this.getCurrentMonth();
-    const previousMonth = this.getPreviousMonth();
-
-    // Guardar MES ANTERIOR
-    const previousResult = this.addOrUpdateMonth(
-      user.monthlyFootprints, 
-      previousMonth, 
-      carbonFootprintMonthly
-    );
-    const previousStatus = previousResult.status;
-    user.monthlyFootprints = previousResult.footprints;
-
-    // Guardar MES ACTUAL
-    const currentResult = this.addOrUpdateMonth(
-      user.monthlyFootprints, 
-      currentMonth, 
-      carbonFootprintMonthly
-    );
-    const currentStatus = currentResult.status;
-    user.monthlyFootprints = currentResult.footprints;
-
-    // Actualizar valores generales
-    user.carbonFootprintYearly = carbonFootprintYearly;
-    user.carbonFootprintMonthly = carbonFootprintMonthly;
-
-    // Ordenar por fecha
-    user.monthlyFootprints = this.sortFootprintsByDate(user.monthlyFootprints, true);
-
-    await carbonRepository.saveUser(user);
-
-    return {
-      carbonFootprintYearly,
-      carbonFootprintMonthly,
-      savedMonths: {
-        previous: {
-          month: previousMonth,
-          status: previousStatus
-        },
-        current: {
-          month: currentMonth,
-          status: currentStatus
-        }
-      },
-      totalMonthsRecorded: user.monthlyFootprints.length,
-      monthlyFootprints: user.monthlyFootprints
-    };
-  }
-
-  static async getAllMonthlyFootprints(userId) {
-    const user = await carbonRepository.getMonthlyFootprints(userId);
-    
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-
-    const sortedFootprints = this.sortFootprintsByDate(user.monthlyFootprints, false);
-
-    return {
-      totalMonths: sortedFootprints.length,
-      monthlyFootprints: sortedFootprints,
-      currentFootprint: user.carbonFootprintMonthly,
-      yearlyFootprint: user.carbonFootprintYearly
-    };
-  }
-
-  static async getFootprintsByDateRange(userId, startMonth, endMonth) {
-    const user = await carbonRepository.findUserById(userId);
-    
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-
-    let filteredFootprints = user.monthlyFootprints;
-
-    if (startMonth) {
-      filteredFootprints = filteredFootprints.filter(entry => entry.month >= startMonth);
-    }
-
-    if (endMonth) {
-      filteredFootprints = filteredFootprints.filter(entry => entry.month <= endMonth);
-    }
-
-    filteredFootprints = this.sortFootprintsByDate(filteredFootprints, true);
-
-    const total = filteredFootprints.reduce((sum, entry) => sum + entry.value, 0);
-    const average = filteredFootprints.length > 0 ? total / filteredFootprints.length : 0;
-    const totalReduction = filteredFootprints.reduce((sum, entry) => sum + (entry.reduction || 0), 0);
-
-    return {
-      range: { startMonth, endMonth },
-      monthsCount: filteredFootprints.length,
-      total,
-      average,
-      totalReduction,
-      monthlyFootprints: filteredFootprints
-    };
-  }
-
-  static async compareCurrentVsPrevious(userId) {
-    const user = await carbonRepository.findUserById(userId);
-    
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-
-    const currentMonth = this.getCurrentMonth();
-    const previousMonth = this.getPreviousMonth();
-
-    const current = user.monthlyFootprints.find(entry => entry.month === currentMonth);
-    const previous = user.monthlyFootprints.find(entry => entry.month === previousMonth);
-
-    if (!current || !previous) {
-      return null;
-    }
-
-    const difference = previous.value - current.value;
-    const percentageChange = (difference / previous.value) * 100;
-
-    return {
-      current: {
-        month: currentMonth,
-        value: current.value
-      },
-      previous: {
-        month: previousMonth,
-        value: previous.value
-      },
-      difference: difference,
-      percentageChange: percentageChange.toFixed(2),
-      trend: difference > 0 ? 'mejora' : difference < 0 ? 'aumento' : 'igual'
-    };
-  }
-  //
 }

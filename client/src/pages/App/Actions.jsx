@@ -4,7 +4,7 @@ import { Heading } from "../../components/Base/Heading";
 import { Pill } from "../../components/Base/Pill";
 import { ActionCard } from "../../components/Cards/ActionCard";
 import { Search } from "../../components/Inputs/Search";
-//import ACTIONS from "../../assets/data/greenSteps.actions.json";
+import ACTIONS from "../../assets/data/actions.json";
 import {
     useDisclosure,
 } from "@heroui/react";
@@ -50,12 +50,12 @@ export function Actions() {
 
     // Filtrar acciones
     const filteredActions = useMemo(() => {
-        return actions?.filter(
+        return ACTIONS?.filter(
             (action) =>
                 (!category || action.category.toLowerCase() === category.toLowerCase()) &&
                 (!searchQuery || action.title.toLowerCase().includes(searchQuery.toLowerCase()))
         ) || [];
-    }, [category, searchQuery, actions]);
+    }, [category, searchQuery]);
 
     // Datos para mostrar con lazy loading
     const displayedActions = useMemo(() => {
